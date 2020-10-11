@@ -3,24 +3,38 @@
 
 const input = {
   1: [
-    [2, 6],
-    [7, 8]
-  ],
-  3: [
-    [3, 6],
-    [9, 10]
-  ],
-  4: [
-    [3, 6],
-    [9, 10]
+    [8, 9],
+    [12, 15],
+    [18, 20]
   ],
   5: [
-    [4, 6],
-    [9, 12]
-  ]
+    [13, 14],
+    [16, 20]
+  ],
+  9: [
+    [7, 9],
+    [15, 18],
+    [21, 22]
+  ],
 };
 
-const currentMatches = { 1: [[1, 7]], 3: [[1, 4], [5, 9.5]], 5: [[5, 7], [8, 10]] };
+const currentMatches = {
+  1: [
+    [7, 10],
+    [14, 19]
+  ],
+  3: [
+    [21, 23],
+  ],
+  5: [
+    [12, 13],
+    [16, 17]
+  ],
+  9: [
+    [6, 8],
+    [20, 23]
+  ]
+};
 
 function updateCommon(input) {
   const commonDates = getCommonDates(input);
@@ -44,7 +58,7 @@ function updateCommon(input) {
       console.log({matchedStart}, {matchedEnd});
 
       //if between
-      if(!(inputStart - matchedEnd >= 0 && inputEnd - matchedStart >= 0) || (inputStart - matchedEnd <= 0 && inputEnd - matchedStart <= 0)) {
+      if(!((inputStart - matchedEnd >= 0 && inputEnd - matchedStart >= 0) || (inputStart - matchedEnd <= 0 && inputEnd - matchedStart <= 0))) {
         console.log('in between');
         const newStart = inputStart > matchedStart ? inputStart : matchedStart;
         const newEnd = inputEnd < matchedEnd ? inputEnd : matchedEnd;
@@ -88,7 +102,8 @@ updateCommon(input);
 //   console.log(date1.value - date2.value);
 // });
 
-//Todo
-//x1. change number to date
-//x2. get common time-slots for sorted time-slots
-//3. need to simplify time-slots input?
+//Todo 
+//1. simplify input time-slots(number)
+
+//Todo (future)
+//1. sort and simplify input time-slots
