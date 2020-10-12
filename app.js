@@ -22,14 +22,14 @@ const input = {
 
 const notSimplifiedInput = {
   1: [
-    [12, 15],
-    [18, 20],
-    [8, 16],
+    [1, 7],
+    [2, 3],
+    [4, 5],
     [21, 23]
   ],
   5: [
+    [13, 16],
     [15, 20],
-    [13, 16]
   ],
 }
 
@@ -177,11 +177,14 @@ function sortTimeSlots(input) {
 // const simplifiedInput = simplifyTimeSlots(notSimplifiedInput)
 // console.log(simplifiedInput);
 // updateCommon(simplifiedInput);
-const sortedInput = sortTimeSlots(input);
-console.log(sortedInput);
-const simplifiedInput = simplifyTimeSlots(sortedInput);
-console.log(simplifiedInput);
-const updatedOutput = updateCommon(simplifiedInput)
+
+// const sortedInput = sortTimeSlots(input);
+// console.log(sortedInput);
+// const simplifiedInput = simplifyTimeSlots(sortedInput);
+// console.log(simplifiedInput);
+// const updatedOutput = updateCommon(simplifiedInput)
+
+console.log(simplifyTimeSlots(notSimplifiedInput));
 
 
 
@@ -193,8 +196,7 @@ const updatedOutput = updateCommon(simplifiedInput)
 // });
 
 //Todo 
-//1. sort not simplified time-slots 
+//1. simplify 3 or more time-slots
 
 //Todo (future)
-//1. sort and simplify input time-slots (simplify done)
-//2. Notetify user after simplifying time-slots?
+//1. Notetify user after simplifying time-slots?
