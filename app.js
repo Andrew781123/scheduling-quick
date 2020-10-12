@@ -18,6 +18,18 @@ const input = {
   ],
 };
 
+const notSimplifiedInput = {
+  1: [
+    [8, 16],
+    [12, 15],
+    [18, 20]
+  ],
+  5: [
+    [13, 16],
+    [15, 20]
+  ],
+}
+
 const currentMatches = {
   1: [
     [7, 10],
@@ -93,7 +105,50 @@ function getCommonDates(input) {
   return newCommonDates;
 }
 
-updateCommon(input);
+// m dates
+// n timeSlots
+// O(mn)
+function simplifyTimeSlots(input) {
+  //input are dates and time-slots
+  const simplifiedInput = {};
+
+  Object.keys(input).forEach((date, i) => {
+    simplifiedInput[date] = [];
+
+    const timeSlots = input[date];
+    let j = 0;
+
+    while(j < timeSlots.length) {
+      const currentStart = timeSlots[j][0], 
+            currentEnd = timeSlots[j][1], 
+            nextStart = j < timeSlots.length - 1 ? timeSlots[j + 1][0] : null, 
+            nextEnd = j < timeSlots.length - 1 ? timeSlots[j + 1][1] : null;
+
+      console.log({currentStart}, {currentEnd}, {nextStart}, {nextEnd});
+
+      if(currentEnd > nextStart) {
+        //Can be simplified
+        const newTimeSlot = [currentStart, Math.max(currentEnd, nextEnd)];
+        simplifiedInput[date].push(newTimeSlot);
+        j += 2;
+      } else {
+        //Can't be simplified
+        const newTimeSlot = [currentStart, currentEnd];
+        simplifiedInput[date].push(newTimeSlot);
+        j++;
+      }
+    }
+  });
+
+  return simplifiedInput;
+}
+
+//Test Codes
+// updateCommon(input);
+
+console.log(simplifyTimeSlots(notSimplifiedInput));
+
+
 
 
 // const date1 = document.querySelector("#date1");
@@ -107,3 +162,4 @@ updateCommon(input);
 
 //Todo (future)
 //1. sort and simplify input time-slots
+//2. Notetify user after simplifying time-slots?
