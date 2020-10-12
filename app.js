@@ -22,7 +22,8 @@ const notSimplifiedInput = {
   1: [
     [8, 16],
     [12, 15],
-    [18, 20]
+    [18, 20],
+    [21, 23]
   ],
   5: [
     [13, 16],
@@ -33,7 +34,8 @@ const notSimplifiedInput = {
 const currentMatches = {
   1: [
     [7, 10],
-    [14, 19]
+    [14, 20],
+    [22, 24]
   ],
   3: [
     [21, 23],
@@ -65,9 +67,9 @@ function updateCommon(input) {
       const matchedStart = matchedTimeSlots[p2][0];
       const matchedEnd = matchedTimeSlots[p2][1];
 
-      console.log({date});
-      console.log({inputStart}, {inputEnd});
-      console.log({matchedStart}, {matchedEnd});
+      // console.log({date});
+      // console.log({inputStart}, {inputEnd});
+      // console.log({matchedStart}, {matchedEnd});
 
       //if between
       if(!((inputStart - matchedEnd >= 0 && inputEnd - matchedStart >= 0) || (inputStart - matchedEnd <= 0 && inputEnd - matchedStart <= 0))) {
@@ -86,7 +88,11 @@ function updateCommon(input) {
       } 
 
       if(inputEnd > matchedEnd) p2++;
-      else p1++;
+      else if(inputEnd < matchedEnd) p1++;
+      else {
+        p1++;
+        p2++;
+      }
     }
   }
 
@@ -145,8 +151,9 @@ function simplifyTimeSlots(input) {
 
 //Test Codes
 // updateCommon(input);
-
-console.log(simplifyTimeSlots(notSimplifiedInput));
+const simplifiedInput = simplifyTimeSlots(notSimplifiedInput)
+console.log(simplifiedInput);
+updateCommon(simplifiedInput)
 
 
 
