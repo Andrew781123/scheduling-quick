@@ -165,8 +165,8 @@ updateCommon(simplifiedInput)
 // });
 
 //Todo 
-//1. simplify input time-slots(number)
+//1. sort not simplified time-slots 
 
 //Todo (future)
-//1. sort and simplify input time-slots
+//1. sort and simplify input time-slots (simplify done)
 //2. Notetify user after simplifying time-slots?
