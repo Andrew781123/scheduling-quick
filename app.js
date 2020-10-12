@@ -3,46 +3,46 @@
 
 const input = {
   1: [
-    [8, 9],
-    [12, 15],
-    [18, 20]
+    [2, 3],
+    [22, 23],
+    [1, 7],
+    [15, 18]
   ],
-  5: [
-    [13, 14],
-    [16, 20]
+  2: [
+    [16, 20],
+    [18, 21],
+    [1, 2]
   ],
-  9: [
-    [7, 9],
-    [15, 18],
-    [21, 22]
+  6: [
+    [8, 10],
+    [3, 6],
+    [4, 7]
   ],
 };
 
 const notSimplifiedInput = {
   1: [
-    [8, 16],
     [12, 15],
     [18, 20],
+    [8, 16],
     [21, 23]
   ],
   5: [
-    [13, 16],
-    [15, 20]
+    [15, 20],
+    [13, 16]
   ],
 }
 
 const currentMatches = {
   1: [
-    [7, 10],
-    [14, 20],
-    [22, 24]
+    [2, 6],
+    [13, 20],
   ],
-  3: [
-    [21, 23],
+  2: [
+    [18, 22],
   ],
-  5: [
-    [12, 13],
-    [16, 17]
+  6: [
+    [1, 2],
   ],
   9: [
     [6, 8],
@@ -130,7 +130,7 @@ function simplifyTimeSlots(input) {
             nextStart = j < timeSlots.length - 1 ? timeSlots[j + 1][0] : null, 
             nextEnd = j < timeSlots.length - 1 ? timeSlots[j + 1][1] : null;
 
-      console.log({currentStart}, {currentEnd}, {nextStart}, {nextEnd});
+      // console.log({currentStart}, {currentEnd}, {nextStart}, {nextEnd});
 
       if(currentEnd > nextStart) {
         //Can be simplified
@@ -149,11 +149,39 @@ function simplifyTimeSlots(input) {
   return simplifiedInput;
 }
 
+function sortTimeSlots(input) {
+  // let sortedInput = {};
+
+  Object.keys(input).forEach((date) => {
+    const timeSlots = input[date];
+
+    for(let i = 1; i < timeSlots.length; i++) {
+      const currentTimeSlot = timeSlots[i];
+      let j = i - 1;
+      for(j; j >= 0; j--) {
+        if(timeSlots[j][0] > currentTimeSlot[0]) {
+          timeSlots[j + 1] = timeSlots[j];
+        } else {
+          break;
+        }
+      }
+      timeSlots[j + 1] = currentTimeSlot;
+    }
+  });
+
+  return input;
+}
+
 //Test Codes
 // updateCommon(input);
-const simplifiedInput = simplifyTimeSlots(notSimplifiedInput)
+// const simplifiedInput = simplifyTimeSlots(notSimplifiedInput)
+// console.log(simplifiedInput);
+// updateCommon(simplifiedInput);
+const sortedInput = sortTimeSlots(input);
+console.log(sortedInput);
+const simplifiedInput = simplifyTimeSlots(sortedInput);
 console.log(simplifiedInput);
-updateCommon(simplifiedInput)
+const updatedOutput = updateCommon(simplifiedInput)
 
 
 
