@@ -1,59 +1,62 @@
 //input list of dates and time-slots
 //determine common dates and time-slots
 
-const input = {
-  1: [
-    [2, 3],
-    [22, 23],
-    [1, 7],
-    [15, 18]
+input1 = {
+  10: [
+    [13, 15],
+    [9, 14],
+    [14, 15],
+    [19, 23]
   ],
-  2: [
-    [16, 20],
-    [18, 21],
-    [1, 2]
-  ],
-  6: [
-    [8, 10],
-    [3, 6],
-    [4, 7]
-  ],
-};
-
-const notSimplifiedInput = {
-  1: [
-    [1, 7],
-    [2, 3],
-    [4, 5],
+  15: [
+    [1, 5],
+    [20, 23],
+    [2, 4],
+    [14, 15],
     [21, 23]
   ],
-  5: [
-    [1, 5],
-    [6, 20],
-    [13, 16],
-    [14, 15],
-    [21, 22]
-  ],
+  18: [
+    [8, 10],
+    [6, 9],
+    [7, 12],
+    [20, 21],
+    [1, 4]
+  ]
 }
 
-const currentMatches = {
-  1: [
-    [2, 6],
-    [13, 20],
+input2 = {
+  10: [
+    [14, 19],
+    [1, 3],
+    [20, 21],
+    [13, 15]
   ],
-  2: [
-    [18, 22],
+  15: [
+    [2, 4],
+    [16, 21],
+    [13, 14],
+    [14, 18],
   ],
-  6: [
-    [1, 2],
-  ],
-  9: [
+  17: [
     [6, 8],
-    [20, 23]
+    [13, 19],
+    [14, 20],
+  ],
+  18: [
+    [7, 12],
+    [9, 15],
+    [14, 15],
+    [13, 20],
+    [6, 9],
+    [1, 2]
   ]
-};
+}
+
+let currentMatches = null;
 
 function updateCommon(input) {
+  if(!currentMatches) currentMatches = input;
+
   const commonDates = getCommonDates(input);
   
   let newMatches = {};
@@ -125,25 +128,26 @@ function simplifyTimeSlots(input) {
     simplifiedInput[date] = [];
 
     const timeSlots = input[date];
-    let comparatorPointer = 0, currentPointer = 0;
+    let comparatorPointer = 0, currentPointer = 0, potentialNewEnd;
 
     while(comparatorPointer < timeSlots.length) {
       const currentStart = timeSlots[currentPointer][0], 
             currentEnd = timeSlots[currentPointer][1],
-            comparatorEnd = timeSlots[comparatorPointer][1],
-            nextStart = comparatorPointer < timeSlots.length - 1  ? timeSlots[comparatorPointer + 1][0] : null;
+            nextStart = comparatorPointer < timeSlots.length - 1  ? timeSlots[comparatorPointer + 1][0] : null,
+            nextEnd = comparatorPointer < timeSlots.length - 1 ? timeSlots[comparatorPointer + 1][1] : null;
 
       // console.log({currentStart}, {currentEnd}, {nextStart}, {nextEnd});
 
-      if(nextStart && currentEnd > nextStart) {
+      if(nextStart && currentEnd >= nextStart) {
         //Must has a nextStart. i.e. comparatorPointer is not pointing to last element
         //Can be simplified, so continue and see if next slot can also be simplified
+        potentialNewEnd = Math.max(potentialNewEnd || -1 , nextEnd);
         comparatorPointer ++;
       } else {
         //Can't be simplified
         if(comparatorPointer !== currentPointer) {
           // console.log(date, {currentEnd}, {comparatorEnd});
-          const newTimeSlot = [currentStart, Math.max(currentEnd, comparatorEnd)];
+          const newTimeSlot = [currentStart, potentialNewEnd];
           simplifiedInput[date].push(newTimeSlot);
         } else {
           const newTimeSlot = [currentStart, currentEnd];
@@ -188,13 +192,16 @@ function sortTimeSlots(input) {
 // console.log(simplifiedInput);
 // updateCommon(simplifiedInput);
 
-// const sortedInput = sortTimeSlots(input);
-// console.log(sortedInput);
-// const simplifiedInput = simplifyTimeSlots(sortedInput);
-// console.log(simplifiedInput);
-// const updatedOutput = updateCommon(simplifiedInput)
+const sortedInput1 = sortTimeSlots(input1);
+console.log('sorted input1', sortedInput1);
+const simplifiedInput1 = simplifyTimeSlots(sortedInput1);
+console.log('input 1', simplifiedInput1);
+const updatedOutput1 = updateCommon(simplifiedInput1)
+const sortedInput2 = sortTimeSlots(input2);
+const simplifiedInput2 = simplifyTimeSlots(sortedInput2);
+const updatedOutput2 = updateCommon(simplifiedInput2)
 
-console.log(simplifyTimeSlots(notSimplifiedInput));
+
 
 
 
