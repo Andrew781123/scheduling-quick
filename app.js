@@ -3,24 +3,19 @@
 
 input1 = {
   10: [
-    [13, 15],
-    [9, 14],
-    [14, 15],
+    [9, 15],
+    [10, 12],
     [19, 23]
   ],
   15: [
     [1, 5],
-    [20, 23],
-    [2, 4],
     [14, 15],
-    [21, 23]
+    [20, 23],
   ],
   18: [
-    [8, 10],
-    [6, 9],
-    [7, 12],
+    [1, 4],
+    [6, 12],
     [20, 21],
-    [1, 4]
   ]
 }
 
@@ -79,7 +74,7 @@ function updateCommon(input) {
 
       //if between
       if(!((inputStart - matchedEnd >= 0 && inputEnd - matchedStart >= 0) || (inputStart - matchedEnd <= 0 && inputEnd - matchedStart <= 0))) {
-        console.log('in between');
+        // console.log('in between');
         const newStart = inputStart > matchedStart ? inputStart : matchedStart;
         const newEnd = inputEnd < matchedEnd ? inputEnd : matchedEnd;
 
@@ -128,7 +123,7 @@ function simplifyTimeSlots(input) {
     simplifiedInput[date] = [];
 
     const timeSlots = input[date];
-    let comparatorPointer = 0, currentPointer = 0, potentialNewEnd;
+    let comparatorPointer = 0, currentPointer = 0, potentialNewEnd = timeSlots[0][1];
 
     while(comparatorPointer < timeSlots.length) {
       const currentStart = timeSlots[currentPointer][0], 
@@ -141,7 +136,7 @@ function simplifyTimeSlots(input) {
       if(nextStart && currentEnd >= nextStart) {
         //Must has a nextStart. i.e. comparatorPointer is not pointing to last element
         //Can be simplified, so continue and see if next slot can also be simplified
-        potentialNewEnd = Math.max(potentialNewEnd || -1 , nextEnd);
+        potentialNewEnd = Math.max(potentialNewEnd , nextEnd);
         comparatorPointer ++;
       } else {
         //Can't be simplified
