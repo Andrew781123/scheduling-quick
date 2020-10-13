@@ -28,8 +28,11 @@ const notSimplifiedInput = {
     [21, 23]
   ],
   5: [
+    [1, 5],
+    [6, 20],
     [13, 16],
-    [15, 20],
+    [14, 15],
+    [21, 22]
   ],
 }
 
@@ -122,26 +125,33 @@ function simplifyTimeSlots(input) {
     simplifiedInput[date] = [];
 
     const timeSlots = input[date];
-    let j = 0;
+    let comparatorPointer = 0, currentPointer = 0;
 
-    while(j < timeSlots.length) {
-      const currentStart = timeSlots[j][0], 
-            currentEnd = timeSlots[j][1], 
-            nextStart = j < timeSlots.length - 1 ? timeSlots[j + 1][0] : null, 
-            nextEnd = j < timeSlots.length - 1 ? timeSlots[j + 1][1] : null;
+    while(comparatorPointer < timeSlots.length) {
+      const currentStart = timeSlots[currentPointer][0], 
+            currentEnd = timeSlots[currentPointer][1],
+            comparatorEnd = timeSlots[comparatorPointer][1],
+            nextStart = comparatorPointer < timeSlots.length - 1  ? timeSlots[comparatorPointer + 1][0] : null;
 
       // console.log({currentStart}, {currentEnd}, {nextStart}, {nextEnd});
 
-      if(currentEnd > nextStart) {
-        //Can be simplified
-        const newTimeSlot = [currentStart, Math.max(currentEnd, nextEnd)];
-        simplifiedInput[date].push(newTimeSlot);
-        j += 2;
+      if(nextStart && currentEnd > nextStart) {
+        //Must has a nextStart. i.e. comparatorPointer is not pointing to last element
+        //Can be simplified, so continue and see if next slot can also be simplified
+        comparatorPointer ++;
       } else {
         //Can't be simplified
-        const newTimeSlot = [currentStart, currentEnd];
-        simplifiedInput[date].push(newTimeSlot);
-        j++;
+        if(comparatorPointer !== currentPointer) {
+          // console.log(date, {currentEnd}, {comparatorEnd});
+          const newTimeSlot = [currentStart, Math.max(currentEnd, comparatorEnd)];
+          simplifiedInput[date].push(newTimeSlot);
+        } else {
+          const newTimeSlot = [currentStart, currentEnd];
+          simplifiedInput[date].push(newTimeSlot);
+        }
+        //update time-slot to compare
+        comparatorPointer ++;
+        currentPointer = comparatorPointer;
       }
     }
   });
