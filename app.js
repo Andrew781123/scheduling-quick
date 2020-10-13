@@ -208,7 +208,7 @@ const updatedOutput2 = updateCommon(simplifiedInput2)
 // });
 
 //Todo 
-//1. simplify 3 or more time-slots
+//1. convert all numbers to times
 
 //Todo (future)
 //1. Notetify user after simplifying time-slots?
