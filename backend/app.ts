@@ -1,10 +1,16 @@
-import express from 'express';
+import express from "express";
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('hello');
+app.get("/", (req, res) => {
+  res.send("hello");
 });
 
-const PORT = process.env.port || 3000;
+import eventRouter from "./routes/event";
+app.use("/api/events", eventRouter);
+
+import participantRouter from "./routes/participants";
+app.use("/api/events/:eventId/participants", participantRouter);
+
+const PORT = process.env.port || 5000;
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));
