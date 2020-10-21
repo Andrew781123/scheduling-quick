@@ -73,7 +73,7 @@ function main(input) {
   } else {
     const commonAvailable = getCommonAvailable(simplifiedTimeSlots);
   
-    updateMatched(input, commonAvailable)
+    updateMatched(input, commonAvailable);
   }
 }
 
@@ -110,7 +110,7 @@ function updateMatched(input, commonAvailable) {
             commonEnd = commonAvailableTimeSlots[p2][1];
 
       if(newStart === commonStart && newEnd === commonEnd) {
-        commonAvailable[date][p2].push(input.name)
+        newMatches[date][p2].push(input.name)
         p1++;
         p2++;
       } else if(newStart > commonStart) p2++;
