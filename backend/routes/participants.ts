@@ -1,6 +1,8 @@
 import express from "express";
 const router = express.Router();
 
+import Event from "../models/event";
+
 //new participant
 router.post("/", (req, res) => {
   res.send("new participant");
