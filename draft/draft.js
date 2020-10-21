@@ -1,20 +1,29 @@
 let input = {
   10: [
     [1, 2, ['Andrew']],
-    [2, 6, ['Andrew']],
-    [7, 8, ['Andrew']],
-    [9, 18, ['Andrew']],
-    [20, 22, ['Andrew']],
-  ],
-  11: [
-    [1, 2, ['Andrew']],
     [3, 6, ['Andrew']],
     [7, 8, ['Andrew']],
     [9, 18, ['Andrew']],
     [20, 22, ['Andrew']],
   ],
-}
 
+  11: [
+    [1, 2, ['Andrew']],
+    [2, 6, ['Andrew']],
+    [7, 8, ['Andrew']],
+    [9, 18, ['Andrew']],
+    [20, 22, ['Andrew']],
+  ],
+
+  12: [
+    [12, 15, ['Andrew']]
+  ],
+
+  13: [
+    [1, 2, ['Andrew']],
+    [3, 4, ['Andrew']]
+  ]
+}
 
 let currentMatched = {
   10: [
@@ -27,6 +36,16 @@ let currentMatched = {
   11: [
     [1.5, 2.5, ['Wendy']],
     [3, 8.5, ['May']]
+  ],
+
+  12: [
+    [12, 13, ['Wendy']],
+    [14, 16, ['May', 'Wendy']]
+  ],
+
+  13: [
+    [10, 11, ['Wendy']],
+    [12, 13, ['Wendy', 'May']]
   ]
 }
 
@@ -47,8 +66,8 @@ const updateCommon = (input) => {
             matchedStart = matchedTimeSlots[j][0],
             matchedEnd = matchedTimeSlots[j][1];
       if(checkInBetween(inputStart, matchedStart, inputEnd, matchedEnd)) {
-        if(date === '11') {
-          console.log({date}, {inputStart}, {inputEnd}, {matchedStart}, {matchedEnd});
+        if(date === '12') {
+          // console.log({date}, {inputStart}, {inputEnd}, {matchedStart}, {matchedEnd});
         }
         //if in between
         if(temp.length == 0) {
@@ -71,7 +90,7 @@ const updateCommon = (input) => {
       } else {
         //if not in between
         if(temp.length > 0) {
-          if(date === '11') {
+          if(date === '12') {
             console.log('temp', temp);
           }
           output[date] = [...output[date], ...splitTimeSlots(temp)]
@@ -95,13 +114,23 @@ const updateCommon = (input) => {
       }
     }
 
+    if(temp.length > 0) {
+      // console.log('not done',temp)
+      output[date] = [...output[date], ...splitTimeSlots(temp)];
+      if(largerRange) {
+        i++;
+      } else {
+        j++;
+      }
+    }
+
     //push remaining timeSlots
     for(i; i < inputTimeSlots.length; i++) {
-      output[date].push(inputTimeSlots[i])
+      output[date].push(inputTimeSlots[i]);
     }
 
     for(j; j < matchedTimeSlots.length; j++) {
-      output[date].push(matchedTimeSlots[j])
+      output[date].push(matchedTimeSlots[j]);
     }
   });
 
@@ -201,7 +230,7 @@ function generateTimeSlots(arr) {
 const checkInBetween = (start1, start2, end1, end2) => {
   return !((start1 - end2 <= 0 && end1 - start2 <= 0) || (start1 - end2 >= 0 && end1 - start2 >= 0)) 
 }
-const result = updateCommon(input)[11]
+const result = updateCommon(input)[13]
 console.log(result);
 // splitTimeSlots([[6, 9], [7, 8]])
 

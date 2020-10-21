@@ -16,6 +16,10 @@ let input = {
     [9, 18, ['Andrew']],
     [20, 22, ['Andrew']],
   ],
+
+  12: [
+    [12, 15, ['Andrew']]
+  ]
 }
 
 let currentMatched = {
@@ -29,6 +33,11 @@ let currentMatched = {
   11: [
     [1.5, 2.5, ['Wendy']],
     [3, 8.5, ['May']]
+  ],
+
+  12: [
+    [12, 13, ['Wendy']],
+    [14, 16, ['May', 'Wendy']]
   ]
 }
 
