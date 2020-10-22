@@ -26,7 +26,7 @@ class Time extends mongoose.SchemaType {
 
 type TimeSlot = [number, number, string[]];
 
-interface IEvent extends mongoose.Document {
+export interface IEvent {
   info: {
     organizer: string;
     venue: {
@@ -40,7 +40,7 @@ interface IEvent extends mongoose.Document {
     time: { fromTime: Date; toTime: Date }[];
   };
 
-  participants: {
+  participants?: {
     name: string;
     timeAvailable: Map<string, TimeSlot>;
   };
@@ -54,6 +54,17 @@ interface IEvent extends mongoose.Document {
   authPassword?: string;
 }
 
+interface EventDocument extends mongoose.Document, IEvent {
+  participants?: {
+    name: string;
+    timeAvailable: mongoose.Types.Map<TimeSlot>;
+  };
+
+  commonDate?: mongoose.Types.Map<TimeSlot>;
+}
+
+interface EventModel extends mongoose.Model<EventDocument> {}
+
 const participantSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -61,7 +72,7 @@ const participantSchema = new mongoose.Schema({
   },
 
   timeAvailable: {
-    type: Map,
+    type: mongoose.Types.Map,
     of: {
       type: Time
     },
@@ -131,6 +142,6 @@ const eventSchema = new mongoose.Schema({
   }
 });
 
-const Event = mongoose.model<IEvent>("event", eventSchema);
+const Event = mongoose.model<EventDocument, EventModel>("event", eventSchema);
 
 export default Event;

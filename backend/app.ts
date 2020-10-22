@@ -4,9 +4,7 @@ import connectDatabase from "./database";
 
 connectDatabase();
 
-app.get("/", (req, res) => {
-  res.send("hello");
-});
+app.use(express.json());
 
 import eventRouter from "./routes/event";
 app.use("/api/events", eventRouter);

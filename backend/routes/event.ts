@@ -1,11 +1,11 @@
 import express from "express";
 const router = express.Router();
 
-import Event from "../models/event";
+import Event, { IEvent } from "../models/event";
 
 //get an event
 router.get("/:id", (req, res) => {
-  res.send("get an event");
+  const { event } = req.body;
 });
 
 //create new event
