@@ -1,0 +1,18 @@
+:root {
+  --arrow-color: black;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+}
+
+.down-arrow {
+  border-top: 20px solid var(--arrow-color);
+}
+
+.up-arrow {
+  border-bottom: 20px solid var(--arrow-color);
+}
