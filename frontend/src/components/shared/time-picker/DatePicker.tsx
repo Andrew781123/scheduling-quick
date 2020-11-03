@@ -2,20 +2,21 @@ import React from "react";
 import { DatePicker as AntDatePicker, ConfigProvider } from "antd";
 import moment from "moment";
 import { RangeValue } from "../../../../node_modules/rc-picker/lib/interface";
+import { dateRange, period } from "../../../shared/types";
 const { RangePicker } = AntDatePicker;
 
 interface DatePickerProps {
-  handleDateSelect: (selectedDate: string) => void;
+  selectDate: (dateRange: dateRange, index: number) => void;
+  period: period;
+  index: number;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = props => {
-  const { handleDateSelect } = props;
+  const { selectDate, index } = props;
 
-  function onChange(
-    dates: RangeValue<moment.Moment>,
-    dateStrings: [string, string]
-  ) {
-    handleDateSelect(dateStrings[0]);
+  function onChange(dates: RangeValue<moment.Moment>, dateStrings: dateRange) {
+    selectDate(dateStrings, index);
+    console.log(dateStrings);
   }
 
   return (

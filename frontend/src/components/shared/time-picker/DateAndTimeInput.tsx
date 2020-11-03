@@ -1,9 +1,12 @@
 import { DatePicker } from "./DatePicker";
 import React, { useState } from "react";
 import { TimePicker } from "./TimePicker";
+import { dateRange, period } from "../../../shared/types";
 
 interface DateAndTimeInputProps {
-  selectDate: (date: string) => void;
+  selectDate: (dateRange: dateRange, index: number) => void;
+  period: period;
+  index: number;
 }
 
 interface IDateAndTime {
@@ -12,31 +15,12 @@ interface IDateAndTime {
   endTime: string;
 }
 
-const initialDateAndTime: IDateAndTime = {
-  date: "",
-  startTime: "",
-  endTime: ""
-};
-
 export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
-  const { selectDate } = props;
-
-  const [dateAndTime, setDateAndTime] = useState(initialDateAndTime);
-
-  const handleDateSelect = (selectedDate: string) => {
-    setDateAndTime(dateAndTime => {
-      return {
-        ...dateAndTime,
-        date: selectedDate
-      };
-    });
-
-    selectDate(selectedDate);
-  };
+  const { selectDate, period, index } = props;
 
   return (
     <>
-      <DatePicker handleDateSelect={handleDateSelect} />
+      <DatePicker selectDate={selectDate} period={period} index={index} />
       <TimePicker />
     </>
   );
