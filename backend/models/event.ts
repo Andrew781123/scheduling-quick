@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { period, TimeSlot } from "../../frontend/src/shared/types";
 
 class Time extends mongoose.SchemaType {
   constructor(key: any, options: any) {
@@ -24,8 +25,6 @@ class Time extends mongoose.SchemaType {
   }
 }
 
-type TimeSlot = [number, number, string[]];
-
 export interface IEvent {
   info: {
     organizer: string;
@@ -35,10 +34,7 @@ export interface IEvent {
     };
   };
 
-  period: {
-    date: { fromDate: Date; toDate: Date }[];
-    time: { fromTime: Date; toTime: Date }[];
-  };
+  period: period[];
 
   participants?: {
     name: string;
@@ -95,34 +91,12 @@ const eventSchema = new mongoose.Schema({
       googleMapLink: String
     },
 
-    period: {
-      date: [
-        {
-          fromDate: {
-            type: Date,
-            required: true
-          },
-
-          toDate: {
-            type: Date,
-            required: true
-          }
-        }
-      ],
-      time: [
-        {
-          fromTime: {
-            type: Date,
-            required: true
-          },
-
-          toTime: {
-            type: Date,
-            required: true
-          }
-        }
-      ]
-    },
+    period: [
+      {
+        dateRange: [String],
+        timeRange: [Number]
+      }
+    ],
 
     participants: [participantSchema],
 
