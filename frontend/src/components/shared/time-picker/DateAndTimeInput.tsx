@@ -1,3 +1,4 @@
+import { DatePicker } from "./DatePicker";
 import React, { useState } from "react";
 import { TimePicker } from "./TimePicker";
 
@@ -22,9 +23,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
 
   const [dateAndTime, setDateAndTime] = useState(initialDateAndTime);
 
-  const handleDateSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = e.target.value;
-
+  const handleDateSelect = (selectedDate: string) => {
     setDateAndTime(dateAndTime => {
       return {
         ...dateAndTime,
@@ -37,7 +36,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
 
   return (
     <>
-      <input type='number' min='1' max='31' onChange={handleDateSelect} />
+      <DatePicker handleDateSelect={handleDateSelect} />
       <TimePicker />
     </>
   );
