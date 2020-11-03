@@ -16,7 +16,6 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
 
   function onChange(dates: RangeValue<moment.Moment>, dateStrings: dateRange) {
     selectDate(dateStrings, index);
-    console.log(dateStrings);
   }
 
   return (

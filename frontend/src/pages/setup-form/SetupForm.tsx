@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Header } from "../../components/shared/Header";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
 import { UserInput } from "../../components/shared/UserInput";
@@ -32,6 +32,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
 
   const selectDate = (dateRange: dateRange, index: number) => {
     dispatch({ type: "SELECT_DATE", dateRange, index });
+    console.log("periods", periods);
   };
 
   const renderDateAndTimeInputComponent = () => {

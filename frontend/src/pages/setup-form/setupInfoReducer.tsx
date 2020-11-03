@@ -1,5 +1,6 @@
 import { IsetupInfo } from "./SetupForm";
 import { dateRange } from "../../shared/types";
+import moment from "moment";
 
 type setupInfoActions =
   | { type: "SELECT_DATE"; dateRange: dateRange; index: number }
@@ -10,10 +11,12 @@ const setupInfoReducer = (state: IsetupInfo, action: setupInfoActions) => {
     case "SELECT_DATE": {
       return {
         ...state,
-        period: state.periods.map((period, index) => {
+        periods: state.periods.map((period, index) => {
           if (index !== action.index) return period;
 
-          return action.dateRange;
+          let newPeriod = period;
+          newPeriod.dateRange = action.dateRange;
+          return newPeriod;
         })
       };
     }
@@ -21,7 +24,14 @@ const setupInfoReducer = (state: IsetupInfo, action: setupInfoActions) => {
     case "ADD_DATE_AND_TIME_COMPONENT": {
       return {
         ...state,
-        periodCount: state.periodCount + 1
+        periodCount: state.periodCount + 1,
+        periods: state.periods.concat({
+          dateRange: [
+            moment().format("YYYY-MM-DD"),
+            moment().format("YYYY-MM-DD")
+          ],
+          timeRange: [0o000, 0o000]
+        })
       };
     }
 
