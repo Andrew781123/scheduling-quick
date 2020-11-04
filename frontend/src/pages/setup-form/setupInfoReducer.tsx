@@ -24,7 +24,6 @@ const setupInfoReducer = (state: IsetupInfo, action: setupInfoActions) => {
     case "ADD_DATE_AND_TIME_COMPONENT": {
       return {
         ...state,
-        periodCount: state.periodCount + 1,
         periods: state.periods.concat({
           dateRange: [
             moment().format("YYYY-MM-DD"),
