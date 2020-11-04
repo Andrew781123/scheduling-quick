@@ -31,6 +31,7 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
   return (
     <ConfigProvider>
       <RangePicker
+        inputReadOnly={true}
         disabledDate={disabledDate}
         defaultValue={dateRangeMoment}
         ranges={{

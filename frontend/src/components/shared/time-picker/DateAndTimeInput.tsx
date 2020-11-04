@@ -1,10 +1,11 @@
 import { DatePicker } from "./DatePicker";
 import React, { useState } from "react";
 import { TimePicker } from "./TimePicker";
-import { dateRange, period } from "../../../shared/types";
+import { dateRange, period, timeRange } from "../../../shared/types";
 
 interface DateAndTimeInputProps {
   selectDate: (dateRange: dateRange, index: number) => void;
+  timeChange: (timeRange: timeRange, index: number) => void;
   period: period;
   index: number;
 }
@@ -12,6 +13,7 @@ interface DateAndTimeInputProps {
 export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   const {
     selectDate,
+    timeChange,
     period: { dateRange, timeRange },
     index
   } = props;
@@ -19,7 +21,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   return (
     <>
       <DatePicker selectDate={selectDate} dateRange={dateRange} index={index} />
-      <TimePicker />
+      <TimePicker timeChange={timeChange} index={index} timeRange={timeRange} />
     </>
   );
 };
