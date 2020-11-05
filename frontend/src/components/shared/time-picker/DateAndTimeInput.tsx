@@ -1,12 +1,14 @@
 import { DatePicker } from "./DatePicker";
 import React, { useState } from "react";
 import { TimePicker } from "./TimePicker";
-import { dateRange, period, timeRange } from "../../../shared/types";
+import { dateRange, timeRange } from "../../../shared/types";
+import { periodState } from "../../../pages/setup-form/types";
+import { Moment } from "moment";
 
 interface DateAndTimeInputProps {
-  selectDate: (dateRange: dateRange, index: number) => void;
+  selectDate: (dateField: string, date: Moment, index: number) => void;
   timeChange: (timeRange: timeRange, index: number) => void;
-  period: period;
+  period: periodState;
   index: number;
 }
 

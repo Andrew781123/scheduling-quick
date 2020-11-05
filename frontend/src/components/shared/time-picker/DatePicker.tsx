@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
 import { DatePicker as AntDatePicker, ConfigProvider } from "antd";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { RangeValue } from "../../../../node_modules/rc-picker/lib/interface";
 import { dateRange } from "../../../shared/types";
-const { RangePicker } = AntDatePicker;
+import { DatePicker as MaterialDatePicker } from "@material-ui/pickers";
+import { dateRangeState } from "../../../pages/setup-form/types";
 
 interface DatePickerProps {
-  selectDate: (dateRange: dateRange, index: number) => void;
-  dateRange: dateRange;
+  selectDate: (dateField: string, date: Moment, index: number) => void;
+  dateRange: dateRangeState;
   index: number;
 }
 
@@ -16,30 +17,27 @@ type dateRangeMoment = [moment.Moment, moment.Moment];
 export const DatePicker: React.FC<DatePickerProps> = props => {
   const { selectDate, index, dateRange } = props;
 
-  function onChange(dates: RangeValue<moment.Moment>, dateStrings: dateRange) {
-    selectDate(dateStrings, index);
-  }
+  const handleFromDateSelect = (date: Moment | null) => {
+    console.log(index);
+    selectDate("fromDate", date!, index);
+  };
 
-  const dateRangeMoment: dateRangeMoment = useMemo(() => {
-    return [moment(dateRange[0]), moment(dateRange[1])];
-  }, [dateRange]);
-
-  const disabledDate = (currentDate: moment.Moment) => {
-    return currentDate < moment();
+  const handleToDateSelect = (date: Moment | null) => {
+    selectDate("toDate", date!, index);
   };
 
   return (
-    <ConfigProvider>
-      <RangePicker
-        inputReadOnly={true}
-        disabledDate={disabledDate}
-        defaultValue={dateRangeMoment}
-        ranges={{
-          Today: [moment(), moment()],
-          "This Month": [moment().startOf("month"), moment().endOf("month")]
-        }}
-        onChange={onChange}
-      />
-    </ConfigProvider>
+    <>
+      <MaterialDatePicker
+        onChange={handleFromDateSelect}
+        value={dateRange.fromDate}
+        disablePast={true}
+      ></MaterialDatePicker>
+      <MaterialDatePicker
+        onChange={handleToDateSelect}
+        value={dateRange.toDate}
+        disablePast={true}
+      ></MaterialDatePicker>
+    </>
   );
 };

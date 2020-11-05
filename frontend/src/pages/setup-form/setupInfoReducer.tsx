@@ -1,23 +1,27 @@
-import { IsetupInfo } from "./SetupForm";
 import { dateRange, timeRange } from "../../shared/types";
-import moment from "moment";
+import moment, { Moment } from "moment";
+import { setupInfo } from "./types";
 
 type setupInfoActions =
-  | { type: "SELECT_DATE"; dateRange: dateRange; index: number }
+  | { type: "FROM_DATE_SELECT"; dateField: string; date: Moment; index: number }
   | { type: "ADD_DATE_AND_TIME_COMPONENT" }
   | { type: "UPDATE_TIME_RANGE"; timeRange: timeRange; index: number };
 
-const setupInfoReducer = (state: IsetupInfo, action: setupInfoActions) => {
+const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
   switch (action.type) {
-    case "SELECT_DATE": {
+    case "FROM_DATE_SELECT": {
       return {
         ...state,
         periods: state.periods.map((period, index) => {
           if (index !== action.index) return period;
 
-          let newPeriod = period;
-          newPeriod.dateRange = action.dateRange;
-          return newPeriod;
+          return {
+            ...period,
+            dateRange: {
+              ...period.dateRange,
+              [action.dateField]: action.date
+            }
+          };
         })
       };
     }
@@ -26,10 +30,10 @@ const setupInfoReducer = (state: IsetupInfo, action: setupInfoActions) => {
       return {
         ...state,
         periods: state.periods.concat({
-          dateRange: [
-            moment().format("YYYY-MM-DD"),
-            moment().format("YYYY-MM-DD")
-          ],
+          dateRange: {
+            fromDate: null,
+            toDate: null
+          },
           timeRange: ["0000", "0000"]
         })
       };

@@ -4,20 +4,19 @@ import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTim
 import { UserInput } from "../../components/shared/UserInput";
 import setupInfoReducer from "./setupInfoReducer";
 import { period, dateRange, timeRange } from "../../shared/types";
-import moment from "moment";
+import moment, { Moment } from "moment";
+import { setupInfo } from "./types";
 
 interface SetupFormProps {}
 
-export interface IsetupInfo {
-  organizerName: string;
-  periods: period[];
-}
-
-const initialSetupInfo: IsetupInfo = {
+const initialSetupInfo: setupInfo = {
   organizerName: "",
   periods: [
     {
-      dateRange: [moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")],
+      dateRange: {
+        fromDate: null,
+        toDate: null
+      },
       timeRange: ["0000", "0000"]
     }
   ]
@@ -28,9 +27,8 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
 
   const { periods } = setupInfo;
 
-  const selectDate = (dateRange: dateRange, index: number) => {
-    dispatch({ type: "SELECT_DATE", dateRange, index });
-    console.log("periods", periods);
+  const selectDate = (dateField: string, date: Moment, index: number) => {
+    dispatch({ type: "FROM_DATE_SELECT", dateField, date, index });
   };
 
   const timeChange = (timeRange: timeRange, index: number) => {
