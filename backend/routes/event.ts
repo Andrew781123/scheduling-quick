@@ -12,9 +12,9 @@ router.get("/:id", (req, res) => {
 //create new event
 router.post("/", async (req, res) => {
   const event: IEvent = req.body;
-
+  console.log(event.periods[0].timeRange);
   try {
-    await Event.create(event);
+    // await Event.create(event);
 
     res.status(201).json({ message: "Event created" });
   } catch (err) {
