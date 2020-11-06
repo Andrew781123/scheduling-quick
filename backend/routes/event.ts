@@ -1,3 +1,4 @@
+//Todo error handling
 import express from "express";
 const router = express.Router();
 
@@ -9,11 +10,16 @@ router.get("/:id", (req, res) => {
 });
 
 //create new event
-router.post("/", (req, res) => {
-  // Event.create({
-  //   info: {}
-  // });
-  res.send("create new event");
+router.post("/", async (req, res) => {
+  const event: IEvent = req.body;
+
+  try {
+    await Event.create(event);
+
+    res.status(201).json({ message: "Event created" });
+  } catch (err) {
+    res.status(400).json({ errorMessage: "" });
+  }
 });
 
 //edit event info and setup

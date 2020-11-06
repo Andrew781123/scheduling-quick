@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { period, TimeSlot } from "../../frontend/src/shared/types";
 
-class Time extends mongoose.SchemaType {
+class TimeSlots extends mongoose.SchemaType {
   constructor(key: any, options: any) {
     super(key, options, "Time");
   }
@@ -24,6 +24,9 @@ class Time extends mongoose.SchemaType {
     return timeArray;
   }
 }
+
+const Types: any = mongoose.Schema.Types;
+Types.TimeSlots = TimeSlots;
 
 export interface IEvent {
   info: {
@@ -66,9 +69,9 @@ const participantSchema = new mongoose.Schema({
   },
 
   timeAvailable: {
-    type: mongoose.Types.Map,
+    type: Map,
     of: {
-      type: Time
+      type: TimeSlots
     },
     required: true
   }
