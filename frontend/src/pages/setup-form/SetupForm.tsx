@@ -1,20 +1,21 @@
 import React, { useReducer } from "react";
 import { Header } from "../../components/shared/Header";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
-import { UserInput } from "../../components/shared/UserInput";
 import setupInfoReducer from "./setupInfoReducer";
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import {
   dateRangeState,
   periodState,
   setupInfo,
   timeRangeState
 } from "./types";
+import { Button, TextField } from "@material-ui/core";
 
 interface SetupFormProps {}
 
 const initialSetupInfo: setupInfo = {
   organizerName: "",
+  venue: "",
   periods: [
     {
       dateRange: {
@@ -26,13 +27,21 @@ const initialSetupInfo: setupInfo = {
         toTime: null
       }
     }
-  ]
+  ],
+  linkPassword: "",
+  authPassword: ""
 };
 
 export const SetupForm: React.FC<SetupFormProps> = props => {
   const [setupInfo, dispatch] = useReducer(setupInfoReducer, initialSetupInfo);
 
-  const { periods } = setupInfo;
+  const {
+    periods,
+    organizerName,
+    venue,
+    linkPassword,
+    authPassword
+  } = setupInfo;
 
   const selectPeriod = (
     periodField: keyof periodState,
@@ -49,11 +58,36 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     });
   };
 
+  const hanleTextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name: textField, value: text }
+    } = e;
+    dispatch({ type: "TEXT_INPUT", textField, text });
+  };
+
   return (
     <div>
       <Header title='Setup Event' />
-      <UserInput label='Name of organizer' placeholder='Enter name' />
-      <UserInput label='Venue' placeholder='Enter venue of event' />
+
+      <div>
+        <TextField
+          value={organizerName}
+          name='organizerName'
+          onChange={hanleTextInput}
+          label='Name of organizer'
+          placeholder='Enter name'
+          required={true}
+        />
+      </div>
+      <div>
+        <TextField
+          value={venue}
+          name='venue'
+          onChange={hanleTextInput}
+          label='Venue'
+          placeholder='Enter venue of event'
+        />
+      </div>
       {periods.map((period, i) => {
         return (
           <DateAndTimeInput
@@ -67,6 +101,27 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       <button onClick={() => dispatch({ type: "ADD_DATE_AND_TIME_COMPONENT" })}>
         Add
       </button>
+
+      <div>
+        <div>
+          <TextField
+            value={linkPassword}
+            name='linkPassword'
+            onChange={hanleTextInput}
+            label='Set password for link (optional)'
+          />
+        </div>
+        <div>
+          <TextField
+            value={authPassword}
+            name='authPassword'
+            onChange={hanleTextInput}
+            label='Set password for link (optional)'
+          />
+        </div>
+      </div>
+
+      <Button variant='contained'>Next</Button>
     </div>
   );
 };

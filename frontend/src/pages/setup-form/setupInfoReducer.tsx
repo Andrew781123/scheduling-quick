@@ -1,5 +1,4 @@
-import { dateRange, timeRange } from "../../shared/types";
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import {
   dateRangeState,
   periodState,
@@ -16,8 +15,11 @@ type setupInfoActions =
       index: number;
     }
   | { type: "ADD_DATE_AND_TIME_COMPONENT" }
-  | { type: "TIME_SELECT"; timeField: string; time: Moment; index: number };
-
+  | {
+      type: "TEXT_INPUT";
+      textField: string;
+      text: string;
+    };
 const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
   switch (action.type) {
     case "FROM_DATE_SELECT": {
@@ -50,6 +52,13 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
             toTime: null
           }
         })
+      };
+    }
+
+    case "TEXT_INPUT": {
+      return {
+        ...state,
+        [action.textField]: action.text
       };
     }
 

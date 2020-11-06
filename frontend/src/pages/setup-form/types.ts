@@ -15,7 +15,15 @@ export interface periodState {
   timeRange: timeRangeState;
 }
 
-export interface setupInfo {
+export interface setupInfoTextFields {
   organizerName: string;
+  venue: string;
+  linkPassword: string;
+  authPassword: string;
+}
+
+export interface setupInfoDateAndTimeFields {
   periods: periodState[];
 }
+
+export type setupInfo = setupInfoDateAndTimeFields & setupInfoTextFields;
