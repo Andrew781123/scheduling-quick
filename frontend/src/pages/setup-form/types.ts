@@ -1,5 +1,4 @@
 import { Moment } from "moment";
-import { timeRange } from "../../shared/types";
 
 export interface dateRangeState {
   fromDate: Moment | null;
@@ -7,13 +6,13 @@ export interface dateRangeState {
 }
 
 export interface timeRangeState {
-  fromTime: string;
-  toTime: string;
+  fromTime: Moment | null;
+  toTime: Moment | null;
 }
 
 export interface periodState {
   dateRange: dateRangeState;
-  timeRange: timeRange;
+  timeRange: timeRangeState;
 }
 
 export interface setupInfo {

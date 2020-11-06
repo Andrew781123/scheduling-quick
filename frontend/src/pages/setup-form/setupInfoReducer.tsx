@@ -1,11 +1,22 @@
 import { dateRange, timeRange } from "../../shared/types";
 import moment, { Moment } from "moment";
-import { setupInfo } from "./types";
+import {
+  dateRangeState,
+  periodState,
+  setupInfo,
+  timeRangeState
+} from "./types";
 
 type setupInfoActions =
-  | { type: "FROM_DATE_SELECT"; dateField: string; date: Moment; index: number }
+  | {
+      type: "FROM_DATE_SELECT";
+      periodField: keyof periodState;
+      fromToField: keyof dateRangeState | keyof timeRangeState;
+      date: Moment;
+      index: number;
+    }
   | { type: "ADD_DATE_AND_TIME_COMPONENT" }
-  | { type: "UPDATE_TIME_RANGE"; timeRange: timeRange; index: number };
+  | { type: "TIME_SELECT"; timeField: string; time: Moment; index: number };
 
 const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
   switch (action.type) {
@@ -17,9 +28,9 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
 
           return {
             ...period,
-            dateRange: {
-              ...period.dateRange,
-              [action.dateField]: action.date
+            [action.periodField]: {
+              ...period[action.periodField],
+              [action.fromToField]: action.date
             }
           };
         })
@@ -34,20 +45,10 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
             fromDate: null,
             toDate: null
           },
-          timeRange: ["0000", "0000"]
-        })
-      };
-    }
-
-    case "UPDATE_TIME_RANGE": {
-      return {
-        ...state,
-        periods: state.periods.map((period, index) => {
-          if (index !== action.index) return period;
-
-          let newPeriod = period;
-          newPeriod.timeRange = action.timeRange;
-          return newPeriod;
+          timeRange: {
+            fromTime: null,
+            toTime: null
+          }
         })
       };
     }

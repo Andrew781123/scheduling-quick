@@ -3,9 +3,13 @@ import { Header } from "../../components/shared/Header";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
 import { UserInput } from "../../components/shared/UserInput";
 import setupInfoReducer from "./setupInfoReducer";
-import { period, dateRange, timeRange } from "../../shared/types";
 import moment, { Moment } from "moment";
-import { setupInfo } from "./types";
+import {
+  dateRangeState,
+  periodState,
+  setupInfo,
+  timeRangeState
+} from "./types";
 
 interface SetupFormProps {}
 
@@ -17,7 +21,10 @@ const initialSetupInfo: setupInfo = {
         fromDate: null,
         toDate: null
       },
-      timeRange: ["0000", "0000"]
+      timeRange: {
+        fromTime: null,
+        toTime: null
+      }
     }
   ]
 };
@@ -27,12 +34,19 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
 
   const { periods } = setupInfo;
 
-  const selectDate = (dateField: string, date: Moment, index: number) => {
-    dispatch({ type: "FROM_DATE_SELECT", dateField, date, index });
-  };
-
-  const timeChange = (timeRange: timeRange, index: number) => {
-    dispatch({ type: "UPDATE_TIME_RANGE", timeRange, index });
+  const selectPeriod = (
+    periodField: keyof periodState,
+    fromToField: keyof dateRangeState | keyof timeRangeState,
+    date: Moment,
+    index: number
+  ) => {
+    dispatch({
+      type: "FROM_DATE_SELECT",
+      periodField,
+      fromToField,
+      date,
+      index
+    });
   };
 
   return (
@@ -43,8 +57,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       {periods.map((period, i) => {
         return (
           <DateAndTimeInput
-            selectDate={selectDate}
-            timeChange={timeChange}
+            selectPeriod={selectPeriod}
             period={period}
             index={i}
             key={i}
