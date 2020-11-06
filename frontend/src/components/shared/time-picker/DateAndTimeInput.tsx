@@ -1,5 +1,4 @@
 import React from "react";
-import { timeRange } from "../../../shared/types";
 import {
   dateRangeState,
   periodState,
@@ -27,7 +26,6 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   } = props;
 
   const handleFromDateSelect = (date: Moment | null) => {
-    console.log(index);
     selectPeriod("dateRange", "fromDate", date!, index);
   };
 

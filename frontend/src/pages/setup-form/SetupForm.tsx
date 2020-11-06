@@ -7,9 +7,12 @@ import {
   dateRangeState,
   periodState,
   setupInfo,
-  timeRangeState
+  timeRangeState,
+  IEvent
 } from "./types";
 import { Button, TextField } from "@material-ui/core";
+import { formatPeriods } from "./utils";
+import axios from "../../api/proxy";
 
 interface SetupFormProps {}
 
@@ -63,6 +66,27 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       target: { name: textField, value: text }
     } = e;
     dispatch({ type: "TEXT_INPUT", textField, text });
+  };
+
+  const submitForm = async () => {
+    const formattedPeriods = formatPeriods(periods);
+
+    const newEvent: IEvent = {
+      info: {
+        organizer: organizerName,
+        venue: {
+          name: venue
+        }
+      },
+      periods: formattedPeriods
+    };
+
+    try {
+      const res = await axios.post("/events", newEvent);
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -121,7 +145,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
         </div>
       </div>
 
-      <Button variant='contained'>Next</Button>
+      <Button variant='contained' onClick={submitForm}>
+        Next
+      </Button>
     </div>
   );
 };

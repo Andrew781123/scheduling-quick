@@ -3,6 +3,8 @@ import { SetupForm } from "./pages/setup-form/SetupForm";
 import "./App.css";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
+import dotenv from "dotenv";
+dotenv.config();
 
 const App: React.FC = () => {
   return (

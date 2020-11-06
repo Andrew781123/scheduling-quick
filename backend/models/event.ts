@@ -34,7 +34,7 @@ export interface IEvent {
     };
   };
 
-  period: period[];
+  periods: period[];
 
   participants?: {
     name: string;
@@ -42,8 +42,6 @@ export interface IEvent {
   };
 
   commonDate?: Map<string, TimeSlot>;
-
-  timeInterval: number;
 
   linkPassword?: string;
 
@@ -89,31 +87,26 @@ const eventSchema = new mongoose.Schema({
       },
 
       googleMapLink: String
-    },
+    }
+  },
 
-    period: [
-      {
-        dateRange: [String],
-        timeRange: [Number]
-      }
-    ],
+  periods: [
+    {
+      dateRange: [String],
+      timeRange: [Number]
+    }
+  ],
 
-    participants: [participantSchema],
+  participants: [participantSchema],
 
-    commonDate: {
-      type: Map,
-      of: Array
-    },
+  commonDate: {
+    type: Map,
+    of: Array
+  },
 
-    timeInterval: {
-      type: Number,
-      default: 1
-    },
+  linkPassword: String,
 
-    linkPassword: String,
-
-    authPassword: String
-  }
+  authPassword: String
 });
 
 const Event = mongoose.model<EventDocument, EventModel>("event", eventSchema);

@@ -10,7 +10,10 @@ router.get("/:id", (req, res) => {
 
 //create new event
 router.post("/", (req, res) => {
-  res.send("new event");
+  // Event.create({
+  //   info: {}
+  // });
+  res.send("create new event");
 });
 
 //edit event info and setup

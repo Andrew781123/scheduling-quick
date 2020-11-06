@@ -1,10 +1,19 @@
 import express from "express";
 const app = express();
 import connectDatabase from "./database";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
 connectDatabase();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL, // allow to server to accept request from different origin
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
+  })
+);
 
 import eventRouter from "./routes/event";
 app.use("/api/events", eventRouter);
