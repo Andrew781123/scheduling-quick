@@ -13,8 +13,12 @@ import {
 import { Button, TextField } from "@material-ui/core";
 import { formatPeriods } from "./utils";
 import axios from "../../api/proxy";
+import { Redirect } from "react-router-dom";
+import * as H from "history";
 
-interface SetupFormProps {}
+interface SetupFormProps {
+  history: H.History;
+}
 
 const initialSetupInfo: setupInfo = {
   organizerName: "",
@@ -83,7 +87,11 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
 
     try {
       const res = await axios.post("/events", newEvent);
-      console.log(res.data);
+
+      props.history.push({
+        pathname: "/events/new/success",
+        state: { eventId: res.data.eventId }
+      });
     } catch (err) {
       console.error(err);
     }
