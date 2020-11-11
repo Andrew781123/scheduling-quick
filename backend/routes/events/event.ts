@@ -2,7 +2,7 @@
 import express from "express";
 const router = express.Router();
 
-import Event, { IEvent } from "../models/event";
+import Event, { IEvent } from "../../models/event";
 
 //get an event
 router.get("/:id", (req, res) => {
@@ -12,11 +12,11 @@ router.get("/:id", (req, res) => {
 //create new event
 router.post("/", async (req, res) => {
   const event: IEvent = req.body;
-  console.log(event.periods[0].timeRange);
-  try {
-    // await Event.create(event);
 
-    res.status(201).json({ message: "Event created" });
+  try {
+    const { _id } = await Event.create(event);
+
+    res.status(201).json({ eventId: _id.toString() });
   } catch (err) {
     res.status(400).json({ errorMessage: "" });
   }
@@ -31,5 +31,16 @@ router.patch("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
   res.send("delete event");
 });
+
+function isString(data: any): data is string {
+  return typeof data === "string";
+}
+
+const hello: any = "10";
+const check = isString(hello);
+if (check) {
+  const hello2 = hello as string;
+  console.log(hello2.slice);
+}
 
 export default router;

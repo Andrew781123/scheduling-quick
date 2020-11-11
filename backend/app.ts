@@ -15,7 +15,7 @@ app.use(
   })
 );
 
-import eventRouter from "./routes/event";
+import eventRouter from "./routes/events/event";
 app.use("/api/events", eventRouter);
 
 import participantRouter from "./routes/participants";
