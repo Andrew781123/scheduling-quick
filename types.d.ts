@@ -31,3 +31,6 @@ export interface IEvent {
 
   authPassword?: string;
 }
+
+//backend
+export type queryString = { key: "type"; value: "form" | "dashboard" };
