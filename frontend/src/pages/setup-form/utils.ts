@@ -1,4 +1,5 @@
-import { periodState, period } from "./types";
+import { periodState } from "./types";
+import { period } from "../../../../types";
 
 export const formatPeriods = (periods: periodState[]): period[] => {
   const formattedPeriods: period[] = [];
