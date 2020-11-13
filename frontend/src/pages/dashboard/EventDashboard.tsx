@@ -16,11 +16,15 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
   } = props;
 
   useLayoutEffect(() => {
-    console.log("redirect");
-    history.replace({
-      pathname: `/events/${eventId}/new-participant`
-    });
-    // history.replace();
+    const hasFilledInForm: string | null = localStorage.getItem(
+      "HAS_FILLED_IN_FORM"
+    );
+    if (!hasFilledInForm) {
+      history.replace({
+        pathname: `/events/${eventId}/new-participant`,
+        state: { hasFilledInForm: false }
+      });
+    }
   }, []);
 
   return (
