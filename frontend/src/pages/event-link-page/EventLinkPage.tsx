@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 interface EventLinkPageProps {}
@@ -12,6 +11,8 @@ interface LocationState {
 export const EventLinkPage: React.FC<
   EventLinkPageProps & RouteComponentProps<{}, any, LocationState | any>
 > = props => {
+  const { history } = props;
+
   const eventId = props.location.state.eventId;
 
   const link = useMemo(() => {
