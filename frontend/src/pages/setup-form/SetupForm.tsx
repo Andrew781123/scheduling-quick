@@ -7,13 +7,12 @@ import {
   dateRangeState,
   periodState,
   setupInfo,
-  timeRangeState,
-  IEvent
+  timeRangeState
 } from "./types";
+import { IEvent } from "../../../../types";
 import { Button, TextField } from "@material-ui/core";
 import { formatPeriods } from "./utils";
 import axios from "../../api/proxy";
-import { Redirect } from "react-router-dom";
 import * as H from "history";
 
 interface SetupFormProps {

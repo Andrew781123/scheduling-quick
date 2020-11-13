@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { SetupForm } from "./pages/setup-form/SetupForm";
 import "./App.css";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -16,8 +10,6 @@ import { EventLinkPage } from "./pages/event-link-page/EventLinkPage";
 dotenv.config();
 
 const App: React.FC = () => {
-  let history: any = useHistory();
-
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <Router>

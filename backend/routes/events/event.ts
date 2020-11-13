@@ -2,7 +2,8 @@
 import express from "express";
 const router = express.Router();
 
-import Event, { IEvent } from "../../models/event";
+import Event from "../../models/event";
+import { IEvent } from "../../../types";
 
 //get an event
 router.get("/:id", (req, res) => {

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { period, TimeSlot } from "../../frontend/src/shared/types";
+import { IEvent, TimeSlot } from "../../types";
 
 class TimeSlots extends mongoose.SchemaType {
   constructor(key: any, options: any) {
@@ -27,29 +27,6 @@ class TimeSlots extends mongoose.SchemaType {
 
 const Types: any = mongoose.Schema.Types;
 Types.TimeSlots = TimeSlots;
-
-export interface IEvent {
-  info: {
-    organizer: string;
-    venue: {
-      name?: string;
-      googleMapLink?: string;
-    };
-  };
-
-  periods: period[];
-
-  participants?: {
-    name: string;
-    timeAvailable: Map<string, TimeSlot>;
-  };
-
-  commonDate?: Map<string, TimeSlot>;
-
-  linkPassword?: string;
-
-  authPassword?: string;
-}
 
 interface EventDocument extends mongoose.Document, IEvent {
   participants?: {

@@ -1,0 +1,33 @@
+export type dateRange = [string, string];
+
+export type timeRange = [number, number];
+
+export type TimeSlot = [string, string, string[]];
+
+export interface period {
+  dateRange: dateRange;
+  timeRange: timeRange;
+}
+
+export interface IEvent {
+  info: {
+    organizer: string;
+    venue: {
+      name?: string;
+      googleMapLink?: string;
+    };
+  };
+
+  periods: period[];
+
+  participants?: {
+    name: string;
+    timeAvailable: Map<string, TimeSlot>;
+  };
+
+  commonDate?: Map<string, TimeSlot>;
+
+  linkPassword?: string;
+
+  authPassword?: string;
+}
