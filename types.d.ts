@@ -1,6 +1,6 @@
 export type dateRange = [string, string];
 
-export type timeRange = [number, number];
+export type timeRange = [string, string];
 
 export type TimeSlot = [string, string, string[]];
 

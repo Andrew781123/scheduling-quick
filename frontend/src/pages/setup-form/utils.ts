@@ -13,12 +13,12 @@ export const formatPeriods = (periods: periodState[]): period[] => {
     const fromDateString: string = fromDate!.format("DD-MM-YYYY");
     const toDateString: string = toDate!.format("DD-MM-YYYY");
 
-    const fromTimeNumber: number = +fromTime!.format("HHmm");
-    const toTimeNumber: number = +toTime!.format("HHmm");
+    const fromTimeString: string = fromTime!.format("HHmm");
+    const toTimeString: string = toTime!.format("HHmm");
 
     const formattedPeriod: period = {
       dateRange: [fromDateString, toDateString],
-      timeRange: [fromTimeNumber, toTimeNumber]
+      timeRange: [fromTimeString, toTimeString]
     };
 
     formattedPeriods.push(formattedPeriod);
