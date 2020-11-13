@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 interface EventLinkPageProps {}
 
@@ -20,7 +21,13 @@ export const EventLinkPage: React.FC<
   return (
     <>
       <h1>Link to dashboard of event</h1>
-      <Button>{link}</Button>
+      <Link
+        to={{
+          pathname: `/events/${eventId}/dashboard`
+        }}
+      >
+        {link}
+      </Link>
     </>
   );
 };
