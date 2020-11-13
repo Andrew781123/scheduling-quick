@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Joi, ValidationError } from "express-validation";
 import { timeSlot } from "../shared-validation-types";
+import { CustomError } from "../utils";
 
 const date = Joi.string().length(10);
 const time = Joi.string().length(4);
@@ -47,11 +48,13 @@ export const dateValidationMiddeware = (
   req: Request,
   res: Response
 ) => {
+  console.log("custom error");
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err);
-  } else if (err.statusCode === 400) {
-    return res.status(400).json({
-      status: 400,
+  } else if (err instanceof CustomError) {
+    return res.status(err.statusCode).json({
+      name: err.name,
+      status: err.statusCode,
       message: err.message
     });
   } else if (err.statusCode === 500) {
