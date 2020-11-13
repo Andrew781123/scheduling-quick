@@ -4,9 +4,7 @@ export const asyncWraper = (fn: any) => (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  fn(req, res, next).catch(next);
-};
+) => fn(req, res, next).catch(next);
 
 type errorNames = "CONTENT NOT FOUND";
 export class CustomError extends Error {

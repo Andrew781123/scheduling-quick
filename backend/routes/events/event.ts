@@ -7,12 +7,11 @@ import { IEvent } from "../../../types";
 import { validate } from "express-validation";
 import { createEventValidation, dateValidationMiddeware } from "./validation";
 import { asyncWraper, CustomError } from "../utils";
-import { queryString } from "../../../types";
 
 //get an event
 router.get(
   "/:id",
-  asyncWraper(async (req: Request, res: Response, next: NextFunction) => {
+  asyncWraper(async (req: Request, res: Response) => {
     // to do, type the query strings
     const { type } = req.query;
     const { id: eventId } = req.params;
@@ -21,7 +20,11 @@ router.get(
       const event = await Event.findById(eventId).select("info venue periods");
 
       if (!event) {
-        throw new CustomError("CONTENT NOT FOUND", "Cannot find event", 404);
+        throw new CustomError(
+          "CONTENT NOT FOUND",
+          "Event requested doesn't exist",
+          404
+        );
       }
 
       res.status(200).json(event);

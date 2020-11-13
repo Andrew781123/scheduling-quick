@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Joi, ValidationError } from "express-validation";
 import { timeSlot } from "../shared-validation-types";
 import { CustomError } from "../utils";
@@ -46,9 +46,9 @@ export const createEventValidation = {
 export const dateValidationMiddeware = (
   err: any,
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  console.log("custom error");
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err);
   } else if (err instanceof CustomError) {
