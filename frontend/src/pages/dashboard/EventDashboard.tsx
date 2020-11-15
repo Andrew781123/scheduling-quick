@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 
 interface routeProps {
@@ -8,6 +8,10 @@ interface routeProps {
 
 interface EventDashboardProps extends RouteComponentProps<routeProps> {}
 
+const hasFilledInForm: string | null = localStorage.getItem(
+  "HAS_FILLED_IN_FORM"
+);
+
 export const EventDashboard: React.FC<EventDashboardProps> = props => {
   const {
     match: {
@@ -15,22 +19,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     },
     history
   } = props;
-
-  // useLayoutEffect(() => {
-  //   const hasFilledInForm: string | null = localStorage.getItem(
-  //     "HAS_FILLED_IN_FORM"
-  //   );
-  //   if (!hasFilledInForm) {
-  //     history.replace({
-  //       pathname: `/events/${eventId}/new-participant`,
-  //       state: { hasFilledInForm: false }
-  //     });
-  //   }
-  // }, []);
-
-  const hasFilledInForm: string | null = localStorage.getItem(
-    "HAS_FILLED_IN_FORM"
-  );
 
   if (!hasFilledInForm) {
     return (
@@ -55,6 +43,9 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
           }}
         >
           Go to form
+        </Button>
+        <Button onClick={() => localStorage.removeItem("HAS_FILLED_IN_FORM")}>
+          Clear local storage
         </Button>
       </>
     );
