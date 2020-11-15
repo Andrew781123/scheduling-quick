@@ -30,12 +30,14 @@ export const createEventValidation = {
       )
       .min(1),
 
-    participants: Joi.object({
-      name: Joi.string(),
-      timeAvailable: dateTimeMap
-    }),
+    participants: Joi.array().items(
+      Joi.object({
+        name: Joi.string(),
+        timeAvailable: dateTimeMap
+      })
+    ),
 
-    commonDate: dateTimeMap,
+    commonDate: dateTimeMap.allow(null),
 
     linkPassword: Joi.string(),
 
@@ -49,6 +51,7 @@ export const dateValidationMiddeware = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err.details);
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err);
   } else if (err instanceof CustomError) {

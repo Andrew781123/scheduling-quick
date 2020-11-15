@@ -1,31 +1,57 @@
 import React, { createContext, useReducer } from "react";
-import { getEventResponse } from "../../../../types";
+import { getEventResponse, queryString } from "../../../../types";
 import eventReducer from "./eventReducer";
+import axios from "../../api/proxy";
 
 interface EventProviderProps {}
 
-const initialEventState: getEventResponse = {
-  info: {
-    organizer: "",
-    venue: {
-      name: ""
-    }
-  },
+interface providerProps {
+  event: getEventResponse;
+  fetchEvent: (eventId: string) => void;
+}
 
-  periods: [],
+const initialEventState: Pick<providerProps, "event"> = {
+  event: {
+    info: {
+      organizer: "",
+      venue: {
+        name: ""
+      }
+    },
 
-  participants: [],
+    periods: [],
 
-  commonDate: null
+    participants: [],
+
+    commonDate: null
+  }
 };
 
-const EventContext = createContext(initialEventState);
+export const EventContext = createContext<providerProps>(undefined!);
 
 const EventProvider: React.FC<EventProviderProps> = props => {
   const [eventState, dispatch] = useReducer(eventReducer, initialEventState);
 
+  const fetchEvent = async (eventId: string) => {
+    const queryString: queryString = {
+      key: "type",
+      value: "form"
+    };
+
+    const res = await axios.get(
+      `/events/${eventId}?${queryString.key}=${queryString.value}`
+    );
+
+    dispatch({ type: "FETCH_EVENT", event: res.data.event });
+  };
+
   return (
-    <EventContext.Provider value={eventState}>
+    <EventContext.Provider
+      value={{
+        event: eventState.event,
+        fetchEvent
+      }}
+    >
       {props.children}
     </EventContext.Provider>
   );

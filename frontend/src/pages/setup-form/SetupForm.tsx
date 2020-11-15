@@ -94,7 +94,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
         state: { eventId: res.data.eventId }
       });
     } catch (err) {
-      console.error(err);
+      console.error(err.message);
     }
   };
 

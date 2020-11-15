@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import axios from "../../api/proxy";
 import { queryString } from "../../../../types";
 import { Button } from "@material-ui/core";
+import { EventContext } from "../../context/event-context/EventProvider";
 
 interface routeParams {
   id: string;
@@ -26,23 +27,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     }
   } = props;
 
+  const { fetchEvent, event } = useContext(EventContext);
+
   useEffect(() => {
-    const queryString: queryString = {
-      key: "type",
-      value: "form"
-    };
-
-    const fetchEventInfo = async () => {
-      try {
-        const res = await axios.get(
-          `/events/${eventId}?${queryString.key}=${queryString.value}`
-        );
-
-        console.log(res.data);
-      } catch (err) {}
-    };
-
-    fetchEventInfo();
+    fetchEvent(eventId);
   }, []);
 
   const submitForm = () => {
@@ -53,7 +41,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   return (
     <div>
-      <h1>New participant form for evenId: {eventId}</h1>;
+      <h1>New participant form for evenId: {eventId}</h1>
+      {event.info && <h1>{event.info.organizer}</h1>}
       <Button
         onClick={() => localStorage.setItem("HAS_FILLED_IN_FORM", "true")}
       >
