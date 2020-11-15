@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import axios from "../../api/proxy";
 import { queryString } from "../../../../types";
+import { Button } from "@material-ui/core";
 
 interface routeParams {
   id: string;
@@ -15,14 +16,13 @@ interface NewParcipantFormProps
   extends RouteComponentProps<routeParams, any, routeStates> {}
 
 export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
-  //Todo: when submit form, update local storage
-
   const {
     match: {
       params: { id: eventId }
     },
     location: {
-      state: { hasFilledInForm = true }
+      //hasFilledInForm is default to false because we can't determine if the user has filled in the form or not if he manually reach this route
+      state: { hasFilledInForm = false }
     }
   } = props;
 
@@ -54,6 +54,11 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   return (
     <div>
       <h1>New participant form for evenId: {eventId}</h1>;
+      <Button
+        onClick={() => localStorage.setItem("HAS_FILLED_IN_FORM", "true")}
+      >
+        Set local storage
+      </Button>
     </div>
   );
 };
