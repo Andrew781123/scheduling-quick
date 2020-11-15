@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import axios from "../../api/proxy";
-import { queryString } from "../../../../types";
 import { Button } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
 

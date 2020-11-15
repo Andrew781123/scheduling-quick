@@ -46,16 +46,22 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
     <div>
       <div>
         <DatePicker
-          label='From'
+          label='From Date'
           onChange={handleFromDateSelect}
           value={dateRange.fromDate}
           disablePast={true}
+          InputLabelProps={{
+            shrink: true
+          }}
         ></DatePicker>
         <DatePicker
-          label='To'
+          label='To Date'
           onChange={handleToDateSelect}
           value={dateRange.toDate}
           disablePast={true}
+          InputLabelProps={{
+            shrink: true
+          }}
         ></DatePicker>
       </div>
       <br />
@@ -66,6 +72,9 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
           value={timeRange.fromTime}
           onChange={handleFromTimeSelect}
           minutesStep={15}
+          InputLabelProps={{
+            shrink: true
+          }}
         />
         <TimePicker
           label='From time'
@@ -73,6 +82,9 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
           value={timeRange.toTime}
           onChange={handleToTimeSelect}
           minutesStep={15}
+          InputLabelProps={{
+            shrink: true
+          }}
         />
       </div>
     </div>

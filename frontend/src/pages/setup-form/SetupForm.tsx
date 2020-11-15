@@ -10,7 +10,13 @@ import {
   timeRangeState
 } from "./types";
 import { IEvent } from "../../../../types";
-import { Button, TextField } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  InputLabel,
+  FormControl,
+  Input
+} from "@material-ui/core";
 import { formatPeriods } from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";
@@ -107,9 +113,12 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
           value={organizerName}
           name='organizerName'
           onChange={hanleTextInput}
-          label='Name of organizer'
           placeholder='Enter name'
           required={true}
+          label='Name of organizer'
+          InputLabelProps={{
+            shrink: true
+          }}
         />
       </div>
       <div>
@@ -119,6 +128,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
           onChange={hanleTextInput}
           label='Venue'
           placeholder='Enter venue of event'
+          InputLabelProps={{
+            shrink: true
+          }}
         />
       </div>
       {periods.map((period, i) => {
@@ -142,6 +154,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
             name='linkPassword'
             onChange={hanleTextInput}
             label='Set password for link (optional)'
+            InputLabelProps={{
+              shrink: true
+            }}
           />
         </div>
         <div>
@@ -150,6 +165,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
             name='authPassword'
             onChange={hanleTextInput}
             label='Set password for link (optional)'
+            InputLabelProps={{
+              shrink: true
+            }}
           />
         </div>
       </div>
