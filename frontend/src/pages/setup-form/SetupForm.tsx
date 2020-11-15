@@ -81,7 +81,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
           name: venue
         }
       },
-      periods: formattedPeriods
+      periods: formattedPeriods,
+      participants: [],
+      commonDate: null
     };
 
     try {

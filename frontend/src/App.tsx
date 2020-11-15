@@ -9,6 +9,7 @@ import { HomePage } from "./pages/home-page/HomePage";
 import { EventLinkPage } from "./pages/event-link-page/EventLinkPage";
 import { EventDashboard } from "./pages/dashboard/EventDashboard";
 import { NewParcipantForm } from "./pages/new-participant-form/NewParcipantForm";
+import EventProvider from "./context/event-context/EventProvider";
 dotenv.config();
 
 const App: React.FC = () => {
@@ -27,11 +28,13 @@ const App: React.FC = () => {
             path='/events/new/success'
             render={props => <EventLinkPage {...props} />}
           />
-          <Route path='/events/:id/dashboard' component={EventDashboard} />
-          <Route
-            path='/events/:id/new-participant'
-            component={NewParcipantForm}
-          />
+          <EventProvider>
+            <Route path='/events/:id/dashboard' component={EventDashboard} />
+            <Route
+              path='/events/:id/new-participant'
+              component={NewParcipantForm}
+            />
+          </EventProvider>
         </Switch>
       </Router>
     </MuiPickersUtilsProvider>

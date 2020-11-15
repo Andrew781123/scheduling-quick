@@ -20,12 +20,12 @@ export interface IEvent {
 
   periods: period[];
 
-  participants?: {
+  participants: {
     name: string;
     timeAvailable: Map<string, TimeSlot>;
-  };
+  }[];
 
-  commonDate?: Map<string, TimeSlot>;
+  commonDate: Map<string, TimeSlot> | null;
 
   linkPassword?: string;
 
@@ -34,3 +34,5 @@ export interface IEvent {
 
 //backend
 export type queryString = { key: "type"; value: "form" | "dashboard" };
+
+export type getEventResponse = Omit<IEvent, "linkPassword" | "authPassword">;
