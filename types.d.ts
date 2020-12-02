@@ -9,6 +9,11 @@ export interface period {
   timeRange: timeRange;
 }
 
+export interface participant {
+  name: string;
+  timeAvailable: Map<string, TimeSlot>;
+}
+
 export interface IEvent {
   info: {
     organizer: string;
@@ -20,10 +25,7 @@ export interface IEvent {
 
   periods: period[];
 
-  participants: {
-    name: string;
-    timeAvailable: Map<string, TimeSlot>;
-  }[];
+  participants: participant[];
 
   commonDate: Map<string, TimeSlot> | null;
 

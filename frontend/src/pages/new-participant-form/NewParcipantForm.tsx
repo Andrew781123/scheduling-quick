@@ -8,6 +8,8 @@ import {
 } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
+import { formatData } from "./utils";
+import axios from "../../api/proxy";
 
 interface routeParams {
   id: string;
@@ -46,9 +48,15 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     initialAvailableTimeSlots
   );
 
+  const [participantName, setParticaipantName] = useState("");
+
   useEffect(() => {
     fetchEvent(eventId);
   }, []);
+
+  const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setParticaipantName(e.target.value);
+  };
 
   const selectDateOrTime = (
     field: keyof AvailableTimeSlot,
@@ -73,7 +81,16 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     ]);
   };
 
-  const submitForm = () => {
+  const submitForm = async () => {
+    const formattedData = formatData(participantName, availableTimeSlots);
+
+    try {
+      //const res = await axios.post("/events", formattedData);
+      console.log({ formattedData });
+    } catch (err) {
+      console.error(err.message);
+    }
+
     if (!state.hasFilledInForm) {
       localStorage.setItem("HAS_FILLED_IN_FORM", "true");
     }
@@ -95,9 +112,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       <div>
         <TextField
           className='text-input'
-          value={""}
+          value={participantName}
           name='participantName'
           placeholder='Enter name'
+          onChange={handleNameInput}
           required={true}
           label='Name'
           InputLabelProps={{
@@ -113,6 +131,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         />
       ))}
       <button onClick={addTimeSlotInput}>Add one</button>
+      <button onClick={submitForm}>Submit</button>
     </div>
   );
 };

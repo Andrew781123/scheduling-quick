@@ -1,5 +1,6 @@
 import { periodState } from "./types";
 import { period } from "../../../../types";
+import { TIME_STRING, DATE_STRING } from "../../shared/constants";
 
 export const formatPeriods = (periods: periodState[]): period[] => {
   const formattedPeriods: period[] = [];
@@ -10,11 +11,11 @@ export const formatPeriods = (periods: periodState[]): period[] => {
       timeRange: { fromTime, toTime }
     } = period;
 
-    const fromDateString: string = fromDate!.format("DD-MM-YYYY");
-    const toDateString: string = toDate!.format("DD-MM-YYYY");
+    const fromDateString: string = fromDate!.format(DATE_STRING);
+    const toDateString: string = toDate!.format(DATE_STRING);
 
-    const fromTimeString: string = fromTime!.format("HHmm");
-    const toTimeString: string = toTime!.format("HHmm");
+    const fromTimeString: string = fromTime!.format(TIME_STRING);
+    const toTimeString: string = toTime!.format(TIME_STRING);
 
     const formattedPeriod: period = {
       dateRange: [fromDateString, toDateString],
