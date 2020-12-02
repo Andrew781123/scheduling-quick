@@ -1,7 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
+import { NewParticipantAvailableTimeSlotsState } from "./types";
+import moment from "moment";
+import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 
 interface routeParams {
   id: string;
@@ -13,6 +16,15 @@ interface routeStates {
 
 interface NewParcipantFormProps
   extends RouteComponentProps<routeParams, any, routeStates> {}
+
+export const initialAvailableTimeSlot = {
+  date: moment(),
+  fromTime: null,
+  toTime: null
+};
+const initialAvailableTimeSlots: NewParticipantAvailableTimeSlotsState = [
+  initialAvailableTimeSlot
+];
 
 export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const {
@@ -26,6 +38,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   } = props;
 
   const { fetchEvent, event } = useContext(EventContext);
+
+  const [availableTimeSlots, setAvailableTimeSlots] = useState(
+    initialAvailableTimeSlots
+  );
 
   useEffect(() => {
     fetchEvent(eventId);
@@ -49,6 +65,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       >
         Set local storage
       </Button>
+
       <div>
         <TextField
           className='text-input'
@@ -62,7 +79,9 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
           }}
         />
       </div>
-      <div></div>
+      {availableTimeSlots.map((timeSlot, i) => (
+        <AvailableTimeSlotsInput availableTimeSlot={timeSlot} index={i} />
+      ))}
     </div>
   );
 };
