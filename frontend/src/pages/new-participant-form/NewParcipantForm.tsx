@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
-import { NewParticipantAvailableTimeSlotsState } from "./types";
-import moment from "moment";
+import {
+  AvailableTimeSlot,
+  NewParticipantAvailableTimeSlotsState
+} from "./types";
+import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 
 interface routeParams {
@@ -47,6 +50,29 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     fetchEvent(eventId);
   }, []);
 
+  const selectDateOrTime = (
+    field: keyof AvailableTimeSlot,
+    data: Moment,
+    index: number
+  ) => {
+    setAvailableTimeSlots(timeSlots => {
+      return timeSlots.map((timeSlot, i) => {
+        if (i !== index) return timeSlot;
+        return {
+          ...timeSlot,
+          [field]: data
+        };
+      });
+    });
+  };
+
+  const addTimeSlotInput = () => {
+    setAvailableTimeSlots(timeSlots => [
+      ...timeSlots,
+      initialAvailableTimeSlot
+    ]);
+  };
+
   const submitForm = () => {
     if (!state.hasFilledInForm) {
       localStorage.setItem("HAS_FILLED_IN_FORM", "true");
@@ -80,8 +106,13 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         />
       </div>
       {availableTimeSlots.map((timeSlot, i) => (
-        <AvailableTimeSlotsInput availableTimeSlot={timeSlot} index={i} />
+        <AvailableTimeSlotsInput
+          availableTimeSlot={timeSlot}
+          index={i}
+          selectDateOrTime={selectDateOrTime}
+        />
       ))}
+      <button onClick={addTimeSlotInput}>Add one</button>
     </div>
   );
 };

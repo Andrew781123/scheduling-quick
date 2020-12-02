@@ -6,19 +6,31 @@ import { AvailableTimeSlot } from "./types";
 interface AvailableTimeSlotsInputProps {
   availableTimeSlot: AvailableTimeSlot;
   index: number;
+  selectDateOrTime: (
+    field: keyof AvailableTimeSlot,
+    date: Moment,
+    index: number
+  ) => void;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
   const {
     availableTimeSlot: { date, fromTime, toTime },
-    index
+    index,
+    selectDateOrTime
   } = props;
 
-  const handleDateSelect = (date: Moment | null) => {};
+  const handleDateSelect = (date: Moment | null) => {
+    selectDateOrTime("date", date!, index);
+  };
 
-  const handleFromTimeSelect = (date: Moment | null) => {};
+  const handleFromTimeSelect = (date: Moment | null) => {
+    selectDateOrTime("fromTime", date!, index);
+  };
 
-  const handleToTimeSelect = (date: Moment | null) => {};
+  const handleToTimeSelect = (date: Moment | null) => {
+    selectDateOrTime("toTime", date!, index);
+  };
 
   return (
     <div>
