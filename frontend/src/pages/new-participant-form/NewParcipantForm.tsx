@@ -2,13 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
-import {
-  AvailableTimeSlot,
-  NewParticipantAvailableTimeSlotsState
-} from "./types";
+import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
-import { formatData } from "./utils";
+//import { formatData } from "./utils";
 import axios from "../../api/proxy";
 
 interface routeParams {
@@ -22,13 +19,17 @@ interface routeStates {
 interface NewParcipantFormProps
   extends RouteComponentProps<routeParams, any, routeStates> {}
 
-export const initialAvailableTimeSlot = {
-  date: moment(),
+const initialTImeSlot: timeSlot = {
   fromTime: null,
   toTime: null
 };
-const initialAvailableTimeSlots: NewParticipantAvailableTimeSlotsState = [
-  initialAvailableTimeSlot
+
+export const initialDateAndTimeInput = {
+  date: moment(),
+  timeSlots: [initialTImeSlot]
+};
+const initialDateAndTimeInputs: NewParticipantDateAndTimeInput = [
+  initialDateAndTimeInput
 ];
 
 export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
@@ -44,8 +45,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const { fetchEvent, event } = useContext(EventContext);
 
-  const [availableTimeSlots, setAvailableTimeSlots] = useState(
-    initialAvailableTimeSlots
+  const [dateAndTimeInputs, setDateAndTimeInputs] = useState(
+    initialDateAndTimeInputs
   );
 
   const [participantName, setParticaipantName] = useState("");
@@ -58,35 +59,63 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     setParticaipantName(e.target.value);
   };
 
-  const selectDateOrTime = (
-    field: keyof AvailableTimeSlot,
-    data: Moment,
-    index: number
-  ) => {
-    setAvailableTimeSlots(timeSlots => {
-      return timeSlots.map((timeSlot, i) => {
-        if (i !== index) return timeSlot;
+  const selectDate = (date: Moment, index: number) => {
+    setDateAndTimeInputs(dateAndTimeInputs => {
+      return dateAndTimeInputs.map((input, i) => {
+        if (i !== index) return input;
         return {
-          ...timeSlot,
-          [field]: data
+          ...input,
+          date: date
         };
       });
     });
   };
 
-  const addTimeSlotInput = () => {
-    setAvailableTimeSlots(timeSlots => [
-      ...timeSlots,
-      initialAvailableTimeSlot
-    ]);
+  const selectTime = (
+    timeField: keyof timeSlot,
+    time: Moment | null,
+    dateIndex: number,
+    timeIndex: number
+  ) => {
+    setDateAndTimeInputs(dateAndTimeInputs =>
+      dateAndTimeInputs.map((dateAndTimeInput, i) => {
+        if (i !== dateIndex) return dateAndTimeInput;
+        return {
+          ...dateAndTimeInput,
+          timeSlots: dateAndTimeInput.timeSlots.map((timeSlot, j) => {
+            if (j !== timeIndex) return timeSlot;
+            return {
+              ...timeSlot,
+              [timeField]: time
+            };
+          })
+        };
+      })
+    );
+  };
+
+  const addDateAndTimeInput = () => {
+    setDateAndTimeInputs(inputs => [...inputs, initialDateAndTimeInput]);
+  };
+
+  const addTimeSlot = (dateIndex: number) => {
+    setDateAndTimeInputs(inputs =>
+      inputs.map((input, i) => {
+        if (dateIndex !== i) return input;
+        return {
+          ...input,
+          timeSlots: [...input.timeSlots, initialTImeSlot]
+        };
+      })
+    );
   };
 
   const submitForm = async () => {
-    const formattedData = formatData(participantName, availableTimeSlots);
+    //const formattedData = formatData(participantName, dateAndTimeInputs);
 
     try {
       //const res = await axios.post("/events", formattedData);
-      console.log({ formattedData });
+      //console.log({ formattedData });
     } catch (err) {
       console.error(err.message);
     }
@@ -123,14 +152,17 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
           }}
         />
       </div>
-      {availableTimeSlots.map((timeSlot, i) => (
+      {dateAndTimeInputs.map((input, i) => (
         <AvailableTimeSlotsInput
-          availableTimeSlot={timeSlot}
-          index={i}
-          selectDateOrTime={selectDateOrTime}
+          dateAndTimeInput={input}
+          dateIndex={i}
+          selectDate={selectDate}
+          selectTime={selectTime}
+          addTimeSlot={addTimeSlot}
         />
       ))}
-      <button onClick={addTimeSlotInput}>Add one</button>
+      <button onClick={addDateAndTimeInput}>Add one Input Block</button>
+
       <button onClick={submitForm}>Submit</button>
     </div>
   );

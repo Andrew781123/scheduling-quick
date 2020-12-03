@@ -1,35 +1,33 @@
 import { DatePicker, TimePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
 import React from "react";
-import { AvailableTimeSlot } from "./types";
+import { TimePickers } from "./TimePickers";
+import { DateAndTimeInput, timeSlot } from "./types";
 
 interface AvailableTimeSlotsInputProps {
-  availableTimeSlot: AvailableTimeSlot;
-  index: number;
-  selectDateOrTime: (
-    field: keyof AvailableTimeSlot,
-    date: Moment,
-    index: number
+  dateAndTimeInput: DateAndTimeInput;
+  dateIndex: number;
+  selectDate: (date: Moment, dateIndex: number) => void;
+  selectTime: (
+    timeField: keyof timeSlot,
+    time: Moment | null,
+    dateIndex: number,
+    timeIndex: number
   ) => void;
+  addTimeSlot: (dateIndex: number) => void;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
   const {
-    availableTimeSlot: { date, fromTime, toTime },
-    index,
-    selectDateOrTime
+    dateAndTimeInput: { date, timeSlots },
+    dateIndex,
+    selectDate,
+    selectTime,
+    addTimeSlot
   } = props;
 
   const handleDateSelect = (date: Moment | null) => {
-    selectDateOrTime("date", date!, index);
-  };
-
-  const handleFromTimeSelect = (date: Moment | null) => {
-    selectDateOrTime("fromTime", date!, index);
-  };
-
-  const handleToTimeSelect = (date: Moment | null) => {
-    selectDateOrTime("toTime", date!, index);
+    selectDate(date!, dateIndex);
   };
 
   return (
@@ -43,26 +41,15 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           shrink: true
         }}
       ></DatePicker>
-      <TimePicker
-        label='From time'
-        ampm={false}
-        value={fromTime}
-        onChange={handleFromTimeSelect}
-        minutesStep={15}
-        InputLabelProps={{
-          shrink: true
-        }}
-      />
-      <TimePicker
-        label='From time'
-        ampm={false}
-        value={toTime}
-        onChange={handleToTimeSelect}
-        minutesStep={15}
-        InputLabelProps={{
-          shrink: true
-        }}
-      />
+      {timeSlots.map((timeSlot, i) => (
+        <TimePickers
+          timeSlot={timeSlot}
+          dateIndex={dateIndex}
+          timeSlotIndex={i}
+          handleTimeSelect={selectTime}
+        />
+      ))}
+      <button onClick={() => addTimeSlot(dateIndex)}>Add one time slot</button>
     </div>
   );
 };

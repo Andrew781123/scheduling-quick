@@ -11,7 +11,7 @@ export interface period {
 
 export interface participant {
   name: string;
-  timeAvailable: Map<string, TimeSlot>;
+  timeAvailable: Map<string, TimeSlot[]>;
 }
 
 export interface IEvent {
