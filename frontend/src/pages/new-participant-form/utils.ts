@@ -8,6 +8,7 @@ export const formatData = (
 ) => {
   let formattedData: {} = {};
   const formattedTimeAvilable: Map<string, TimeSlot[]> = new Map();
+
   dateAndTimeInputs.forEach(dateAndTimeInput => {
     const { date, timeSlots } = dateAndTimeInput;
     const dateString: string = date!.format(DATE_STRING);
@@ -26,9 +27,12 @@ export const formatData = (
 
       return formattedTimeSlot;
     });
+
     formattedTimeAvilable.set(dateString, formattedTimeSlots);
   });
-  (formattedData as participant).name = "Andrew";
+
+  (formattedData as participant).name = participantName;
   (formattedData as participant).timeAvailable = formattedTimeAvilable;
-  return formattedData;
+
+  return formattedData as participant;
 };

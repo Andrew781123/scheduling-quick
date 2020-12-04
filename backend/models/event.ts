@@ -31,7 +31,7 @@ Types.TimeSlots = TimeSlots;
 interface EventDocument extends mongoose.Document, IEvent {
   participants: {
     name: string;
-    timeAvailable: mongoose.Types.Map<TimeSlot>;
+    timeAvailable: mongoose.Types.Map<TimeSlot[]>;
   }[];
 
   // commonDate: mongoose.Types.Map<TimeSlot>;
