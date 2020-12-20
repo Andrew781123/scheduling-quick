@@ -9,9 +9,13 @@ export interface period {
   timeRange: timeRange;
 }
 
+export interface TimeAvailable {
+  [key: string]: TimeSlot[];
+}
+
 export interface participant {
   name: string;
-  timeAvailable: Map<string, TimeSlot[]>;
+  timeAvailable: TimeAvailable;
 }
 
 export interface IEvent {
