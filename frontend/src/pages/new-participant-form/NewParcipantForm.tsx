@@ -5,7 +5,7 @@ import { EventContext } from "../../context/event-context/EventProvider";
 import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
-import { formatData, simplifyTimeSlots } from "./utils";
+import { generateRequestData } from "./utils";
 import axios from "../../api/proxy";
 
 interface routeParams {
@@ -111,11 +111,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   const submitForm = async () => {
-    const formattedData = formatData(participantName, dateAndTimeInputs);
-    simplifyTimeSlots(formattedData);
+    const requestData = generateRequestData(participantName, dateAndTimeInputs);
 
     try {
-      //const res = await axios.post("/events", formattedData);
+      const res = await axios.post(`/events/${eventId}/participants`, requestData);
     } catch (err) {
       console.error(err.message);
     }
@@ -154,6 +153,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       </div>
       {dateAndTimeInputs.map((input, i) => (
         <AvailableTimeSlotsInput
+          key={i}
           dateAndTimeInput={input}
           dateIndex={i}
           selectDate={selectDate}

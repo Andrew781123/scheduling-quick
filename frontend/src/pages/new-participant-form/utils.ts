@@ -60,10 +60,12 @@ export const sortTimeSlots = (participantInput: participant) => {
   });
 };
 
-export const generateOutput = (participantInput: participant) => {
-  sortTimeSlots(participantInput);
+export const generateRequestData = (participantName : string, dateAndTimeInputs: DateAndTimeInput[]) => {
+  const formattedPartipantInput = formatData(participantName, dateAndTimeInputs);
 
-  const simplifiedTimeSlots = simplifyTimeSlots(participantInput);
+  sortTimeSlots(formattedPartipantInput);
+
+  const simplifiedTimeSlots = simplifyTimeSlots(formattedPartipantInput);
 
   return simplifiedTimeSlots;
 };

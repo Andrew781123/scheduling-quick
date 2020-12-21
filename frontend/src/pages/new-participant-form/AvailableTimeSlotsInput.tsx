@@ -43,6 +43,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
       ></DatePicker>
       {timeSlots.map((timeSlot, i) => (
         <TimePickers
+          key={i}
           timeSlot={timeSlot}
           dateIndex={dateIndex}
           timeSlotIndex={i}
