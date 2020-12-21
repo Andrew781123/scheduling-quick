@@ -5,6 +5,7 @@ import Event from "../models/event";
 
 //new participant
 router.post("/", (req, res) => {
+  console.log(req.body);
   res.send("new participant");
 });
 
