@@ -67,7 +67,12 @@ export const generateRequestData = (participantName : string, dateAndTimeInputs:
 
   const simplifiedTimeSlots = simplifyTimeSlots(formattedPartipantInput);
 
-  return simplifiedTimeSlots;
+  const outputData: participant = {
+    name: participantName,
+    timeAvailable: simplifiedTimeSlots
+  }
+
+  return outputData;
 };
 
 export const convertToTimeString = (timeNum: number) => {

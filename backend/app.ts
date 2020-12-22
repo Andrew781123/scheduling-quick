@@ -19,7 +19,7 @@ import eventRouter from "./routes/events/event";
 app.use("/api/events", eventRouter);
 
 import participantRouter from "./routes/participants";
-app.use("/api/events/:eventId/participants", participantRouter);
+app.use("/api/events", participantRouter);
 
 const PORT = process.env.port || 5000;
 

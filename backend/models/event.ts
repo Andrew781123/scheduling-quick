@@ -6,22 +6,24 @@ class TimeSlots extends mongoose.SchemaType {
     super(key, options, "Time");
   }
 
-  cast(timeArray: TimeSlot) {
-    if (typeof timeArray[0] !== "number" || typeof timeArray[1] !== "number") {
-      throw new Error("First two element of available time must be numbers");
-    }
-
-    if (!Array.isArray(timeArray[2])) {
-      throw new Error("List of available person must be of type array");
-    }
-
-    for (let i = 0; i < timeArray[2].length; i++) {
-      if (typeof timeArray[2][i] !== "string") {
-        throw new Error("Person available must be of type string");
+  cast(timeSlots: TimeSlot[]) {
+    for(const timeSlot of timeSlots) {
+      if (typeof timeSlot[0] !== "string" || typeof timeSlot[1] !== "string") {
+        throw new Error("First two element of available time must be numbers");
+      }
+  
+      if (!Array.isArray(timeSlot[2])) {
+        throw new Error("List of available person must be of type array");
+      }
+  
+      for (let i = 0; i < timeSlot[2].length; i++) {
+        if (typeof timeSlot[2][i] !== "string") {
+          throw new Error("Person available must be of type string");
+        }
       }
     }
 
-    return timeArray;
+    return timeSlots;
   }
 }
 
