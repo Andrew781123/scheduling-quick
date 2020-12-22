@@ -18,7 +18,7 @@ app.use(
 import eventRouter from "./routes/events/event";
 app.use("/api/events", eventRouter);
 
-import participantRouter from "./routes/participants";
+import participantRouter from "./routes/participants/participants";
 app.use("/api/events", participantRouter);
 
 const PORT = process.env.port || 5000;

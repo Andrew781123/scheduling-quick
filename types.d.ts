@@ -18,6 +18,8 @@ export interface participant {
   timeAvailable: TimeAvailable;
 }
 
+export type CommmonAvailable = TimeAvailable | null
+
 export interface IEvent {
   info: {
     organizer: string;
@@ -31,7 +33,7 @@ export interface IEvent {
 
   participants: participant[];
 
-  commonDate: Map<string, TimeSlot> | null;
+  commonAvailable: CommmonAvailable;
 
   linkPassword?: string;
 

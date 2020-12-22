@@ -23,7 +23,7 @@ const initialEventState: Pick<providerProps, "event"> = {
 
     participants: [],
 
-    commonDate: null
+    commonAvailable: null
   }
 };
 

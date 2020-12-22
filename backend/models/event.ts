@@ -47,11 +47,8 @@ const participantSchema = new mongoose.Schema({
   },
 
   timeAvailable: {
-    type: Map,
-    of: {
-      type: TimeSlots
-    },
-    required: true
+    type: mongoose.Schema.Types.Mixed,
+    requied: true
   }
 });
 
@@ -80,9 +77,9 @@ const eventSchema = new mongoose.Schema({
 
   participants: [participantSchema],
 
-  commonDate: {
-    type: Map,
-    of: Array
+  commonAvailable: {
+    type: mongoose.Schema.Types.Mixed,
+    default: null
   },
 
   linkPassword: String,

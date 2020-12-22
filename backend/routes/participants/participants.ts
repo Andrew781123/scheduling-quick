@@ -1,9 +1,10 @@
 import e from "express";
 import express from "express";
-import { participant } from "../../types";
+import { IEvent, participant } from "../../../types";
 const router = express.Router();
 
-import Event from "../models/event";
+import Event from "../../models/event";
+import { computeNewCommonAvailable } from "../utils";
 
 //new participant
 router.post("/:eventId/participants", async (req, res) => {
@@ -11,10 +12,20 @@ router.post("/:eventId/participants", async (req, res) => {
   const {eventId} = req.params;
   console.log({eventId})
   const newParticipantInput: participant = req.body;
+  const {timeAvailable} = newParticipantInput;
 
   const event = await Event.findById(eventId);
 
   if(event) {
+    const eventObj: IEvent = event.toObject();
+    const {commonAvailable} = eventObj;
+    
+    if(commonAvailable) {
+      const newCommonAvailable = computeNewCommonAvailable(timeAvailable, commonAvailable);
+      event.commonAvailable = newCommonAvailable;
+    } else {
+      event.commonAvailable = timeAvailable;
+    }
     event.participants.push(newParticipantInput);
     await event.save();
   } else {

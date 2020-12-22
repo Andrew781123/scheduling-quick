@@ -89,7 +89,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       },
       periods: formattedPeriods,
       participants: [],
-      commonDate: null
+      commonAvailable: null
     };
 
     try {

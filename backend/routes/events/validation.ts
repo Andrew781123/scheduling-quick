@@ -37,7 +37,7 @@ export const createEventValidation = {
       })
     ),
 
-    commonDate: dateTimeMap.allow(null),
+    commonAvailable: dateTimeMap.allow(null),
 
     linkPassword: Joi.string(),
 

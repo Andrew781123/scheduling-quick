@@ -54,8 +54,10 @@ const updateCommon = input => {
       j = 0,
       inputHasLargerRange;
     output[date] = [];
+
     const inputTimeSlots = input[date];
     const matchedTimeSlots = currentMatched[date];
+    
     let temp = [];
 
     while (i < inputTimeSlots.length && j < matchedTimeSlots.length) {
@@ -68,9 +70,11 @@ const updateCommon = input => {
         //if in between
         if (temp.length == 0) {
           temp.push(inputTimeSlots[i], matchedTimeSlots[j]);
+
           if (inputEnd > matchedEnd) inputHasLargerRange = true;
           else inputHasLargerRange = false;
         } else {
+          //If there are timeSlots in temp
           if (inputHasLargerRange) temp.push(matchedTimeSlots[j]);
           else temp.push(inputTimeSlots[i]);
         }
@@ -80,6 +84,7 @@ const updateCommon = input => {
       } else {
         //if not in between
         if (temp.length > 0) {
+          //output the content in temp
           output[date] = [...output[date], ...splitTimeSlots(temp)];
 
           temp = [];
@@ -89,6 +94,7 @@ const updateCommon = input => {
 
           continue;
         }
+        //temp is empty
         if (inputStart < matchedStart) {
           output[date].push(inputTimeSlots[i]);
           i++;
@@ -100,7 +106,8 @@ const updateCommon = input => {
     }
 
     if (temp.length > 0) {
-      // console.log('not done',temp)
+      //clear temp if exists
+      console.log(`in split timeslot, ${JSON.stringify(temp)}`)
       output[date] = [...output[date], ...splitTimeSlots(temp)];
       if (inputHasLargerRange) i++;
       else j++;
@@ -120,11 +127,17 @@ const updateCommon = input => {
 };
 
 const splitTimeSlots = timeSlots => {
+  //e.g [20, 22, ['A']], [21, 23, ['Wendy', 'May']] 
+  //   -> [20, 22, 21, 23]  (flatten)
+  //   -> [20, 21, 22, 23]  (sorted)
+  //   -> [[20, 21], [21, 22], [22, 23]]
   flattenedTimeSlots = flattenTimeSlots(timeSlots);
+  console.log(`flattened: ${JSON.stringify(flattenedTimeSlots)}`);
 
   sorted = mergeSort(flattenedTimeSlots);
 
   const splittedTimeSlots = generateTimeSlots(sorted);
+  console.log(`combined: ${JSON.stringify(splittedTimeSlots)}`);
 
   //push names of available people
   for (let i = 0; i < splittedTimeSlots.length; i++) {
@@ -145,6 +158,7 @@ const splitTimeSlots = timeSlots => {
       }
     }
   }
+
   return splittedTimeSlots;
 };
 

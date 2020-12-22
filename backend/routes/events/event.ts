@@ -41,6 +41,7 @@ router.post(
   validate(createEventValidation),
   asyncWraper(async (req: Request, res: Response) => {
     const event: IEvent = req.body;
+    console.log(event);
 
     const { _id } = await Event.create(event);
 
