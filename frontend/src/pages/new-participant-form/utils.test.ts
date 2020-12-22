@@ -2,8 +2,7 @@ import {
   expectedOutput,
   timeNums,
   timeStrings,
-  unSimplifiedNotSortedTimeSlots,
-  sortedNotSimplifiedTimeSlots
+  sortedNotSimplifiedTimeSlots,
 } from "./testData";
 import { simplifyTimeSlots, convertToTimeString } from "./utils";
 

@@ -20,7 +20,7 @@ let input = {
   13: [
     [1, 2, ["Andrew"]],
     [3, 4, ["Andrew"]]
-  ]
+  ],
 };
 
 let currentMatched = {

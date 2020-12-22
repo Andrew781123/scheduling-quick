@@ -34,6 +34,11 @@ export const computeNewCommonAvailable = (
     const inputTimeSlots = input[date];
     const matchedTimeSlots = currentCommon[date];
 
+    if(!matchedTimeSlots) {
+      (newCommon as TimeAvailable)[date] = inputTimeSlots;
+      return;
+    }
+
     let temp: TimeSlot[] = [];
 
     while (i < inputTimeSlots.length && j < matchedTimeSlots.length) {
@@ -103,6 +108,13 @@ export const computeNewCommonAvailable = (
     for (j; j < matchedTimeSlots.length; j++) {
       (newCommon as TimeAvailable)[date].push(matchedTimeSlots[j]);
     }
+  });
+
+  //add timeslots of incommon date of input and currentCommon
+  Object.keys(currentCommon).forEach((date) => {
+    if((newCommon as TimeAvailable)[date]) return;
+      
+    (newCommon as TimeAvailable)[date] = currentCommon[date];
   });
 
   return newCommon as TimeAvailable;
