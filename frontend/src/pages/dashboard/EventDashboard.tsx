@@ -27,9 +27,11 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
 
   console.log(commonAvailable);
   useEffect(() => {
+    //update the commonAvailable if redirected from form
     if (!commonAvailable) {
-      // fetchEvent(event._id.toString());
+      fetchEvent(eventId);
     }
+    console.log({ commonAvailable });
   }, []);
 
   if (!hasFilledInForm) {
@@ -46,7 +48,9 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
       <>
         <h1>Dashboard</h1>
         <h2>id: {eventId}</h2>
-        <h3>Common available: {commonAvailable}</h3>
+        {commonAvailable && (
+          <h3>Common available: {commonAvailable["22-12-2020"][0][0]}</h3>
+        )}
         <Button
           onClick={() => {
             history.push({

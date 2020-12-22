@@ -15,7 +15,7 @@ router.get(
     const { id: eventId } = req.params;
 
     const event = await Event.findById(eventId).select(
-      "info venue periods participants commonDate"
+      "info venue periods participants commonAvailable"
     );
 
     if (!event) {
