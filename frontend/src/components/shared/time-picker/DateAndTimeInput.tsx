@@ -34,7 +34,6 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   };
 
   const handleFromTimeSelect = (date: Moment | null) => {
-    console.log(index);
     selectPeriod("timeRange", "fromTime", date!, index);
   };
 

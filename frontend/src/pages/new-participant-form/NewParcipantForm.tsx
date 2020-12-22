@@ -55,6 +55,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   useEffect(() => {
     fetchEvent(eventId);
+    // eslint-disable-next-line
   }, []);
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {

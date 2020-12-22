@@ -1,4 +1,4 @@
-import { DatePicker, TimePicker } from "@material-ui/pickers";
+import { DatePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
 import React from "react";
 import { TimePickers } from "./TimePickers";

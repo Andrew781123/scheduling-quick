@@ -10,7 +10,6 @@ import { simplifyTimeSlots, convertToTimeString } from "./utils";
 test("simplify timeSlots", () => {
   const simplifiedTimeSlots = simplifyTimeSlots(sortedNotSimplifiedTimeSlots);
 
-  console.log(simplifiedTimeSlots);
   expect(simplifiedTimeSlots).toEqual({ ...expectedOutput.timeAvailable });
 });
 

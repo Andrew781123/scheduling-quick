@@ -1,5 +1,4 @@
 import { Button } from "@material-ui/core";
-import { common } from "@material-ui/core/colors";
 import React, { useContext, useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { EventContext } from "../../context/event-context/EventProvider";
@@ -25,13 +24,12 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
   const { event, fetchEvent } = useContext(EventContext);
   const { commonAvailable } = event;
 
-  console.log(commonAvailable);
   useEffect(() => {
     //update the commonAvailable if redirected from form
     if (!commonAvailable) {
       fetchEvent(eventId);
     }
-    console.log({ commonAvailable });
+    // eslint-disable-next-line
   }, []);
 
   if (!hasFilledInForm) {

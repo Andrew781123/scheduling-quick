@@ -10,12 +10,9 @@ import { EventLinkPage } from "./pages/event-link-page/EventLinkPage";
 import { EventDashboard } from "./pages/dashboard/EventDashboard";
 import { NewParcipantForm } from "./pages/new-participant-form/NewParcipantForm";
 import EventProvider from "./context/event-context/EventProvider";
-import * as H from "history";
 dotenv.config();
 
 const App: React.FC = () => {
-  let history: H.History<{ hasFilledInForm?: boolean }>;
-
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <Router>

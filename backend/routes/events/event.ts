@@ -1,5 +1,5 @@
 //Todo error handling
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 const router = express.Router();
 
 import Event from "../../models/event";
@@ -36,7 +36,6 @@ router.post(
   validate(createEventValidation),
   asyncWraper(async (req: Request, res: Response) => {
     const event: IEvent = req.body;
-    console.log(event);
 
     const { _id } = await Event.create(event);
 

@@ -10,13 +10,7 @@ import {
   timeRangeState
 } from "./types";
 import { IEvent } from "../../../../types";
-import {
-  Button,
-  TextField,
-  InputLabel,
-  FormControl,
-  Input
-} from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { formatPeriods } from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";

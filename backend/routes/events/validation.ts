@@ -51,7 +51,6 @@ export const dateValidationMiddeware = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err.details);
   if (err instanceof ValidationError) {
     return res.status(err.statusCode).json(err);
   } else if (err instanceof CustomError) {

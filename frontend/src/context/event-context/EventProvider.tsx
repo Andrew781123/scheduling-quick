@@ -1,9 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import {
-  getEventResponse,
-  queryString,
-  TimeAvailable
-} from "../../../../types";
+import { getEventResponse, TimeAvailable } from "../../../../types";
 import eventReducer from "./eventReducer";
 import axios from "../../api/proxy";
 
@@ -41,8 +37,6 @@ const EventProvider: React.FC<EventProviderProps> = props => {
 
   const fetchEvent = async (eventId: string) => {
     const res = await axios.get(`/events/${eventId}`);
-
-    console.log(res.data.event);
 
     dispatch({ type: "FETCH_EVENT", event: res.data.event });
   };

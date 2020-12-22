@@ -18,7 +18,10 @@ export class CustomError extends Error {
   }
 }
 
-export const computeNewCommonAvailable = (input: TimeAvailable, currentCommon: TimeAvailable) => {
+export const computeNewCommonAvailable = (
+  input: TimeAvailable,
+  currentCommon: TimeAvailable
+) => {
   let newCommon = {};
 
   Object.keys(input).forEach(date => {
@@ -30,10 +33,9 @@ export const computeNewCommonAvailable = (input: TimeAvailable, currentCommon: T
 
     const inputTimeSlots = input[date];
     const matchedTimeSlots = currentCommon[date];
-    
+
     let temp: TimeSlot[] = [];
 
-    console.log({inputTimeSlots}, {matchedTimeSlots}, {currentCommon})
     while (i < inputTimeSlots.length && j < matchedTimeSlots.length) {
       const inputStart = inputTimeSlots[i][0],
         inputEnd = inputTimeSlots[i][1],
@@ -59,7 +61,10 @@ export const computeNewCommonAvailable = (input: TimeAvailable, currentCommon: T
         //if not in between
         if (temp.length > 0) {
           //output the content in temp
-          (newCommon as TimeAvailable)[date] = [...(newCommon as TimeAvailable)[date], ...splitTimeSlots(temp)];
+          (newCommon as TimeAvailable)[date] = [
+            ...(newCommon as TimeAvailable)[date],
+            ...splitTimeSlots(temp)
+          ];
 
           temp = [];
 
@@ -81,8 +86,11 @@ export const computeNewCommonAvailable = (input: TimeAvailable, currentCommon: T
 
     if (temp.length > 0) {
       //clear temp if exists
-     
-      (newCommon as TimeAvailable)[date] = [...(newCommon as TimeAvailable)[date], ...splitTimeSlots(temp)];
+
+      (newCommon as TimeAvailable)[date] = [
+        ...(newCommon as TimeAvailable)[date],
+        ...splitTimeSlots(temp)
+      ];
       if (inputHasLargerRange) i++;
       else j++;
     }
@@ -97,11 +105,11 @@ export const computeNewCommonAvailable = (input: TimeAvailable, currentCommon: T
     }
   });
 
-  return (newCommon as TimeAvailable);
-}
+  return newCommon as TimeAvailable;
+};
 
 const splitTimeSlots = (timeSlots: TimeSlot[]) => {
-  //e.g [20, 22, ['A']], [21, 23, ['B', 'C']] 
+  //e.g [20, 22, ['A']], [21, 23, ['B', 'C']]
   //   -> [20, 22, 21, 23]  (flatten)
   //   -> [20, 21, 22, 23]  (sorted)
   //   -> [[20, 21], [21, 22], [22, 23]]
@@ -197,7 +205,12 @@ function generateTimeSlots(arr: string[]) {
   return newTimeSlots;
 }
 
-const checkInBetween = (start1: string, start2: string, end1: string, end2: string) => {
+const checkInBetween = (
+  start1: string,
+  start2: string,
+  end1: string,
+  end2: string
+) => {
   return !(
     (+start1 - +end2 <= 0 && +end1 - +start2 <= 0) ||
     (+start1 - +end2 >= 0 && +end1 - +start2 >= 0)

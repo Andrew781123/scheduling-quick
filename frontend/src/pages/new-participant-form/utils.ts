@@ -1,6 +1,5 @@
 import { participant, TimeAvailable, TimeSlot } from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
-import { timeStrings } from "./testData";
 import { DateAndTimeInput } from "./types";
 
 export const formatData = (
@@ -60,8 +59,14 @@ export const sortTimeSlots = (participantInput: participant) => {
   });
 };
 
-export const generateRequestData = (participantName : string, dateAndTimeInputs: DateAndTimeInput[]) => {
-  const formattedPartipantInput = formatData(participantName, dateAndTimeInputs);
+export const generateRequestData = (
+  participantName: string,
+  dateAndTimeInputs: DateAndTimeInput[]
+) => {
+  const formattedPartipantInput = formatData(
+    participantName,
+    dateAndTimeInputs
+  );
 
   sortTimeSlots(formattedPartipantInput);
 
@@ -70,14 +75,14 @@ export const generateRequestData = (participantName : string, dateAndTimeInputs:
   const outputData: participant = {
     name: participantName,
     timeAvailable: simplifiedTimeSlots
-  }
+  };
 
   return outputData;
 };
 
 export const convertToTimeString = (timeNum: number) => {
   let timeString = timeNum.toString();
-  return timeString.length == 3 ? "0" + timeString : timeString;
+  return timeString.length === 3 ? "0" + timeString : timeString;
 };
 
 export const simplifyTimeSlots = (participantInput: participant) => {

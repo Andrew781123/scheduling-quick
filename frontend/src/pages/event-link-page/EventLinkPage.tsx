@@ -11,8 +11,6 @@ interface LocationState {
 export const EventLinkPage: React.FC<
   EventLinkPageProps & RouteComponentProps<{}, any, LocationState | any>
 > = props => {
-  const { history } = props;
-
   const eventId = props.location.state.eventId;
 
   const link = useMemo(() => {
