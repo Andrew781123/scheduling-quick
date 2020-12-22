@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import { getEventResponse, queryString } from "../../../../types";
+import { getEventResponse, queryString, TimeAvailable } from "../../../../types";
 import eventReducer from "./eventReducer";
 import axios from "../../api/proxy";
 
@@ -8,6 +8,7 @@ interface EventProviderProps {}
 interface providerProps {
   event: getEventResponse;
   fetchEvent: (eventId: string) => void;
+  updateCommonAvailable: (newCommon: TimeAvailable) => void
 }
 
 const initialEventState: Pick<providerProps, "event"> = {
@@ -45,11 +46,16 @@ const EventProvider: React.FC<EventProviderProps> = props => {
     dispatch({ type: "FETCH_EVENT", event: res.data.event });
   };
 
+  const updateCommonAvailable = (newCommon: TimeAvailable) => {
+    dispatch({type: "UPDATE_COMMON_AVAILABLE", newCommon});
+  }
+
   return (
     <EventContext.Provider
       value={{
         event: eventState.event,
-        fetchEvent
+        fetchEvent,
+        updateCommonAvailable
       }}
     >
       {props.children}

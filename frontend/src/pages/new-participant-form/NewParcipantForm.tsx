@@ -7,17 +7,20 @@ import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 import { generateRequestData } from "./utils";
 import axios from "../../api/proxy";
+import * as H from "history";
 
 interface routeParams {
   id: string;
 }
 
-interface routeStates {
+type routeStates = {
   hasFilledInForm?: boolean;
 }
 
+
 interface NewParcipantFormProps
-  extends RouteComponentProps<routeParams, any, routeStates> {}
+  extends RouteComponentProps<routeParams, any, routeStates> {
+  }
 
 const initialTImeSlot: timeSlot = {
   fromTime: null,
@@ -40,10 +43,11 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     location: {
       //hasFilledInForm is default to false because we can't determine if the user has filled in the form or not if he manually reach this route
       state = { hasFilledInForm: false }
-    }
+    },
+    history
   } = props;
 
-  const { fetchEvent, event } = useContext(EventContext);
+  const { fetchEvent, updateCommonAvailable, event } = useContext(EventContext);
 
   const [dateAndTimeInputs, setDateAndTimeInputs] = useState(
     initialDateAndTimeInputs
@@ -115,6 +119,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
     try {
       const res = await axios.post(`/events/${eventId}/participants`, requestData);
+
+      updateCommonAvailable(res.data);
+
+      history.push({pathname: `/events/${eventId}/dashboard`});
     } catch (err) {
       console.error(err.message);
     }

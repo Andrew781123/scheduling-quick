@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, {useContext} from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
+import { EventContext } from "../../context/event-context/EventProvider";
 
 interface routeProps {
   id: string;
@@ -19,6 +20,8 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     },
     history
   } = props;
+
+  const {event} = useContext(EventContext);
 
   if (!hasFilledInForm) {
     return (

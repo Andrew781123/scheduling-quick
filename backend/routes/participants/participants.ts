@@ -4,13 +4,12 @@ import { IEvent, participant } from "../../../types";
 const router = express.Router();
 
 import Event from "../../models/event";
-import { computeNewCommonAvailable } from "../utils";
+import { computeNewCommonAvailable, CustomError } from "../utils";
 
 //new participant
 router.post("/:eventId/participants", async (req, res) => {
-  console.log(req.body)
   const {eventId} = req.params;
-  console.log({eventId})
+
   const newParticipantInput: participant = req.body;
   const {timeAvailable} = newParticipantInput;
 
@@ -20,20 +19,21 @@ router.post("/:eventId/participants", async (req, res) => {
     const eventObj: IEvent = event.toObject();
     const {commonAvailable} = eventObj;
     
-    if(commonAvailable) {
-      const newCommonAvailable = computeNewCommonAvailable(timeAvailable, commonAvailable);
-      event.commonAvailable = newCommonAvailable;
-    } else {
-      event.commonAvailable = timeAvailable;
-    }
+    const newCommonAvailable = commonAvailable ? computeNewCommonAvailable(timeAvailable, commonAvailable) :  timeAvailable;
+    
+    event.commonAvailable = newCommonAvailable;
+  
     event.participants.push(newParticipantInput);
     await event.save();
-  } else {
-    console.log('no event')
-    return res.send('no event')
-  }
 
-  res.send("new participant");
+    res.status(201).json({newCommonAvailable});
+  } else {
+    throw new CustomError(
+      "CONTENT NOT FOUND",
+      "Event requested doesn't exist",
+      404
+    );
+  }
 });
 
 //edit participant's input
