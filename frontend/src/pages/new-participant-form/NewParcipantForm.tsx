@@ -7,7 +7,6 @@ import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 import { generateRequestData } from "./utils";
 import axios from "../../api/proxy";
-import * as H from "history";
 
 interface routeParams {
   id: string;
@@ -15,12 +14,10 @@ interface routeParams {
 
 type routeStates = {
   hasFilledInForm?: boolean;
-}
-
+};
 
 interface NewParcipantFormProps
-  extends RouteComponentProps<routeParams, any, routeStates> {
-  }
+  extends RouteComponentProps<routeParams, any, routeStates> {}
 
 const initialTImeSlot: timeSlot = {
   fromTime: null,
@@ -118,11 +115,14 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     const requestData = generateRequestData(participantName, dateAndTimeInputs);
 
     try {
-      const res = await axios.post(`/events/${eventId}/participants`, requestData);
+      const res = await axios.post(
+        `/events/${eventId}/participants`,
+        requestData
+      );
 
       updateCommonAvailable(res.data);
 
-      history.push({pathname: `/events/${eventId}/dashboard`});
+      history.push({ pathname: `/events/${eventId}/dashboard` });
     } catch (err) {
       console.error(err.message);
     }
