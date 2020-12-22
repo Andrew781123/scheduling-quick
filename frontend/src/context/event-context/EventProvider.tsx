@@ -1,5 +1,9 @@
 import React, { createContext, useReducer } from "react";
-import { getEventResponse, queryString, TimeAvailable } from "../../../../types";
+import {
+  getEventResponse,
+  queryString,
+  TimeAvailable
+} from "../../../../types";
 import eventReducer from "./eventReducer";
 import axios from "../../api/proxy";
 
@@ -8,11 +12,13 @@ interface EventProviderProps {}
 interface providerProps {
   event: getEventResponse;
   fetchEvent: (eventId: string) => void;
-  updateCommonAvailable: (newCommon: TimeAvailable) => void
+  updateCommonAvailable: (newCommon: TimeAvailable) => void;
 }
 
 const initialEventState: Pick<providerProps, "event"> = {
   event: {
+    _id: "",
+
     info: {
       organizer: "",
       venue: {
@@ -34,21 +40,16 @@ const EventProvider: React.FC<EventProviderProps> = props => {
   const [eventState, dispatch] = useReducer(eventReducer, initialEventState);
 
   const fetchEvent = async (eventId: string) => {
-    const queryString: queryString = {
-      key: "type",
-      value: "form"
-    };
+    const res = await axios.get(`/events/${eventId}`);
 
-    const res = await axios.get(
-      `/events/${eventId}?${queryString.key}=${queryString.value}`
-    );
+    console.log(res.data.event);
 
     dispatch({ type: "FETCH_EVENT", event: res.data.event });
   };
 
   const updateCommonAvailable = (newCommon: TimeAvailable) => {
-    dispatch({type: "UPDATE_COMMON_AVAILABLE", newCommon});
-  }
+    dispatch({ type: "UPDATE_COMMON_AVAILABLE", newCommon });
+  };
 
   return (
     <EventContext.Provider

@@ -18,7 +18,7 @@ export interface participant {
   timeAvailable: TimeAvailable;
 }
 
-export type CommmonAvailable = TimeAvailable | null
+export type CommmonAvailable = TimeAvailable | null;
 
 export interface IEvent {
   info: {
@@ -41,6 +41,9 @@ export interface IEvent {
 }
 
 //backend
-export type queryString = { key: "type"; value: "form" | "dashboard" };
+export type queryString = { key: "type"; value: "common" | "all" };
 
-export type getEventResponse = Omit<IEvent, "linkPassword" | "authPassword">;
+export type getEventResponse = { _id: string } & Omit<
+  IEvent,
+  "linkPassword" | "authPassword"
+>;

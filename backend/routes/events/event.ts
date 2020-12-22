@@ -12,26 +12,21 @@ import { asyncWraper, CustomError } from "../utils";
 router.get(
   "/:id",
   asyncWraper(async (req: Request, res: Response) => {
-    // to do, type the query strings
-    const { type } = req.query;
     const { id: eventId } = req.params;
 
-    if (type === "form") {
-      const event = await Event.findById(eventId).select(
-        "info venue periods participants commonDate"
+    const event = await Event.findById(eventId).select(
+      "info venue periods participants commonDate"
+    );
+
+    if (!event) {
+      throw new CustomError(
+        "CONTENT NOT FOUND",
+        "Event requested doesn't exist",
+        404
       );
-
-      if (!event) {
-        throw new CustomError(
-          "CONTENT NOT FOUND",
-          "Event requested doesn't exist",
-          404
-        );
-      }
-
-      const eventObject: getEventResponse = event.toObject();
-      res.status(200).json({ event: eventObject });
     }
+    const eventObject: getEventResponse = event.toObject();
+    res.status(200).json({ event: eventObject });
   })
 );
 

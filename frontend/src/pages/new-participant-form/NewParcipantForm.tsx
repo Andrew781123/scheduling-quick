@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
 import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
@@ -40,9 +40,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     location: {
       //hasFilledInForm is default to false because we can't determine if the user has filled in the form or not if he manually reach this route
       state = { hasFilledInForm: false }
-    },
-    history
+    }
   } = props;
+
+  const history = useHistory();
 
   const { fetchEvent, updateCommonAvailable, event } = useContext(EventContext);
 

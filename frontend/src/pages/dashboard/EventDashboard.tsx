@@ -1,5 +1,6 @@
 import { Button } from "@material-ui/core";
-import React, {useContext} from "react";
+import { common } from "@material-ui/core/colors";
+import React, { useContext, useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { EventContext } from "../../context/event-context/EventProvider";
 
@@ -21,7 +22,15 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     history
   } = props;
 
-  const {event} = useContext(EventContext);
+  const { event, fetchEvent } = useContext(EventContext);
+  const { commonAvailable } = event;
+
+  console.log(commonAvailable);
+  useEffect(() => {
+    if (!commonAvailable) {
+      // fetchEvent(event._id.toString());
+    }
+  }, []);
 
   if (!hasFilledInForm) {
     return (
@@ -37,6 +46,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
       <>
         <h1>Dashboard</h1>
         <h2>id: {eventId}</h2>
+        <h3>Common available: {commonAvailable}</h3>
         <Button
           onClick={() => {
             history.push({

@@ -1,6 +1,8 @@
-import { getEventResponse, IEvent, TimeAvailable } from "../../../../types";
+import { getEventResponse, TimeAvailable } from "../../../../types";
 
-type actions = { type: "FETCH_EVENT"; event: IEvent } | {type: 'UPDATE_COMMON_AVAILABLE'; newCommon: TimeAvailable};
+type actions =
+  | { type: "FETCH_EVENT"; event: getEventResponse }
+  | { type: "UPDATE_COMMON_AVAILABLE"; newCommon: TimeAvailable };
 
 const eventReducer = (state: { event: getEventResponse }, action: actions) => {
   switch (action.type) {
@@ -11,14 +13,14 @@ const eventReducer = (state: { event: getEventResponse }, action: actions) => {
       };
     }
 
-    case 'UPDATE_COMMON_AVAILABLE': {
+    case "UPDATE_COMMON_AVAILABLE": {
       return {
         ...state,
         event: {
           ...state.event,
           commonAvailable: action.newCommon
         }
-      }
+      };
     }
 
     default:
