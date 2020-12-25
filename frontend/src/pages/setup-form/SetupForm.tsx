@@ -10,10 +10,17 @@ import {
   timeRangeState
 } from "./types";
 import { IEvent } from "../../../../types";
-import { Button, TextField } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel
+} from "@material-ui/core";
 import { formatPeriods } from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";
+import { EVENT_MIN_DURATION_HOURS, EVENT_MIN_DURATION_MIN } from "./constants";
 
 interface SetupFormProps {
   history: H.History;
@@ -22,6 +29,10 @@ interface SetupFormProps {
 const initialSetupInfo: setupInfo = {
   organizerName: "",
   venue: "",
+  duration: {
+    durationHour: 0,
+    durationMin: 0
+  },
   periods: [
     {
       dateRange: {
@@ -61,6 +72,22 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       fromToField,
       date,
       index
+    });
+  };
+
+  const selectDurationHour = (event: React.ChangeEvent<{ value: unknown }>) => {
+    dispatch({
+      type: "DURATION_SELECT",
+      durationField: "durationHour",
+      data: event.target.value as number
+    });
+  };
+
+  const selectDurationMin = (event: React.ChangeEvent<{ value: unknown }>) => {
+    dispatch({
+      type: "DURATION_SELECT",
+      durationField: "durationMin",
+      data: event.target.value as number
     });
   };
 
@@ -140,6 +167,33 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       <button onClick={() => dispatch({ type: "ADD_DATE_AND_TIME_COMPONENT" })}>
         Add
       </button>
+
+      <div>
+        <InputLabel id='event_min_duration'>Min duration</InputLabel>
+        <Select
+          labelId='event_min_duration'
+          id='min_duration_hour'
+          value={setupInfo.duration.durationHour}
+          onChange={selectDurationHour}
+        >
+          {EVENT_MIN_DURATION_HOURS.map(hour => {
+            return <MenuItem value={hour}>{hour}</MenuItem>;
+          })}
+        </Select>
+        <span>hours</span>
+
+        <Select
+          labelId='event_min_duration'
+          id='min_duration_min'
+          value={setupInfo.duration.durationMin}
+          onChange={selectDurationMin}
+        >
+          {EVENT_MIN_DURATION_MIN.map(min => {
+            return <MenuItem value={min}>{min}</MenuItem>;
+          })}
+        </Select>
+        <span>minutes</span>
+      </div>
 
       <div>
         <div>

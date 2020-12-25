@@ -1,6 +1,7 @@
 import { Moment } from "moment";
 import {
   dateRangeState,
+  EventDuration,
   periodState,
   setupInfo,
   timeRangeState
@@ -13,6 +14,11 @@ type setupInfoActions =
       fromToField: keyof dateRangeState | keyof timeRangeState;
       date: Moment;
       index: number;
+    }
+  | {
+      type: "DURATION_SELECT";
+      durationField: keyof EventDuration;
+      data: number;
     }
   | { type: "ADD_DATE_AND_TIME_COMPONENT" }
   | {

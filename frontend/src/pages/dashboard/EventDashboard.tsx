@@ -46,6 +46,9 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
       <>
         <h1>Dashboard</h1>
         <h2>id: {eventId}</h2>
+        <div className="dashboard_common_available">
+          
+        </div>
         {commonAvailable && (
           <h3>Common available: {commonAvailable["22-12-2020"][0][0]}</h3>
         )}

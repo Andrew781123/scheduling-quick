@@ -1,4 +1,5 @@
 import { Moment } from "moment";
+import { EventMinDurationHour, EventMinDurationMin } from "../../../../types";
 
 export interface dateRangeState {
   fromDate: Moment | null;
@@ -15,9 +16,15 @@ export interface periodState {
   timeRange: timeRangeState;
 }
 
+export interface EventDuration {
+  durationHour: EventMinDurationHour;
+  durationMin: EventMinDurationMin;
+}
+
 export interface setupInfoTextFields {
   organizerName: string;
   venue: string;
+  duration: EventDuration
   linkPassword: string;
   authPassword: string;
 }

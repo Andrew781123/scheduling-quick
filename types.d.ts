@@ -40,6 +40,10 @@ export interface IEvent {
   authPassword?: string;
 }
 
+//constants
+export type EventMinDurationHour = number;
+export type EventMinDurationMin = number;
+
 //backend
 export type queryString = { key: "type"; value: "common" | "all" };
 
