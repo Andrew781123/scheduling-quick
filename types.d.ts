@@ -25,6 +25,8 @@ export interface EventDuration {
   durationMin: EventMinDurationMin;
 }
 
+export type CommonByPeopleElement = [string, number];
+
 export interface IEvent {
   info: {
     organizer: string;
@@ -38,6 +40,8 @@ export interface IEvent {
   periods: period[];
 
   participants: participant[];
+
+  commonByPeople?: CommonByPeopleElement[];
 
   commonAvailable: CommmonAvailable;
 

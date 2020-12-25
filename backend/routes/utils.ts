@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { TimeSlot, TimeAvailable } from "../../types";
+import { TimeSlot, TimeAvailable, CommonByPeopleElement } from "../../types";
 
 export const asyncWraper = (fn: any) => (
   req: Request,
@@ -23,6 +23,7 @@ export const computeNewCommonAvailable = (
   currentCommon: TimeAvailable
 ) => {
   let newCommon = {};
+  let commonByPeople: CommonByPeopleElement[] = [];
 
   Object.keys(input).forEach(date => {
     let i = 0,
@@ -34,7 +35,7 @@ export const computeNewCommonAvailable = (
     const inputTimeSlots = input[date];
     const matchedTimeSlots = currentCommon[date];
 
-    if(!matchedTimeSlots) {
+    if (!matchedTimeSlots) {
       (newCommon as TimeAvailable)[date] = inputTimeSlots;
       return;
     }
@@ -66,10 +67,7 @@ export const computeNewCommonAvailable = (
         //if not in between
         if (temp.length > 0) {
           //output the content in temp
-          (newCommon as TimeAvailable)[date] = [
-            ...(newCommon as TimeAvailable)[date],
-            ...splitTimeSlots(temp)
-          ];
+          (newCommon as TimeAvailable)[date].push(...splitTimeSlots(temp));
 
           temp = [];
 
@@ -91,11 +89,8 @@ export const computeNewCommonAvailable = (
 
     if (temp.length > 0) {
       //clear temp if exists
+      (newCommon as TimeAvailable)[date].push(...splitTimeSlots(temp));
 
-      (newCommon as TimeAvailable)[date] = [
-        ...(newCommon as TimeAvailable)[date],
-        ...splitTimeSlots(temp)
-      ];
       if (inputHasLargerRange) i++;
       else j++;
     }
@@ -111,9 +106,9 @@ export const computeNewCommonAvailable = (
   });
 
   //add timeslots of incommon date of input and currentCommon
-  Object.keys(currentCommon).forEach((date) => {
-    if((newCommon as TimeAvailable)[date]) return;
-      
+  Object.keys(currentCommon).forEach(date => {
+    if ((newCommon as TimeAvailable)[date]) return;
+
     (newCommon as TimeAvailable)[date] = currentCommon[date];
   });
 
@@ -131,7 +126,7 @@ const splitTimeSlots = (timeSlots: TimeSlot[]) => {
 
   const splittedTimeSlots = generateTimeSlots(sortedNumbers);
 
-  //push names of available string, string]people
+  //push names of available people
   for (let i = 0; i < splittedTimeSlots.length; i++) {
     const splittedStart = splittedTimeSlots[i][0];
     const splittedEnd = splittedTimeSlots[i][1];
@@ -215,6 +210,37 @@ function generateTimeSlots(arr: string[]) {
   }
 
   return newTimeSlots;
+}
+
+const pushToNewCommonAndSort = (newCommon: any, commonByPeople: CommonByPeopleElement[], date: string, timeSlots: TimeSlot | TimeSlot[]) => {
+  if(typeof timeSlots == 'string') {
+    //eg. ['1000', '1100', ['A']]
+    (newCommon as TimeAvailable)[date].push(timeSlots as TimeSlot);
+  } else {
+    (newCommon as TimeAvailable)[date].push(...timeSlots as TimeSlot[]);
+  }
+
+  const indexOfCurrentTimeSlot = (newCommon as TimeAvailable)[date].length - 1;
+  updateCommonByPeople(commonByPeople, newCommon, date, indexOfCurrentTimeSlot);
+}
+
+const updateCommonByPeople = (commonByPeople: CommonByPeopleElement[], newCommon: TimeAvailable, date: string, index: number) => {
+  const commonByPeopleElement: CommonByPeopleElement = [date, index];
+  const peopleCountOfCurrentTimeSlot = newCommon[date][index][2].length;
+
+  commonByPeople.push(commonByPeopleElement);
+
+  let j = commonByPeople.length - 2;
+  for(j; j >= 0; j--) {
+    const peopleCountOfTimeSlot = newCommon[commonByPeople[j][0]][commonByPeople[j][1]][2].length;
+    
+    if(peopleCountOfTimeSlot > peopleCountOfCurrentTimeSlot) {
+      commonByPeople[j + 1] = commonByPeople[j];
+    } else {
+      commonByPeople[j + 1] = commonByPeopleElement;
+      break;
+    }
+  }
 }
 
 const checkInBetween = (

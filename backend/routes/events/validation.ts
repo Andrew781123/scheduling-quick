@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { Joi, ValidationError } from "express-validation";
-import { isJSDocSignature } from "typescript";
 import { timeSlot } from "../shared-validation-types";
 import { CustomError } from "../utils";
 
