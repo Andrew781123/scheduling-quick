@@ -61,6 +61,16 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
       };
     }
 
+    case 'DURATION_SELECT': {
+      return {
+        ...state,
+        duration: {
+          ...state.duration,
+          [action.durationField]: action.data
+        }
+      }
+    }
+
     case "TEXT_INPUT": {
       return {
         ...state,

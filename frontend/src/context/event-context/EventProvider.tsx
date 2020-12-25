@@ -22,6 +22,11 @@ const initialEventState: Pick<providerProps, "event"> = {
       }
     },
 
+    duration: {
+      durationHour: 0,
+      durationMin: 0
+    },
+
     periods: [],
 
     participants: [],

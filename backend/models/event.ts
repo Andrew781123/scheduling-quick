@@ -68,6 +68,17 @@ const eventSchema = new mongoose.Schema({
     }
   },
 
+  duration: {
+    durationHour: {
+      type: Number,
+      required: true
+    },
+    durationMin: {
+      type: Number,
+      required: true
+    }
+  },
+
   periods: [
     {
       dateRange: [String],

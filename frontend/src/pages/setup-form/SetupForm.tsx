@@ -108,6 +108,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
           name: venue
         }
       },
+      duration: setupInfo.duration,
       periods: formattedPeriods,
       participants: [],
       commonAvailable: null

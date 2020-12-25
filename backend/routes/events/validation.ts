@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Joi, ValidationError } from "express-validation";
+import { isJSDocSignature } from "typescript";
 import { timeSlot } from "../shared-validation-types";
 import { CustomError } from "../utils";
 
@@ -29,6 +30,11 @@ export const createEventValidation = {
         })
       )
       .min(1),
+
+    duration: Joi.object({
+      durationHour: Joi.number().integer().min(0).max(23),
+      durationMin: Joi.number().integer().min(0).max(45)
+    }),
 
     participants: Joi.array().items(
       Joi.object({

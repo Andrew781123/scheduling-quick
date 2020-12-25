@@ -20,6 +20,11 @@ export interface participant {
 
 export type CommmonAvailable = TimeAvailable | null;
 
+export interface EventDuration {
+  durationHour: EventMinDurationHour;
+  durationMin: EventMinDurationMin;
+}
+
 export interface IEvent {
   info: {
     organizer: string;
@@ -28,6 +33,7 @@ export interface IEvent {
       googleMapLink?: string;
     };
   };
+  duration: EventDuration;
 
   periods: period[];
 
