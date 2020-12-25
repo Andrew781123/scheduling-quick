@@ -8,25 +8,35 @@ import { computeNewCommonAvailable, CustomError } from "../utils";
 
 //new participant
 router.post("/:eventId/participants", async (req, res) => {
-  const {eventId} = req.params;
+  const { eventId } = req.params;
 
   const newParticipantInput: participant = req.body;
-  const {timeAvailable} = newParticipantInput;
+  const { timeAvailable } = newParticipantInput;
 
   const event = await Event.findById(eventId);
 
-  if(event) {
+  if (event) {
     const eventObj: IEvent = event.toObject();
-    const {commonAvailable} = eventObj;
-    
-    const newCommonAvailable = commonAvailable ? computeNewCommonAvailable(timeAvailable, commonAvailable) :  timeAvailable;
-    
+    const { commonAvailable } = eventObj;
+
+    let newCommonAvailable;
+    if (commonAvailable) {
+      const { newCommon, commonByPeople } = computeNewCommonAvailable(
+        timeAvailable,
+        commonAvailable
+      );
+
+      newCommonAvailable = newCommon;
+    } else {
+      newCommonAvailable = timeAvailable;
+    }
+
     event.commonAvailable = newCommonAvailable;
-  
+
     event.participants.push(newParticipantInput);
     await event.save();
 
-    res.status(201).json({newCommonAvailable});
+    res.status(201).json({ newCommonAvailable });
   } else {
     throw new CustomError(
       "CONTENT NOT FOUND",
