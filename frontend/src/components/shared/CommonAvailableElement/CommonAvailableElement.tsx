@@ -7,10 +7,17 @@ interface CommonAvailableElementProps {
   date: string;
   timeSlotIndex: number;
   commonAvailable: TimeAvailable;
+  participantCount: number;
 }
 
 export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = props => {
-  const { index, date, timeSlotIndex, commonAvailable } = props;
+  const {
+    index,
+    date,
+    timeSlotIndex,
+    commonAvailable,
+    participantCount
+  } = props;
 
   const [timeSlot, availablePeople] = useMemo(() => {
     const timeSlot = commonAvailable[date][timeSlotIndex];
@@ -19,8 +26,15 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
     return [timeSlot, availablePeople];
   }, [commonAvailable, date, timeSlotIndex]);
 
+  const elementBackgroundColor =
+    participantCount == availablePeople.length ? "#b3ffc7" : "#ffb3b3";
+
+  const elementStyle = {
+    backgroundColor: elementBackgroundColor
+  };
+
   return (
-    <div className='common_available_element'>
+    <div className='common_available_element' style={elementStyle}>
       <h3>
         #{index}: {date}
       </h3>

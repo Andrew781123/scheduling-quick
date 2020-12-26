@@ -23,7 +23,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
   } = props;
 
   const { event, fetchEvent } = useContext(EventContext);
-  const { commonAvailable, commonByPeople } = event;
+  const { commonAvailable, commonByPeople, participants } = event;
 
   useEffect(() => {
     //update the commonAvailable if redirected from form
@@ -62,6 +62,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
                 date={date}
                 timeSlotIndex={timeSlotIndex}
                 commonAvailable={commonAvailable}
+                participantCount={participants.length}
               />
             ))}
           </div>
