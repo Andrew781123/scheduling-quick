@@ -134,6 +134,7 @@ export const simplifyTimeSlots = (participantInput: participant) => {
         //update time-slot to compare
         comparatorPointer++;
         currentPointer = comparatorPointer;
+        if(nextEnd) potentialNewEnd = nextEnd;
       }
     }
   });
