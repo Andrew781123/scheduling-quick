@@ -50,5 +50,5 @@
     "dotenv": "^8.2.0",
     "ts-jest": "^26.4.4"
   },
-  "proxy": "http://localhost:5000/api"
+  "proxy": "https://localhost:5000/api"
 }
