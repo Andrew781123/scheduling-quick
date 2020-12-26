@@ -45,7 +45,9 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const history = useHistory();
 
-  const { fetchEvent, updateCommonAvailable, event } = useContext(EventContext);
+  const { fetchEvent, updateEventAfterUserSubmit, event } = useContext(
+    EventContext
+  );
 
   const [dateAndTimeInputs, setDateAndTimeInputs] = useState(
     initialDateAndTimeInputs
@@ -122,7 +124,9 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         requestData
       );
 
-      updateCommonAvailable(res.data);
+      const { newCommonAvailable, commonByPeople } = res.data;
+
+      updateEventAfterUserSubmit(newCommonAvailable, commonByPeople);
 
       history.push({ pathname: `/events/${eventId}/dashboard` });
     } catch (err) {

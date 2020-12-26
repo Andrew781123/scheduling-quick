@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { EventContext } from "../../context/event-context/EventProvider";
 
@@ -22,15 +22,20 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
   } = props;
 
   const { event, fetchEvent } = useContext(EventContext);
-  const { commonAvailable } = event;
+  const { commonAvailable, commonByPeople } = event;
 
   useEffect(() => {
     //update the commonAvailable if redirected from form
     if (!commonAvailable) {
       fetchEvent(eventId);
     }
+    console.log(commonByPeople);
     // eslint-disable-next-line
   }, []);
+
+  // const timeAvailableResults = useMemo(() => {
+
+  // }, [commonAvailable, commonByPeople]);
 
   if (!hasFilledInForm) {
     return (
@@ -46,12 +51,30 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
       <>
         <h1>Dashboard</h1>
         <h2>id: {eventId}</h2>
-        <div className="dashboard_common_available">
-          
-        </div>
-        {commonAvailable && (
-          <h3>Common available: {commonAvailable["22-12-2020"][0][0]}</h3>
+
+        {commonAvailable && commonByPeople && (
+          <div className='dashboard_common_available'>
+            <h2>Common available: </h2>
+            {commonByPeople.map(([date, timeSlotIndex], index) => {
+              return (
+                <div key={index} className='common_available_element'>
+                  <h3>
+                    #{index}: {date}
+                  </h3>
+                  <h3>
+                    Available People:{" "}
+                    {commonAvailable[date][timeSlotIndex][2].map(
+                      (name, index) => {
+                        return <span key={index}>{name}, </span>;
+                      }
+                    )}
+                  </h3>
+                </div>
+              );
+            })}
+          </div>
         )}
+
         <Button
           onClick={() => {
             history.push({
