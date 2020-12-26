@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "devStart": "nodemon --exec ts-node app.ts",
-    "test": "jest",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd ../frontend && cd ../frontend npm run build"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
