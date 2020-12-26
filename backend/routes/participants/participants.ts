@@ -1,10 +1,18 @@
-import e from "express";
 import express from "express";
-import { IEvent, participant, TimeAvailable } from "../../../types";
+import {
+  CommonByPeopleElement,
+  IEvent,
+  participant,
+  TimeAvailable
+} from "../../../types";
 const router = express.Router();
 
 import Event from "../../models/event";
-import { computeNewCommonAvailable, CustomError } from "../utils";
+import {
+  computeNewCommonAvailable,
+  CustomError,
+  generateInitialCommonByPeople
+} from "../utils";
 
 //new participant
 router.post("/:eventId/participants", async (req, res) => {
@@ -21,6 +29,7 @@ router.post("/:eventId/participants", async (req, res) => {
 
     let newCommonAvailable: unknown;
     let commonByPeople: unknown;
+
     if (commonAvailable) {
       const { newCommon, newCommonByPeople } = computeNewCommonAvailable(
         timeAvailable,
@@ -28,16 +37,22 @@ router.post("/:eventId/participants", async (req, res) => {
       );
 
       (newCommonAvailable as TimeAvailable) = newCommon;
+      (commonByPeople as CommonByPeopleElement[]) = newCommonByPeople;
     } else {
       newCommonAvailable = timeAvailable;
+      (commonByPeople as CommonByPeopleElement[]) = generateInitialCommonByPeople(
+        timeAvailable
+      );
     }
 
     event.commonAvailable = newCommonAvailable as TimeAvailable;
 
+    event.commonByPeople = commonByPeople as CommonByPeopleElement[];
+
     event.participants.push(newParticipantInput);
     await event.save();
 
-    res.status(201).json({ newCommonAvailable });
+    res.status(201).json({ newCommonAvailable, commonByPeople });
   } else {
     throw new CustomError(
       "CONTENT NOT FOUND",
