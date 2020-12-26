@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
-    "start": "node app.js",
+    "start": "ts-node app.ts",
     "devStart": "nodemon --exec ts-node app.ts",
     "test": "jest",
     "build": "tsc"
