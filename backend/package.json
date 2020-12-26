@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "devStart": "nodemon --exec ts-node app.ts",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "ts-node"
   },
   "author": "",
   "license": "ISC",
