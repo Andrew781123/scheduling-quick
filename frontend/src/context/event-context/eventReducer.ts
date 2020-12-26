@@ -1,8 +1,8 @@
-import { CommonByPeopleElement, getEventResponse, TimeAvailable } from "../../../../types";
+import { CommonByPeopleElement, getEventResponse, participant, TimeAvailable } from "../../../../types";
 
 type actions =
   | { type: "FETCH_EVENT"; event: getEventResponse }
-  | { type: "UPDATE_COMMON_AVAILABLE"; newCommon: TimeAvailable; commonByPeople: CommonByPeopleElement[] };
+  | { type: "UPDATE_COMMON_AVAILABLE"; newCommon: TimeAvailable; commonByPeople: CommonByPeopleElement[], participants: participant[] };
 
 const eventReducer = (state: { event: getEventResponse }, action: actions) => {
   switch (action.type) {
@@ -19,7 +19,8 @@ const eventReducer = (state: { event: getEventResponse }, action: actions) => {
         event: {
           ...state.event,
           commonAvailable: action.newCommon,
-          commonByPeople: action.commonByPeople
+          commonByPeople: action.commonByPeople,
+          participants: action.participants
         }
       };
     }

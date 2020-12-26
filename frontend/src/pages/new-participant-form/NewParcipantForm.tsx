@@ -124,9 +124,13 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         requestData
       );
 
-      const { newCommonAvailable, commonByPeople } = res.data;
+      const { newCommonAvailable, commonByPeople, participants } = res.data;
 
-      updateEventAfterUserSubmit(newCommonAvailable, commonByPeople);
+      updateEventAfterUserSubmit(
+        newCommonAvailable,
+        commonByPeople,
+        participants
+      );
 
       history.push({ pathname: `/events/${eventId}/dashboard` });
     } catch (err) {

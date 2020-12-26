@@ -50,9 +50,9 @@ router.post("/:eventId/participants", async (req, res) => {
     event.commonByPeople = commonByPeople as CommonByPeopleElement[];
 
     event.participants.push(newParticipantInput);
-    await event.save();
+    const {participants} = await event.save();
 
-    res.status(201).json({ newCommonAvailable, commonByPeople });
+    res.status(201).json({ newCommonAvailable, commonByPeople, participants });
   } else {
     throw new CustomError(
       "CONTENT NOT FOUND",
