@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
 import React, { useContext, useEffect, useMemo } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
+import { CommonAvailableElement } from "../../components/shared/CommonAvailableElement/CommonAvailableElement";
 import { EventContext } from "../../context/event-context/EventProvider";
 
 interface routeProps {
@@ -29,7 +30,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     if (!commonAvailable) {
       fetchEvent(eventId);
     }
-    console.log(commonByPeople);
     // eslint-disable-next-line
   }, []);
 
@@ -55,23 +55,15 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
         {commonAvailable && commonByPeople && (
           <div className='dashboard_common_available'>
             <h2>Common available: </h2>
-            {commonByPeople.map(([date, timeSlotIndex], index) => {
-              return (
-                <div key={index} className='common_available_element'>
-                  <h3>
-                    #{index}: {date}
-                  </h3>
-                  <h3>
-                    Available People:{" "}
-                    {commonAvailable[date][timeSlotIndex][2].map(
-                      (name, index) => {
-                        return <span key={index}>{name}, </span>;
-                      }
-                    )}
-                  </h3>
-                </div>
-              );
-            })}
+            {commonByPeople.map(([date, timeSlotIndex], index) => (
+              <CommonAvailableElement
+                key={index}
+                index={index + 1}
+                date={date}
+                timeSlotIndex={timeSlotIndex}
+                commonAvailable={commonAvailable}
+              />
+            ))}
           </div>
         )}
 
