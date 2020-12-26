@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const connectDatabase = () => {
-  mongoose.connect("mongodb://localhost:27017/making-date", {
+  mongoose.connect(process.env.MONGODB_URI!, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
