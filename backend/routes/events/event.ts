@@ -14,9 +14,7 @@ router.get(
   asyncWraper(async (req: Request, res: Response) => {
     const { id: eventId } = req.params;
 
-    const event = await Event.findById(eventId).select(
-      "info venue periods participants commonAvailable"
-    );
+    const event = await Event.findById(eventId);
 
     if (!event) {
       throw new CustomError(
