@@ -7,15 +7,15 @@ class TimeSlots extends mongoose.SchemaType {
   }
 
   cast(timeSlots: TimeSlot[]) {
-    for(const timeSlot of timeSlots) {
+    for (const timeSlot of timeSlots) {
       if (typeof timeSlot[0] !== "string" || typeof timeSlot[1] !== "string") {
         throw new Error("First two element of available time must be numbers");
       }
-  
+
       if (!Array.isArray(timeSlot[2])) {
         throw new Error("List of available person must be of type array");
       }
-  
+
       for (let i = 0; i < timeSlot[2].length; i++) {
         if (typeof timeSlot[2][i] !== "string") {
           throw new Error("Person available must be of type string");
@@ -87,6 +87,10 @@ const eventSchema = new mongoose.Schema({
   ],
 
   participants: [participantSchema],
+
+  commonByPeople: {
+    type: Array
+  },
 
   commonAvailable: {
     type: mongoose.Schema.Types.Mixed,

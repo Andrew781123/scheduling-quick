@@ -1,4 +1,8 @@
-import { computeNewCommonAvailable } from "./utils";
+import { TimeAvailable } from "../../types";
+import {
+  computeNewCommonAvailable,
+  generateInitialCommonByPeople
+} from "./utils";
 import {
   currentCommon,
   expectedIntegrationOutput,
@@ -6,8 +10,18 @@ import {
 } from "./utilTestData";
 
 //integration
-describe("update new common and sort by number of people", () => {
-  const { newCommon, commonByPeople } = computeNewCommonAvailable(
+describe("update new common and commonByPeople", () => {
+  const getTimeSlotCount = (timeAvailable: TimeAvailable) => {
+    let timeSlotCount = 0;
+
+    Object.keys(timeAvailable).forEach(date => {
+      timeSlotCount += timeAvailable[date].length;
+    });
+
+    return timeSlotCount;
+  };
+
+  const { newCommon, newCommonByPeople } = computeNewCommonAvailable(
     newParticipantInput,
     currentCommon
   );
@@ -16,23 +30,27 @@ describe("update new common and sort by number of people", () => {
     expect(newCommon).toMatchObject(expectedIntegrationOutput);
   });
 
-  describe("sort by number of people available", () => {
+  describe("update commonByPeople", () => {
+    test("generate initial commonByPeople", () => {
+      const commonByPeople = generateInitialCommonByPeople(newParticipantInput);
+
+      const timeSlotCount = getTimeSlotCount(newParticipantInput);
+
+      expect(commonByPeople.length).toEqual(timeSlotCount);
+    });
+
     test("ensure total number of time-slots is correct", () => {
-      let totalTimeSlots = 0;
+      const timeSlotCount = getTimeSlotCount(newCommon);
 
-      Object.keys(newCommon).forEach(date => {
-        totalTimeSlots += newCommon[date].length;
-      });
-
-      expect(totalTimeSlots).toEqual(commonByPeople.length);
+      expect(timeSlotCount).toEqual(newCommonByPeople.length);
     });
 
     test("test for correct sequence", () => {
-      for (let i = 0; i < commonByPeople.length - 1; i++) {
-        const date = commonByPeople[i][0];
-        const nextDate = commonByPeople[i][0];
-        const index = commonByPeople[i][1];
-        const nextIndex = commonByPeople[i][1];
+      for (let i = 0; i < newCommonByPeople.length - 1; i++) {
+        const date = newCommonByPeople[i][0];
+        const nextDate = newCommonByPeople[i][0];
+        const index = newCommonByPeople[i][1];
+        const nextIndex = newCommonByPeople[i][1];
 
         const peopleCount = newCommon[date][index].length;
         const nextPeopleCount = newCommon[nextDate][nextIndex].length;
