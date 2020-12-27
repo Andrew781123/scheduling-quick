@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { TimeSlot, TimeAvailable, CommonByPeopleElement } from "../../types";
+import moment from "moment";
+import { TIME_STRING, DATE_STRING } from "../constans";
 
 export const asyncWraper = (fn: any) => (
   req: Request,
@@ -283,7 +285,7 @@ const updateCommonByPeople = (
 ) => {
   //index is the location of newly pushed timeSlot in newCommon
   const commonByPeopleElement: CommonByPeopleElement = [date, index];
-  const peopleCountOfNewlyPushedTimeSlot = newCommon[date][index][2].length;
+  const timeSlotOfNewlyPushedTimeSlot = newCommon[date][index];
 
   //push then sort
   newCommonByPeople.push(commonByPeopleElement);
@@ -291,14 +293,26 @@ const updateCommonByPeople = (
   //insertion sort
   let j = newCommonByPeople.length - 2;
   for (j; j >= 0; j--) {
-    const peopleCountOfTimeSlot =
-      newCommon[newCommonByPeople[j][0]][newCommonByPeople[j][1]][2].length;
+    const timeSlot =
+      newCommon[newCommonByPeople[j][0]][newCommonByPeople[j][1]];
 
-    if (peopleCountOfTimeSlot < peopleCountOfNewlyPushedTimeSlot) {
+    if (timeSlot[2].length < timeSlotOfNewlyPushedTimeSlot[2].length) {
       newCommonByPeople[j + 1] = newCommonByPeople[j];
-    } 
-   
-    else {
+    } else if (timeSlot[2].length === timeSlotOfNewlyPushedTimeSlot[2].length) {
+      //first parameter is date, second is fromTime
+      const dateMoment = moment(
+        newCommonByPeople[j][0] + timeSlot[1],
+        DATE_STRING + TIME_STRING
+      );
+      const dateMomentOfNewlyPushedTimeSlot = moment(
+        date + timeSlotOfNewlyPushedTimeSlot[0],
+        DATE_STRING + TIME_STRING
+      );
+
+      if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot) > 0) {
+        newCommonByPeople[j + 1] = newCommonByPeople[j];
+      }
+    } else {
       break;
     }
   }
