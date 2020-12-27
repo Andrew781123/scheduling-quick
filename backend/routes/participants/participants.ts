@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  CommonAvailableCategory,
   CommonByPeopleElement,
   IEvent,
   participant,
@@ -11,7 +12,7 @@ import Event from "../../models/event";
 import {
   computeNewCommonAvailable,
   CustomError,
-  generateInitialCommonByPeople
+  generateInitialCommonAvailableCategory
 } from "../utils";
 
 //new participant
@@ -25,10 +26,10 @@ router.post("/:eventId/participants", async (req, res) => {
 
   if (event) {
     const eventObj: IEvent = event.toObject();
-    const { commonAvailable } = eventObj;
+    const { commonAvailable, duration } = eventObj;
 
     let newCommonAvailable: unknown;
-    let commonByPeople: unknown;
+    let commonAvailableCategory: unknown;
 
     if (commonAvailable) {
       const { newCommon, newCommonByPeople } = computeNewCommonAvailable(
@@ -40,8 +41,9 @@ router.post("/:eventId/participants", async (req, res) => {
       (commonByPeople as CommonByPeopleElement[]) = newCommonByPeople;
     } else {
       newCommonAvailable = timeAvailable;
-      (commonByPeople as CommonByPeopleElement[]) = generateInitialCommonByPeople(
-        timeAvailable
+      (commonAvailableCategory as CommonAvailableCategory) = generateInitialCommonAvailableCategory(
+        timeAvailable,
+        duration
       );
     }
 
@@ -50,7 +52,7 @@ router.post("/:eventId/participants", async (req, res) => {
     event.commonByPeople = commonByPeople as CommonByPeopleElement[];
 
     event.participants.push(newParticipantInput);
-    const {participants} = await event.save();
+    const { participants } = await event.save();
 
     res.status(201).json({ newCommonAvailable, commonByPeople, participants });
   } else {

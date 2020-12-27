@@ -88,8 +88,8 @@ const eventSchema = new mongoose.Schema({
 
   participants: [participantSchema],
 
-  commonByPeople: {
-    type: Array
+  commonAvailableCategory: {
+    type: mongoose.Schema.Types.Mixed
   },
 
   commonAvailable: {

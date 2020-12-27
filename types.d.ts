@@ -45,9 +45,7 @@ export interface IEvent {
 
   participants: participant[];
 
-  commonAvailableCategory: CommonAvailableCategory;
-
-  commonByPeople?: CommonByPeopleElement[];
+  commonAvailableCategory?: CommonAvailableCategory;
 
   commonAvailable: CommmonAvailable;
 

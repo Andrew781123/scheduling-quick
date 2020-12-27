@@ -1,5 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { TimeSlot, TimeAvailable, CommonByPeopleElement } from "../../types";
+import {
+  TimeSlot,
+  TimeAvailable,
+  CommonByPeopleElement,
+  EventDuration,
+  CommonAvailableCategory
+} from "../../types";
 import moment from "moment";
 import { TIME_STRING, DATE_STRING } from "../constans";
 
@@ -321,22 +327,92 @@ const updateCommonByPeople = (
   newCommonByPeople[j + 1] = commonByPeopleElement;
 };
 
-export const generateInitialCommonByPeople = (
-  newTimeAvailable: TimeAvailable
+export const generateInitialCommonAvailableCategory = (
+  newCommon: TimeAvailable,
+  eventDuration: EventDuration
 ) => {
-  let initialCommonByPeople: CommonByPeopleElement[] = [];
+  let categoryOne: CommonByPeopleElement[] = [];
+  let categoryTwo: CommonByPeopleElement[] = [];
+  let commonAvailableCategory: CommonAvailableCategory = {
+    1: categoryOne,
+    2: categoryTwo
+  };
 
-  Object.keys(newTimeAvailable).forEach(date => {
-    const timeSlots = newTimeAvailable[date];
+  Object.keys(newCommon).forEach(date => {
+    const timeSlots = newCommon[date];
 
     for (let i = 0; i < timeSlots.length; i++) {
+      const fromTime = timeSlots[i][0];
+      const toTime = timeSlots[i][1];
+
       const commonByPeopleElement: CommonByPeopleElement = [date, i];
 
-      initialCommonByPeople.push(commonByPeopleElement);
+      const durationInMinute = getDurationInMinute(eventDuration);
+      const fromTimeMoment = moment(fromTime, TIME_STRING);
+      const toTimeMoment = moment(toTime, TIME_STRING);
+      //compare timeSlot with duration
+      if (toTimeMoment.diff(fromTimeMoment, "minutes") >= durationInMinute) {
+        //update category one(t, p)
+        updateCommonAvailableCategory(
+          categoryOne,
+          commonByPeopleElement,
+          newCommon,
+          date,
+          fromTime
+        );
+      } else {
+        //update category two(!t, p)
+        updateCommonAvailableCategory(
+          categoryTwo,
+          commonByPeopleElement,
+          newCommon,
+          date,
+          fromTime
+        );
+      }
     }
   });
 
-  return initialCommonByPeople;
+  console.log(commonAvailableCategory);
+  return commonAvailableCategory as CommonAvailableCategory;
+};
+
+const updateCommonAvailableCategory = (
+  category: CommonByPeopleElement[],
+  element: CommonByPeopleElement,
+  newCommon: TimeAvailable,
+  date: string,
+  fromTime: string
+) => {
+  category.push(element);
+
+  let j = category.length - 2;
+
+  //insertion sort
+  for (j; j >= 0; j--) {
+    const timeSlot = newCommon[category[j][0]][category[j][1]];
+
+    const dateMoment = moment(
+      category[j][0] + timeSlot[1],
+      DATE_STRING + TIME_STRING
+    );
+    const dateMomentOfNewlyPushedTimeSlot = moment(
+      date + fromTime,
+      DATE_STRING + TIME_STRING
+    );
+
+    if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot) > 0) {
+      category[j + 1] = category[j];
+    } else break;
+  }
+
+  category[j + 1] = element;
+};
+
+const getDurationInMinute = (duration: EventDuration) => {
+  const { durationHour, durationMin } = duration;
+
+  return durationHour * 60 + durationMin;
 };
 
 const checkInBetween = (
