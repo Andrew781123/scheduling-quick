@@ -44,12 +44,7 @@ export const computeNewCommonAvailable = (
     const matchedTimeSlots = currentCommon[date];
 
     if (!matchedTimeSlots) {
-      pushToNewCommonAndSort(
-        newCommon,
-        newCommonByPeople,
-        date,
-        inputTimeSlots
-      );
+      pushToNewCommonAndSort(newCommon, date, inputTimeSlots);
       return;
     }
 
@@ -80,12 +75,7 @@ export const computeNewCommonAvailable = (
         //if not in between
         if (temp.length > 0) {
           //output the content in temp
-          pushToNewCommonAndSort(
-            newCommon,
-            newCommonByPeople,
-            date,
-            splitTimeSlots(temp)
-          );
+          pushToNewCommonAndSort(newCommon, date, splitTimeSlots(temp));
 
           temp = [];
 
@@ -96,14 +86,10 @@ export const computeNewCommonAvailable = (
         }
         //temp is empty
         if (inputStart < matchedStart) {
-          pushToNewCommonAndSort(newCommon, newCommonByPeople, date, [
-            inputTimeSlots[i]
-          ]);
+          pushToNewCommonAndSort(newCommon, date, [inputTimeSlots[i]]);
           i++;
         } else {
-          pushToNewCommonAndSort(newCommon, newCommonByPeople, date, [
-            matchedTimeSlots[j]
-          ]);
+          pushToNewCommonAndSort(newCommon, date, [matchedTimeSlots[j]]);
           j++;
         }
       }
@@ -113,7 +99,7 @@ export const computeNewCommonAvailable = (
       //clear temp if exists
       pushToNewCommonAndSort(
         newCommon,
-        newCommonByPeople,
+
         date,
         splitTimeSlots(temp)
       );
@@ -124,15 +110,11 @@ export const computeNewCommonAvailable = (
 
     //push remaining timeSlots
     for (i; i < inputTimeSlots.length; i++) {
-      pushToNewCommonAndSort(newCommon, newCommonByPeople, date, [
-        inputTimeSlots[i]
-      ]);
+      pushToNewCommonAndSort(newCommon, date, [inputTimeSlots[i]]);
     }
 
     for (j; j < matchedTimeSlots.length; j++) {
-      pushToNewCommonAndSort(newCommon, newCommonByPeople, date, [
-        matchedTimeSlots[j]
-      ]);
+      pushToNewCommonAndSort(newCommon, date, [matchedTimeSlots[j]]);
     }
   });
 
@@ -143,18 +125,10 @@ export const computeNewCommonAvailable = (
     //create entry for newCommon
     (newCommon as TimeAvailable)[date] = [];
 
-    pushToNewCommonAndSort(
-      newCommon,
-      newCommonByPeople,
-      date,
-      currentCommon[date]
-    );
+    pushToNewCommonAndSort(newCommon, date, currentCommon[date]);
   });
 
-  return {
-    newCommon: newCommon as TimeAvailable,
-    newCommonByPeople
-  };
+  return newCommon as TimeAvailable;
 };
 
 const splitTimeSlots = (timeSlots: TimeSlot[]) => {
@@ -256,75 +230,15 @@ function generateTimeSlots(arr: string[]) {
 
 const pushToNewCommonAndSort = (
   newCommon: any,
-  newCommonByPeople: CommonByPeopleElement[],
   date: string,
   timeSlots: TimeSlot[]
 ) => {
   if (timeSlots.length == 1) {
     //eg. [['1000', '1100', ['A']]]
     (newCommon as TimeAvailable)[date].push(timeSlots[0]);
-
-    const indexOfCurrentTimeSlot =
-      (newCommon as TimeAvailable)[date].length - 1;
-    updateCommonByPeople(
-      newCommonByPeople,
-      newCommon,
-      date,
-      indexOfCurrentTimeSlot
-    );
   } else {
     (newCommon as TimeAvailable)[date].push(...timeSlots);
-
-    //push and sort all ...timeSlots
-    let i = (newCommon as TimeAvailable)[date].length - timeSlots.length;
-    for (i; i < (newCommon as TimeAvailable)[date].length; i++) {
-      updateCommonByPeople(newCommonByPeople, newCommon, date, i);
-    }
   }
-};
-
-const updateCommonByPeople = (
-  newCommonByPeople: CommonByPeopleElement[],
-  newCommon: TimeAvailable,
-  date: string,
-  index: number
-) => {
-  //index is the location of newly pushed timeSlot in newCommon
-  const commonByPeopleElement: CommonByPeopleElement = [date, index];
-  const timeSlotOfNewlyPushedTimeSlot = newCommon[date][index];
-
-  //push then sort
-  newCommonByPeople.push(commonByPeopleElement);
-
-  //insertion sort
-  let j = newCommonByPeople.length - 2;
-  for (j; j >= 0; j--) {
-    const timeSlot =
-      newCommon[newCommonByPeople[j][0]][newCommonByPeople[j][1]];
-
-    if (timeSlot[2].length < timeSlotOfNewlyPushedTimeSlot[2].length) {
-      newCommonByPeople[j + 1] = newCommonByPeople[j];
-    } else if (timeSlot[2].length === timeSlotOfNewlyPushedTimeSlot[2].length) {
-      //if both numbers of people available are the same
-      //first parameter is date, second is fromTime
-      const dateMoment = moment(
-        newCommonByPeople[j][0] + timeSlot[1],
-        DATE_STRING + TIME_STRING
-      );
-      const dateMomentOfNewlyPushedTimeSlot = moment(
-        date + timeSlotOfNewlyPushedTimeSlot[0],
-        DATE_STRING + TIME_STRING
-      );
-
-      if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot) > 0) {
-        newCommonByPeople[j + 1] = newCommonByPeople[j];
-      } else break;
-      //The break below and above to break the for loop
-    } else {
-      break;
-    }
-  }
-  newCommonByPeople[j + 1] = commonByPeopleElement;
 };
 
 export const generateCommonAvailableCategory = (
