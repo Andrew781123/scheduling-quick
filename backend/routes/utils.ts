@@ -281,8 +281,9 @@ const updateCommonByPeople = (
   date: string,
   index: number
 ) => {
+  //index is the location of newly pushed timeSlot in newCommon
   const commonByPeopleElement: CommonByPeopleElement = [date, index];
-  const peopleCountOfCurrentTimeSlot = newCommon[date][index][2].length;
+  const peopleCountOfNewlyPushedTimeSlot = newCommon[date][index][2].length;
 
   //push then sort
   newCommonByPeople.push(commonByPeopleElement);
@@ -293,9 +294,11 @@ const updateCommonByPeople = (
     const peopleCountOfTimeSlot =
       newCommon[newCommonByPeople[j][0]][newCommonByPeople[j][1]][2].length;
 
-    if (peopleCountOfTimeSlot < peopleCountOfCurrentTimeSlot) {
+    if (peopleCountOfTimeSlot < peopleCountOfNewlyPushedTimeSlot) {
       newCommonByPeople[j + 1] = newCommonByPeople[j];
-    } else {
+    } 
+   
+    else {
       break;
     }
   }

@@ -10,7 +10,6 @@ import { EventLinkPage } from "./pages/event-link-page/EventLinkPage";
 import { EventDashboard } from "./pages/dashboard/EventDashboard";
 import { NewParcipantForm } from "./pages/new-participant-form/NewParcipantForm";
 import EventProvider from "./context/event-context/EventProvider";
-import { TestC } from "./TestC";
 import { NotFound } from "./NotFound";
 dotenv.config();
 
