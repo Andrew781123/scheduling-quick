@@ -12,7 +12,7 @@ import Event from "../../models/event";
 import {
   computeNewCommonAvailable,
   CustomError,
-  generateInitialCommonAvailableCategory
+  generateCommonAvailableCategory
 } from "../utils";
 
 //new participant
@@ -26,10 +26,9 @@ router.post("/:eventId/participants", async (req, res) => {
 
   if (event) {
     const eventObj: IEvent = event.toObject();
-    const { commonAvailable, duration } = eventObj;
+    const { commonAvailable, duration, commonAvailableCategory } = eventObj;
 
     let newCommonAvailable: unknown;
-    let commonAvailableCategory: unknown;
 
     if (commonAvailable) {
       const { newCommon, newCommonByPeople } = computeNewCommonAvailable(
@@ -38,23 +37,34 @@ router.post("/:eventId/participants", async (req, res) => {
       );
 
       (newCommonAvailable as TimeAvailable) = newCommon;
-      (commonByPeople as CommonByPeopleElement[]) = newCommonByPeople;
+      (commonAvailableCategory as CommonAvailableCategory) = generateCommonAvailableCategory(
+        timeAvailable,
+        commonAvailableCategory,
+        duration,
+        eventObj.participants.length + 1, //include new participant
+        true
+      );
     } else {
       newCommonAvailable = timeAvailable;
-      (commonAvailableCategory as CommonAvailableCategory) = generateInitialCommonAvailableCategory(
+      (commonAvailableCategory as CommonAvailableCategory) = generateCommonAvailableCategory(
         timeAvailable,
-        duration
+        commonAvailableCategory,
+        duration,
+        eventObj.participants.length + 1,
+        true
       );
     }
 
     event.commonAvailable = newCommonAvailable as TimeAvailable;
 
-    event.commonByPeople = commonByPeople as CommonByPeopleElement[];
+    event.commonAvailableCategory = commonAvailableCategory;
 
     event.participants.push(newParticipantInput);
     const { participants } = await event.save();
 
-    res.status(201).json({ newCommonAvailable, commonByPeople, participants });
+    res
+      .status(201)
+      .json({ newCommonAvailable, commonAvailableCategory, participants });
   } else {
     throw new CustomError(
       "CONTENT NOT FOUND",

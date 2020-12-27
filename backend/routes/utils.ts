@@ -327,53 +327,91 @@ const updateCommonByPeople = (
   newCommonByPeople[j + 1] = commonByPeopleElement;
 };
 
-export const generateInitialCommonAvailableCategory = (
+export const generateCommonAvailableCategory = (
   newCommon: TimeAvailable,
-  eventDuration: EventDuration
+  originalCategory: CommonAvailableCategory | undefined,
+  eventDuration: EventDuration,
+  participantCount: number,
+  isFirstPartipcant: boolean
 ) => {
   let categoryOne: CommonByPeopleElement[] = [];
   let categoryTwo: CommonByPeopleElement[] = [];
-  let commonAvailableCategory: CommonAvailableCategory = {
-    1: categoryOne,
-    2: categoryTwo
-  };
+  let categoryThree: CommonByPeopleElement[] = [];
+  let categoryFour: CommonByPeopleElement[] = [];
 
-  Object.keys(newCommon).forEach(date => {
+  let commonAvailableCategory: CommonAvailableCategory = isFirstPartipcant
+    ? {
+        1: categoryOne,
+        2: categoryTwo
+      }
+    : {
+        1: categoryOne,
+        2: categoryTwo,
+        3: categoryThree,
+        4: categoryFour
+      };
+
+  Object.keys(newCommon).forEach((date, k) => {
     const timeSlots = newCommon[date];
 
     for (let i = 0; i < timeSlots.length; i++) {
       const fromTime = timeSlots[i][0];
       const toTime = timeSlots[i][1];
+      const peopleCount = timeSlots[i][2].length;
 
       const commonByPeopleElement: CommonByPeopleElement = [date, i];
 
       const durationInMinute = getDurationInMinute(eventDuration);
       const fromTimeMoment = moment(fromTime, TIME_STRING);
       const toTimeMoment = moment(toTime, TIME_STRING);
+
       //compare timeSlot with duration
       if (toTimeMoment.diff(fromTimeMoment, "minutes") >= durationInMinute) {
-        //update category one(t, p)
-        updateCommonAvailableCategory(
-          categoryOne,
-          commonByPeopleElement,
-          newCommon,
-          date,
-          fromTime
-        );
+        //compare people in timeSlot and number of participants
+        if (isFirstPartipcant || participantCount === peopleCount) {
+          //update category one(t, p)
+          updateCommonAvailableCategory(
+            categoryOne,
+            commonByPeopleElement,
+            newCommon,
+            date,
+            fromTime
+          );
+        } else {
+          //update category three (t, !p)
+          updateCommonAvailableCategory(
+            categoryThree,
+            commonByPeopleElement,
+            newCommon,
+            date,
+            fromTime
+          );
+        }
       } else {
-        //update category two(!t, p)
-        updateCommonAvailableCategory(
-          categoryTwo,
-          commonByPeopleElement,
-          newCommon,
-          date,
-          fromTime
-        );
+        if (isFirstPartipcant || participantCount == peopleCount) {
+          //update category two(!t, p)
+          updateCommonAvailableCategory(
+            categoryTwo,
+            commonByPeopleElement,
+            newCommon,
+            date,
+            fromTime
+          );
+        } else {
+          //update category four (!t, !p)
+          updateCommonAvailableCategory(
+            categoryFour,
+            commonByPeopleElement,
+            newCommon,
+            date,
+            fromTime
+          );
+        }
       }
     }
   });
 
-  console.log(commonAvailableCategory);
+  console.log(commonAvailableCategory[3]);
   return commonAvailableCategory as CommonAvailableCategory;
 };
 
@@ -392,17 +430,30 @@ const updateCommonAvailableCategory = (
   for (j; j >= 0; j--) {
     const timeSlot = newCommon[category[j][0]][category[j][1]];
 
-    const dateMoment = moment(
+    const dateAndTimeMoment = moment(
       category[j][0] + timeSlot[1],
       DATE_STRING + TIME_STRING
     );
-    const dateMomentOfNewlyPushedTimeSlot = moment(
+    const dateAndTimeMomentOfNewlyPushedTimeSlot = moment(
       date + fromTime,
       DATE_STRING + TIME_STRING
     );
 
-    if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot) > 0) {
+    const dateMoment = moment(category[j][0], DATE_STRING);
+    const dateMomentOfNewlyPushedTimeSlot = moment(date, DATE_STRING);
+
+    if (dateAndTimeMoment.diff(dateAndTimeMomentOfNewlyPushedTimeSlot) > 0) {
+      //date of new element is smaller
       category[j + 1] = category[j];
+    } else if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot, "days") == 0) {
+      //same date
+      const peopleCount = timeSlot[2].length;
+      const peopleCountOfNewlyPushedTimeSlot =
+        newCommon[date][element[1]][2].length;
+
+      if (peopleCountOfNewlyPushedTimeSlot > peopleCount) {
+        category[j + 1] = category[j];
+      } else break;
     } else break;
   }
 
