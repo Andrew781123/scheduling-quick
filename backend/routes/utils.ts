@@ -311,7 +311,7 @@ const updateCommonByPeople = (
 
       if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot) > 0) {
         newCommonByPeople[j + 1] = newCommonByPeople[j];
-      }
+      } else break;
     } else {
       break;
     }
