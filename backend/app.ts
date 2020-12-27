@@ -9,7 +9,6 @@ dotenv.config();
 
 connectDatabase();
 
-app.use(express.json());
 app.use(
   cors({
     origin: [process.env.CLIENT_URL!, "https://scheduling1123.herokuapp.com/"], // allow to server to accept request from different origin
@@ -17,6 +16,7 @@ app.use(
     credentials: true
   })
 );
+app.use(express.json());
 
 import eventRouter from "./routes/events/event";
 app.use("/api/events", eventRouter);
