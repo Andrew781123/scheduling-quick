@@ -32,17 +32,17 @@ router.post("/:eventId/participants", async (req, res) => {
     let commonAvailableCategory: unknown;
 
     if (commonAvailable) {
-      const { newCommon, newCommonByPeople } = computeNewCommonAvailable(
+      const { newCommon } = computeNewCommonAvailable(
         timeAvailable,
         commonAvailable
       );
 
       (newCommonAvailable as TimeAvailable) = newCommon;
       (commonAvailableCategory as CommonAvailableCategory) = generateCommonAvailableCategory(
-        timeAvailable,
+        newCommon,
         duration,
         eventObj.participants.length + 1, //include new participant
-        true
+        false
       );
     } else {
       newCommonAvailable = timeAvailable;

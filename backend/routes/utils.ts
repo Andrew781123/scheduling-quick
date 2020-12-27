@@ -338,19 +338,14 @@ export const generateCommonAvailableCategory = (
   let categoryThree: CommonByPeopleElement[] = [];
   let categoryFour: CommonByPeopleElement[] = [];
 
-  let commonAvailableCategory: CommonAvailableCategory = isFirstPartipcant
-    ? {
-        1: categoryOne,
-        2: categoryTwo
-      }
-    : {
-        1: categoryOne,
-        2: categoryTwo,
-        3: categoryThree,
-        4: categoryFour
-      };
+  let commonAvailableCategory: CommonAvailableCategory = {
+    1: categoryOne,
+    2: categoryTwo,
+    3: categoryThree,
+    4: categoryFour
+  };
 
-  Object.keys(newCommon).forEach((date, k) => {
+  Object.keys(newCommon).forEach(date => {
     const timeSlots = newCommon[date];
 
     for (let i = 0; i < timeSlots.length; i++) {
