@@ -11,7 +11,7 @@ connectDatabase();
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL!, "https://scheduling1123.herokuapp.com/"], // allow to server to accept request from different origin
+    origin: [process.env.CLIENT_URL!, "https://scheduling1123.herokuapp.com"], // allow to server to accept request from different origin
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true
   })
