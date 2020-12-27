@@ -124,11 +124,15 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         requestData
       );
 
-      const { newCommonAvailable, commonByPeople, participants } = res.data;
+      const {
+        newCommonAvailable,
+        commonAvailableCategory,
+        participants
+      } = res.data;
 
       updateEventAfterUserSubmit(
         newCommonAvailable,
-        commonByPeople,
+        commonAvailableCategory,
         participants
       );
 

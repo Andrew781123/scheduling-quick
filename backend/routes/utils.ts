@@ -329,7 +329,6 @@ const updateCommonByPeople = (
 
 export const generateCommonAvailableCategory = (
   newCommon: TimeAvailable,
-  originalCategory: CommonAvailableCategory | undefined,
   eventDuration: EventDuration,
   participantCount: number,
   isFirstPartipcant: boolean
@@ -411,7 +410,6 @@ export const generateCommonAvailableCategory = (
     }
   });
 
-  console.log(commonAvailableCategory[3]);
   return commonAvailableCategory as CommonAvailableCategory;
 };
 

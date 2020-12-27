@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import React, { useContext, useEffect, useMemo } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { CommonAvailableElement } from "../../components/shared/CommonAvailableElement/CommonAvailableElement";
+import { CommonAvailableCategoryGroup } from "../../components/shared/Dashboard/CommonAvailableCategoryGroup";
 import { EventContext } from "../../context/event-context/EventProvider";
 
 interface routeProps {
@@ -23,7 +24,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
   } = props;
 
   const { event, fetchEvent } = useContext(EventContext);
-  const { commonAvailable, commonByPeople, participants } = event;
+  const { commonAvailable, commonAvailableCategory, participants } = event;
 
   useEffect(() => {
     //update the commonAvailable if redirected from form
@@ -52,10 +53,19 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
         <h1>Dashboard</h1>
         <h2>id: {eventId}</h2>
 
-        {commonAvailable && commonByPeople && (
+        {commonAvailable && commonAvailableCategory && (
           <div className='dashboard_common_available'>
+            {Object.keys(commonAvailableCategory).map((categoryIndex, i) => (
+              <CommonAvailableCategoryGroup
+                key={i}
+                category={commonAvailableCategory[+categoryIndex]}
+                commonAvailable={commonAvailable}
+                participantCount={participants.length}
+                index={i + 1}
+              />
+            ))}
             <h2>Common available: </h2>
-            {commonByPeople.map(([date, timeSlotIndex], index) => (
+            {/* {commonByPeople.map(([date, timeSlotIndex], index) => (
               <CommonAvailableElement
                 key={index}
                 index={index + 1}
@@ -64,7 +74,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
                 commonAvailable={commonAvailable}
                 participantCount={participants.length}
               />
-            ))}
+            ))} */}
           </div>
         )}
 

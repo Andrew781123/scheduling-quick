@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 import {
-  CommonByPeopleElement,
+  CommonAvailableCategory,
   getEventResponse,
   participant,
   TimeAvailable
@@ -15,7 +15,7 @@ interface providerProps {
   fetchEvent: (eventId: string) => void;
   updateEventAfterUserSubmit: (
     newCommon: TimeAvailable,
-    commonByPeople: CommonByPeopleElement[],
+    commonAvailableCategory: CommonAvailableCategory,
     participants: participant[]
   ) => void;
 }
@@ -57,13 +57,13 @@ const EventProvider: React.FC<EventProviderProps> = props => {
 
   const updateEventAfterUserSubmit = (
     newCommon: TimeAvailable,
-    commonByPeople: CommonByPeopleElement[],
+    commonAvailableCategory: CommonAvailableCategory,
     participants: participant[]
   ) => {
     dispatch({
       type: "UPDATE_COMMON_AVAILABLE",
       newCommon,
-      commonByPeople,
+      commonAvailableCategory,
       participants
     });
   };
