@@ -299,6 +299,7 @@ const updateCommonByPeople = (
     if (timeSlot[2].length < timeSlotOfNewlyPushedTimeSlot[2].length) {
       newCommonByPeople[j + 1] = newCommonByPeople[j];
     } else if (timeSlot[2].length === timeSlotOfNewlyPushedTimeSlot[2].length) {
+      //if both numbers of people available are the same
       //first parameter is date, second is fromTime
       const dateMoment = moment(
         newCommonByPeople[j][0] + timeSlot[1],
@@ -312,6 +313,7 @@ const updateCommonByPeople = (
       if (dateMoment.diff(dateMomentOfNewlyPushedTimeSlot) > 0) {
         newCommonByPeople[j + 1] = newCommonByPeople[j];
       } else break;
+      //The break below and above to break the for loop
     } else {
       break;
     }

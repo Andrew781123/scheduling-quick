@@ -27,6 +27,10 @@ export interface EventDuration {
 
 export type CommonByPeopleElement = [string, number];
 
+export interface CommonAvailableCategory {
+  [key: number]: CommonByPeopleElement[];
+}
+
 export interface IEvent {
   info: {
     organizer: string;
@@ -40,6 +44,8 @@ export interface IEvent {
   periods: period[];
 
   participants: participant[];
+
+  commonAvailableCategory: CommonAvailableCategory;
 
   commonByPeople?: CommonByPeopleElement[];
 
