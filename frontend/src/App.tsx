@@ -10,34 +10,36 @@ import { EventLinkPage } from "./pages/event-link-page/EventLinkPage";
 import { EventDashboard } from "./pages/dashboard/EventDashboard";
 import { NewParcipantForm } from "./pages/new-participant-form/NewParcipantForm";
 import EventProvider from "./context/event-context/EventProvider";
+import { TestC } from "./TestC";
+import { NotFound } from "./NotFound";
 dotenv.config();
 
 const App: React.FC = () => {
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
-      <Router>
-        <Switch>
-          <Route
-            exact
-            path='/events/new'
-            render={props => <SetupForm {...props} />}
-          />
-          <Route exact path='/' component={HomePage} />
-          <Route
-            exact
-            path='/events/new/success'
-            render={props => <EventLinkPage {...props} />}
-          />
-          <EventProvider>
-            <Route path='/events/:id/dashboard' component={EventDashboard} />
+      <EventProvider>
+        <Router>
+          <Switch>
             <Route
               exact
+              path='/events/new'
+              render={props => <SetupForm {...props} />}
+            />
+            <Route exact path='/' component={HomePage} />
+            <Route
+              path='/events/new/success'
+              render={props => <EventLinkPage {...props} />}
+            />
+            <Route path='/events/:id/dashboard' component={EventDashboard} />
+            <Route
               path='/events/:id/new-participant'
               component={NewParcipantForm}
             />
-          </EventProvider>
-        </Switch>
-      </Router>
+
+            <Route path='*' component={NotFound} />
+          </Switch>
+        </Router>
+      </EventProvider>
     </MuiPickersUtilsProvider>
   );
 };
