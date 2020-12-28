@@ -1,4 +1,4 @@
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import {
   dateRangeState,
   EventDuration,
@@ -50,25 +50,25 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
         ...state,
         periods: state.periods.concat({
           dateRange: {
-            fromDate: null,
-            toDate: null
+            fromDate: moment(),
+            toDate: moment()
           },
           timeRange: {
-            fromTime: null,
-            toTime: null
+            fromTime: moment("0000"),
+            toTime: moment("0000")
           }
         })
       };
     }
 
-    case 'DURATION_SELECT': {
+    case "DURATION_SELECT": {
       return {
         ...state,
         duration: {
           ...state.duration,
           [action.durationField]: action.data
         }
-      }
+      };
     }
 
     case "TEXT_INPUT": {

@@ -1,0 +1,19 @@
+@import "~antd/dist/antd.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.text-input {
+  color: red;
+}
+
+// .MuiTypography-root.MuiPickersClockNumber-clockNumber.MuiTypography-body1 {
+//   display: none;
+// }
+
+// .MuiTypography-root.MuiPickersClockNumber-clockNumber.MuiTypography-body1:nth-last-child(3n) {
+//   display: inline-flex;
+// }

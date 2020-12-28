@@ -76,7 +76,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
           }}
         />
         <TimePicker
-          label='From time'
+          label='To time'
           ampm={false}
           value={timeRange.toTime}
           onChange={handleToTimeSelect}

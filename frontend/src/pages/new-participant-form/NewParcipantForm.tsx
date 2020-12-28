@@ -20,8 +20,8 @@ interface NewParcipantFormProps
   extends RouteComponentProps<routeParams, any, routeStates> {}
 
 const initialTImeSlot: timeSlot = {
-  fromTime: null,
-  toTime: null
+  fromTime: moment("0000"),
+  toTime: moment("0000")
 };
 
 export const initialDateAndTimeInput = {
@@ -48,6 +48,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const { fetchEvent, updateEventAfterUserSubmit, event } = useContext(
     EventContext
   );
+  const { periods } = event;
 
   const [dateAndTimeInputs, setDateAndTimeInputs] = useState(
     initialDateAndTimeInputs
@@ -176,6 +177,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       {dateAndTimeInputs.map((input, i) => (
         <AvailableTimeSlotsInput
           key={i}
+          periods={periods}
           dateAndTimeInput={input}
           dateIndex={i}
           selectDate={selectDate}

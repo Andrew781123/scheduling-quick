@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { SetupForm } from "./pages/setup-form/SetupForm";
-import "./App.css";
+import "./App.scss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
 import dotenv from "dotenv";

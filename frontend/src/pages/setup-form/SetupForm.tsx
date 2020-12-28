@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import { Header } from "../../components/shared/Header";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
 import setupInfoReducer from "./setupInfoReducer";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import {
   dateRangeState,
   periodState,
@@ -36,12 +36,12 @@ const initialSetupInfo: setupInfo = {
   periods: [
     {
       dateRange: {
-        fromDate: null,
-        toDate: null
+        fromDate: moment(),
+        toDate: moment()
       },
       timeRange: {
-        fromTime: null,
-        toTime: null
+        fromTime: moment("0000"),
+        toTime: moment("0000")
       }
     }
   ],

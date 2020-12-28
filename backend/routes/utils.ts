@@ -31,7 +31,6 @@ export const computeNewCommonAvailable = (
   currentCommon: TimeAvailable
 ) => {
   let newCommon = {};
-  let newCommonByPeople: CommonByPeopleElement[] = [];
 
   Object.keys(input).forEach(date => {
     let i = 0,
