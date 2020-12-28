@@ -44,7 +44,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
   };
 
   return (
-    <div>
+    <>
       <TimePicker
         label='From time'
         ampm={false}
@@ -66,6 +66,6 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
           shrink: true
         }}
       />
-    </div>
+    </>
   );
 };

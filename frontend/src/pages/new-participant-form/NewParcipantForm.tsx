@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { Button, TextField } from "@material-ui/core";
+import { Button, InputLabel, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
 import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 import { generateRequestData } from "./utils";
 import axios from "../../api/proxy";
+import "./NewParticipantForm.scss";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 interface routeParams {
   id: string;
@@ -148,8 +150,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   return (
-    <div>
-      <h1>New participant form for evenId: {eventId}</h1>
+    <div className='container'>
+      <h1>New participant</h1>
       {event.info && <h1>{event.info.organizer}</h1>}
       <Button
         style={{
@@ -160,7 +162,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         Set local storage
       </Button>
 
-      <div>
+      <div className='input_block'>
+        <h2 className='label primary-label'>Enter Info</h2>
         <TextField
           className='text-input'
           value={participantName}
@@ -174,18 +177,36 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
           }}
         />
       </div>
-      {dateAndTimeInputs.map((input, i) => (
-        <AvailableTimeSlotsInput
-          key={i}
-          periods={periods}
-          dateAndTimeInput={input}
-          dateIndex={i}
-          selectDate={selectDate}
-          selectTime={selectTime}
-          addTimeSlot={addTimeSlot}
-        />
-      ))}
-      <button onClick={addDateAndTimeInput}>Add one Input Block</button>
+      <div className='input_block '>
+        <h2 className='label primary-label'>
+          Enter available date and time slots
+        </h2>
+        <div className='new_participant_date_and_time_input'>
+          {dateAndTimeInputs.map((input, i) => (
+            <div className='sub_input_block can_be_deleted'>
+              <AvailableTimeSlotsInput
+                key={i}
+                periods={periods}
+                dateAndTimeInput={input}
+                dateIndex={i}
+                selectDate={selectDate}
+                selectTime={selectTime}
+                addTimeSlot={addTimeSlot}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className='add_one_input_block_button'>
+          <Button
+            onClick={addDateAndTimeInput}
+            color='primary'
+            variant='contained'
+          >
+            Add one Input Block
+          </Button>
+        </div>
+      </div>
 
       <button onClick={submitForm}>Submit</button>
     </div>

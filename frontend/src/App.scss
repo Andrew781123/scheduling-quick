@@ -1,15 +1,65 @@
 @import "~antd/dist/antd.css";
 
+$primaryColor: #0067ab;
+$secondaryColor: #c2e2f8;
+$thirdColor: #daecf7;
+$subTitle: rgb(134, 134, 134);
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+h1,
+h2 {
+  color: $secondaryColor;
+  font-weight: bold;
+}
+
+body {
+  background-color: $primaryColor;
+}
+
 .text-input {
   color: red;
 }
 
+.index {
+  color: $subTitle;
+}
+
+.container {
+  padding: 5px;
+}
+
+.input_block {
+  background-color: $secondaryColor;
+  margin-bottom: 20px;
+  opacity: 80%;
+  padding: 0 5px 5px 5px;
+  border-radius: 10px;
+}
+
+.sub_input_block {
+  border-radius: 10px;
+  padding: 0 5px 5px 5px;
+  background-color: $thirdColor;
+  margin-top: 10px;
+}
+
+.can_be_deleted {
+  position: relative;
+}
+
+.label {
+  color: $primaryColor;
+  font-weight: bold;
+}
+
+.primary-label {
+  text-align: center;
+}
 // .MuiTypography-root.MuiPickersClockNumber-clockNumber.MuiTypography-body1 {
 //   display: none;
 // }
