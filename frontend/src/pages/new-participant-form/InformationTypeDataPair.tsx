@@ -10,7 +10,7 @@ export const InformationTypeDataPair: React.FC<InformationTypeDataPairProps> = p
 
   return (
     <div className='information_type_data_pair_container'>
-      <span className='information_type'>{type}: </span>
+      <span className='information_type_text'>{type}: </span>
       <span className='information_data'>{data}</span>
     </div>
   );

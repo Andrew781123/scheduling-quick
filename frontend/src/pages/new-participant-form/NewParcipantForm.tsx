@@ -182,7 +182,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   return (
     <div className='new_participant_page_container'>
-      <h1>New participant</h1>
+      <h1 className='new_participant_page_header'>New participant</h1>
 
       {event.info && <EventInfoBlock eventInfo={eventInfo} />}
       <Button
@@ -196,7 +196,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
       <div className='new_participant_form_container'>
         <div className='input_block'>
-          <h2 className='label primary-label'>Enter Info</h2>
+          <h2 className='label primary-label'>Your Info</h2>
           <TextField
             className='text-input'
             value={participantName}
@@ -212,7 +212,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         </div>
         <div className='input_block '>
           <h2 className='label primary-label'>
-            Enter available date and time slots
+            Your available date and time slots
           </h2>
           <div className='new_participant_date_and_time_input'>
             {dateAndTimeInputs.map((input, i) => (

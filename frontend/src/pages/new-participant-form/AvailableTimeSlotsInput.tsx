@@ -1,4 +1,4 @@
-import { Button, Divider } from "@material-ui/core";
+import { Button, Divider, IconButton } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import moment, { Moment } from "moment";
 import React, { useMemo } from "react";
@@ -79,10 +79,13 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     <>
       <div className='date_input'>
         <DeleteIconWithCondition componentLength={dateAndTimeInputLength}>
-          <CancelIcon
-            style={cancelIconStyle}
+          <IconButton
             onClick={() => deleteDateAndTimeInput(dateIndex)}
-          />
+            style={cancelIconStyle}
+            size='small'
+          >
+            <CancelIcon fontSize='small' />
+          </IconButton>
         </DeleteIconWithCondition>
 
         <h3 className='label'>Date</h3>
@@ -104,10 +107,13 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           <div className='time_pickers'>
             <h4 className='index'>#{i + 1}</h4>
             <DeleteIconWithCondition componentLength={timeSlots.length}>
-              <DeleteIcon
-                style={deleteButtonStyle}
+              <IconButton
                 onClick={() => deleteTimeSlot(dateIndex, i)}
-              />
+                style={deleteButtonStyle}
+                size='small'
+              >
+                <DeleteIcon fontSize='small' />
+              </IconButton>
             </DeleteIconWithCondition>
 
             <TimePickers
@@ -135,8 +141,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 
 const cancelIconStyle: React.CSSProperties = {
   position: "absolute",
-  top: "3px",
-  right: "5px"
+  top: "0",
+  right: "0px"
 };
 
 const deleteButtonStyle: React.CSSProperties = {

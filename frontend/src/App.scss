@@ -1,9 +1,10 @@
 @import "~antd/dist/antd.css";
 
 $primaryColor: white;
-$secondaryColor: #7ecbff;
+$secondaryColor: #92d3ff;
 $secondaryHoveredColor: #619dc5;
 $thirdColor: #d9ebf7;
+$forthColor: #ffb3b1;
 $subTitle: rgb(134, 134, 134);
 $labelColor: #004675;
 $primaryButtonColor: #dea24b;
@@ -12,10 +13,11 @@ $primaryButtonTextColor: #000000de;
 
 $formContainerColor: #f5f5f5;
 
-@mixin creatButtonStyle($backgroundColor, $hoveredColor, $color) {
+@mixin creatButtonStyle($backgroundColor, $hoveredColor, $color, $fontSize) {
   background-color: $backgroundColor !important;
   color: $color !important;
   font-weight: bold !important;
+  font-size: $fontSize;
   &:hover {
     background-color: $hoveredColor !important;
   }
@@ -25,12 +27,21 @@ $formContainerColor: #f5f5f5;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  //  font-size: 1.05rem;
 }
 
 h1,
 h2 {
   color: $secondaryColor;
   font-weight: bold;
+}
+
+.information_type_text {
+  color: $subTitle;
+}
+
+.dataText {
+  color: $labelColor;
 }
 
 body {
@@ -41,7 +52,8 @@ body {
   @include creatButtonStyle(
     $primaryButtonColor,
     $primaryButtonHoveredColor,
-    $primaryButtonTextColor
+    $primaryButtonTextColor,
+    0.8rem
   );
 }
 
@@ -49,7 +61,8 @@ body {
   @include creatButtonStyle(
     $secondaryColor,
     $secondaryHoveredColor,
-    $primaryColor
+    $primaryColor,
+    1.05rem
   );
 }
 
@@ -92,10 +105,3 @@ body {
 .primary-label {
   text-align: center;
 }
-// .MuiTypography-root.MuiPickersClockNumber-clockNumber.MuiTypography-body1 {
-//   display: none;
-// }
-
-// .MuiTypography-root.MuiPickersClockNumber-clockNumber.MuiTypography-body1:nth-last-child(3n) {
-//   display: inline-flex;
-// }

@@ -1,6 +1,7 @@
+import { Box } from "@material-ui/core";
 import React from "react";
 import { dateRange, timeRange } from "../../../../types";
-import { TimeSlot } from "./TimeSlot";
+import { RangeDisplay } from "./RangeDisplay";
 
 interface DateAndTimeSlotDisplayProps {
   date: string | dateRange;
@@ -15,9 +16,10 @@ export const DateAndTimeSlotDisplay: React.FC<DateAndTimeSlotDisplayProps> = pro
       {typeof date === "string" ? (
         <h3>{date}</h3>
       ) : (
-        <TimeSlot fromTime={date[0]} toTime={date[1]} />
+        <RangeDisplay fromRange={date[0]} toRange={date[1]} />
       )}
-      <TimeSlot fromTime={timeSlot[0]} toTime={timeSlot[1]} />
+      <Box component='span' mx='10px'></Box>
+      <RangeDisplay fromRange={timeSlot[0]} toRange={timeSlot[1]} />
     </>
   );
 };

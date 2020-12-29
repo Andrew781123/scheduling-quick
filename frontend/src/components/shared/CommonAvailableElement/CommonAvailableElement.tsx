@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { TimeAvailable } from "../../../../../types";
 import { DateAndTimeSlotDisplay } from "../../../shared/conponents/DateAndTimeSlotDisplay";
-import { TimeSlot } from "../../../shared/conponents/TimeSlot";
 import "./CommonAvailableElement.css";
 
 interface CommonAvailableElementProps {

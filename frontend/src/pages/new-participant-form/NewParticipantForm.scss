@@ -1,33 +1,64 @@
 @import "../../App.scss";
 
-.new_participant_form_container {
+.new_participant_page_container {
   background-color: $thirdColor;
   padding: 15px;
   border-radius: 10px;
-}
 
-.new_participant_date_and_time_input {
-  display: flex;
-  flex-direction: column;
-
-  .date_input {
-    margin-bottom: 10px;
+  .new_participant_page_header {
+    text-align: center;
+    color: $labelColor;
   }
 
-  .time_range_input {
-    margin-top: 10px;
-    margin-bottom: 10px;
+  .event_info_container {
+    background-color: $forthColor;
+    padding: 5px;
+    border-radius: 10px;
 
-    .time_pickers {
-      position: relative;
-      background-color: #ebf5fc;
-      border-radius: 5px;
+    .event_info_header {
+      text-align: center;
+      color: $labelColor;
+    }
+
+    .event_info {
+      background-color: $thirdColor;
+      padding: 5px;
+      border-radius: 10px;
+
+      .information_type_data_pair_container {
+        color: $labelColor;
+        font-weight: bold;
+        font-size: 1.05rem;
+
+        .information_type {
+        }
+      }
+    }
+  }
+
+  .new_participant_date_and_time_input {
+    display: flex;
+    flex-direction: column;
+
+    .date_input {
       margin-bottom: 10px;
     }
 
-    .add_one_time_slot_button {
+    .time_range_input {
       margin-top: 10px;
-      display: block;
+      margin-bottom: 10px;
+
+      .time_pickers {
+        position: relative;
+        background-color: #ebf5fc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+
+      .add_one_time_slot_button {
+        margin-top: 10px;
+        display: block;
+      }
     }
   }
 }
