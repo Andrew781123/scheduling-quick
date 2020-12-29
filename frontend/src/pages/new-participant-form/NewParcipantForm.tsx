@@ -8,9 +8,8 @@ import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 import { generateRequestData } from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
-import CancelIcon from "@material-ui/icons/Cancel";
-import { InformationTypeDataPair } from "./InformationTypeDataPair";
 import { EventInfoBlock } from "./EventInfoBlock";
+import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
 
 interface routeParams {
   id: string;
@@ -182,7 +181,12 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   return (
     <div className='new_participant_page_container'>
-      <h1 className='new_participant_page_header'>New participant</h1>
+      <div className='new_participant_page_header'>
+        <span className='new_participant_page_header_text'>
+          New participant
+        </span>
+        <PeopleOutlineOutlinedIcon fontSize='large' />
+      </div>
 
       {event.info && <EventInfoBlock eventInfo={eventInfo} />}
       <Button

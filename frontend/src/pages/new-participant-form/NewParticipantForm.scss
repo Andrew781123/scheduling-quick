@@ -6,8 +6,13 @@
   border-radius: 10px;
 
   .new_participant_page_header {
-    text-align: center;
     color: $labelColor;
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
   }
 
   .event_info_container {
