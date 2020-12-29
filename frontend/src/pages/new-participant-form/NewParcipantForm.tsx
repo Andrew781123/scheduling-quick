@@ -118,6 +118,27 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     );
   };
 
+  const deleteDateAndTimeInput = (dateIndex: number) => {
+    setDateAndTimeInputs(inputs =>
+      inputs.filter((input, i) => i !== dateIndex)
+    );
+  };
+
+  const deleteTimeSlot = (dateIndex: number, timeSlotIndex: number) => {
+    setDateAndTimeInputs(inputs =>
+      inputs.map((input, i) => {
+        if (dateIndex !== i) return input;
+
+        return {
+          ...input,
+          timeSlots: input.timeSlots.filter(
+            (timeSlot, j) => j !== timeSlotIndex
+          )
+        };
+      })
+    );
+  };
+
   const submitForm = async () => {
     const requestData = generateRequestData(participantName, dateAndTimeInputs);
 
@@ -194,6 +215,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                   selectDate={selectDate}
                   selectTime={selectTime}
                   addTimeSlot={addTimeSlot}
+                  deleteDateAndTimeInput={deleteDateAndTimeInput}
+                  deleteTimeSlot={deleteTimeSlot}
                 />
               </div>
             ))}

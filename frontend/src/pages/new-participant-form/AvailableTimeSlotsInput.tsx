@@ -23,6 +23,8 @@ interface AvailableTimeSlotsInputProps {
     timeIndex: number
   ) => void;
   addTimeSlot: (dateIndex: number) => void;
+  deleteDateAndTimeInput: (dateIndex: number) => void;
+  deleteTimeSlot: (dateIndex: number, timeSlotIndex: number) => void;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
@@ -33,7 +35,9 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     dateIndex,
     selectDate,
     selectTime,
-    addTimeSlot
+    addTimeSlot,
+    deleteDateAndTimeInput,
+    deleteTimeSlot
   } = props;
 
   const { date, timeSlots } = dateAndTimeInput;
@@ -75,7 +79,10 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     <>
       <div className='date_input'>
         <DeleteIconWithCondition componentLength={dateAndTimeInputLength}>
-          <CancelIcon style={cancelIconStyle} />
+          <CancelIcon
+            style={cancelIconStyle}
+            onClick={() => deleteDateAndTimeInput(dateIndex)}
+          />
         </DeleteIconWithCondition>
 
         <h3 className='label'>Date</h3>
@@ -97,7 +104,10 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           <div className='time_pickers'>
             <h4 className='index'>#{i + 1}</h4>
             <DeleteIconWithCondition componentLength={timeSlots.length}>
-              <DeleteIcon style={deleteButtonStyle} />
+              <DeleteIcon
+                style={deleteButtonStyle}
+                onClick={() => deleteTimeSlot(dateIndex, i)}
+              />
             </DeleteIconWithCondition>
 
             <TimePickers
