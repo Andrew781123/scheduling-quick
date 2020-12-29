@@ -1,4 +1,5 @@
 import { Moment } from "moment";
+import { EventDuration, period } from "../../../../types";
 
 export type queryString = "form" | "dashboard";
 
@@ -13,3 +14,11 @@ export type DateAndTimeInput = {
 };
 
 export type NewParticipantDateAndTimeInput = DateAndTimeInput[];
+
+export interface EventInfo {
+  venue: string;
+  organizer: string;
+  evnetPossibleDataAndTime: period[];
+  participantCount: number;
+  eventDuration: EventDuration;
+}

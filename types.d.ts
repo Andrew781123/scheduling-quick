@@ -35,7 +35,7 @@ export interface IEvent {
   info: {
     organizer: string;
     venue: {
-      name?: string;
+      name: string;
       googleMapLink?: string;
     };
   };

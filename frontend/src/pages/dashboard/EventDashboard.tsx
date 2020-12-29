@@ -1,7 +1,6 @@
 import { Button } from "@material-ui/core";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import { CommonAvailableElement } from "../../components/shared/CommonAvailableElement/CommonAvailableElement";
 import { CommonAvailableCategoryGroup } from "../../components/shared/Dashboard/CommonAvailableCategoryGroup";
 import { EventContext } from "../../context/event-context/EventProvider";
 
@@ -34,10 +33,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     // eslint-disable-next-line
   }, []);
 
-  // const timeAvailableResults = useMemo(() => {
-
-  // }, [commonAvailable, commonByPeople]);
-
   if (!hasFilledInForm) {
     return (
       <Redirect
@@ -64,17 +59,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
                 index={i + 1}
               />
             ))}
-            <h2>Common available: </h2>
-            {/* {commonByPeople.map(([date, timeSlotIndex], index) => (
-              <CommonAvailableElement
-                key={index}
-                index={index + 1}
-                date={date}
-                timeSlotIndex={timeSlotIndex}
-                commonAvailable={commonAvailable}
-                participantCount={participants.length}
-              />
-            ))} */}
           </div>
         )}
 

@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { Button, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
-import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
+import { EventInfo, NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 import { generateRequestData } from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
 import CancelIcon from "@material-ui/icons/Cancel";
+import { InformationTypeDataPair } from "./InformationTypeDataPair";
+import { EventInfoBlock } from "./EventInfoBlock";
 
 interface routeParams {
   id: string;
@@ -51,6 +53,14 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     EventContext
   );
   const { periods } = event;
+  //this variable is for display event info
+  const eventInfo: EventInfo = {
+    venue: event.info.venue.name,
+    organizer: event.info.organizer,
+    evnetPossibleDataAndTime: event.periods,
+    participantCount: event.participants.length,
+    eventDuration: event.duration
+  };
 
   const [dateAndTimeInputs, setDateAndTimeInputs] = useState(
     initialDateAndTimeInputs
@@ -173,7 +183,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   return (
     <div className='new_participant_page_container'>
       <h1>New participant</h1>
-      {event.info && <h1>{event.info.organizer}</h1>}
+
+      {event.info && <EventInfoBlock eventInfo={eventInfo} />}
       <Button
         style={{
           display: "block"

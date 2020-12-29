@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 import { TimeAvailable } from "../../../../../types";
+import { DateAndTimeSlotDisplay } from "../../../shared/conponents/DateAndTimeSlotDisplay";
+import { TimeSlot } from "../../../shared/conponents/TimeSlot";
 import "./CommonAvailableElement.css";
 
 interface CommonAvailableElementProps {
@@ -38,9 +40,12 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
       <h3>
         #{index}: {date}
       </h3>
-      <h3>
-        Time: {timeSlot[0]} - {timeSlot[1]}
-      </h3>
+
+      <DateAndTimeSlotDisplay
+        date={date}
+        timeSlot={[timeSlot[0], timeSlot[1]]}
+      />
+
       <h3>
         Available People:{" "}
         {availablePeople.map((name, index) => {
