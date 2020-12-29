@@ -1,5 +1,4 @@
 import { TimePicker } from "@material-ui/pickers";
-import { changeConfirmLocale } from "antd/lib/modal/locale";
 import { Moment } from "moment";
 import React from "react";
 import { timeSlot } from "./types";
