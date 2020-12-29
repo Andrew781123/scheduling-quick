@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { Button, InputLabel, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
 import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
@@ -150,7 +150,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   return (
-    <div className='container'>
+    <div className='new_participant_page_container'>
       <h1>New participant</h1>
       {event.info && <h1>{event.info.organizer}</h1>}
       <Button
@@ -162,53 +162,60 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         Set local storage
       </Button>
 
-      <div className='input_block'>
-        <h2 className='label primary-label'>Enter Info</h2>
-        <TextField
-          className='text-input'
-          value={participantName}
-          name='participantName'
-          placeholder='Enter name'
-          onChange={handleNameInput}
-          required={true}
-          label='Name'
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-      </div>
-      <div className='input_block '>
-        <h2 className='label primary-label'>
-          Enter available date and time slots
-        </h2>
-        <div className='new_participant_date_and_time_input'>
-          {dateAndTimeInputs.map((input, i) => (
-            <div className='sub_input_block can_be_deleted'>
-              <AvailableTimeSlotsInput
-                key={i}
-                periods={periods}
-                dateAndTimeInput={input}
-                dateIndex={i}
-                selectDate={selectDate}
-                selectTime={selectTime}
-                addTimeSlot={addTimeSlot}
-              />
-            </div>
-          ))}
+      <div className='new_participant_form_container'>
+        <div className='input_block'>
+          <h2 className='label primary-label'>Enter Info</h2>
+          <TextField
+            className='text-input'
+            value={participantName}
+            name='participantName'
+            placeholder='Enter name'
+            onChange={handleNameInput}
+            required={true}
+            label='Name'
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        </div>
+        <div className='input_block '>
+          <h2 className='label primary-label'>
+            Enter available date and time slots
+          </h2>
+          <div className='new_participant_date_and_time_input'>
+            {dateAndTimeInputs.map((input, i) => (
+              <div className='sub_input_block can_be_deleted'>
+                <AvailableTimeSlotsInput
+                  key={i}
+                  periods={periods}
+                  dateAndTimeInputLength={dateAndTimeInputs.length}
+                  dateAndTimeInput={input}
+                  dateIndex={i}
+                  selectDate={selectDate}
+                  selectTime={selectTime}
+                  addTimeSlot={addTimeSlot}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className='add_one_input_block_button'>
+            <Button
+              onClick={addDateAndTimeInput}
+              variant='contained'
+              className='Button'
+            >
+              Add another date
+            </Button>
+          </div>
         </div>
 
-        <div className='add_one_input_block_button'>
-          <Button
-            onClick={addDateAndTimeInput}
-            color='primary'
-            variant='contained'
-          >
-            Add one Input Block
+        <div className='submit_button_container'>
+          <Button onClick={submitForm} className='proceed_button' size='large'>
+            Submit
           </Button>
         </div>
       </div>
-
-      <button onClick={submitForm}>Submit</button>
     </div>
   );
 };

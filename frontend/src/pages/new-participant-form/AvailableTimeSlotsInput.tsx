@@ -7,9 +7,12 @@ import { DATE_STRING } from "../../shared/constants";
 import { TimePickers } from "./TimePickers";
 import { DateAndTimeInput, timeSlot } from "./types";
 import CancelIcon from "@material-ui/icons/Cancel";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { DeleteIconWithCondition } from "../../components/shared/DeleteIconWithCondition";
 
 interface AvailableTimeSlotsInputProps {
   periods: period[];
+  dateAndTimeInputLength: number;
   dateAndTimeInput: DateAndTimeInput;
   dateIndex: number;
   selectDate: (date: Moment, dateIndex: number) => void;
@@ -25,12 +28,15 @@ interface AvailableTimeSlotsInputProps {
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
   const {
     periods,
-    dateAndTimeInput: { date, timeSlots },
+    dateAndTimeInputLength,
+    dateAndTimeInput,
     dateIndex,
     selectDate,
     selectTime,
     addTimeSlot
   } = props;
+
+  const { date, timeSlots } = dateAndTimeInput;
 
   const handleDateSelect = (date: Moment | null) => {
     selectDate(date!, dateIndex);
@@ -68,7 +74,10 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
   return (
     <>
       <div className='date_input'>
-        {dateIndex !== 0 && <CancelIcon style={cancelIconStyle} />}
+        <DeleteIconWithCondition componentLength={dateAndTimeInputLength}>
+          <CancelIcon style={cancelIconStyle} />
+        </DeleteIconWithCondition>
+
         <h3 className='label'>Date</h3>
         <DatePicker
           minDate={minDate}
@@ -87,6 +96,10 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         {timeSlots.map((timeSlot, i) => (
           <div className='time_pickers'>
             <h4 className='index'>#{i + 1}</h4>
+            <DeleteIconWithCondition componentLength={timeSlots.length}>
+              <DeleteIcon style={deleteButtonStyle} />
+            </DeleteIconWithCondition>
+
             <TimePickers
               key={i}
               timeSlot={timeSlot}
@@ -99,8 +112,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         <div className='add_one_time_slot_button'>
           <Button
             variant='contained'
-            color='primary'
             onClick={() => addTimeSlot(dateIndex)}
+            className={"Button"}
           >
             Add one time slot
           </Button>
@@ -111,6 +124,12 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 };
 
 const cancelIconStyle: React.CSSProperties = {
+  position: "absolute",
+  top: "3px",
+  right: "5px"
+};
+
+const deleteButtonStyle: React.CSSProperties = {
   position: "absolute",
   top: "3px",
   right: "5px"
