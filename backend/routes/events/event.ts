@@ -33,10 +33,11 @@ router.post(
   "/",
   validate(createEventValidation),
   asyncWraper(async (req: Request, res: Response) => {
+    console.log("posting new event");
     const event: IEvent = req.body;
 
     const { _id } = await Event.create(event);
-
+    console.log("event created");
     res.status(201).json({ eventId: _id.toString() });
   })
 );
