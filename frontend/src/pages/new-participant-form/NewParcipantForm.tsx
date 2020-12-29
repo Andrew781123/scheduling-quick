@@ -189,71 +189,63 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       </div>
 
       {event.info && <EventInfoBlock eventInfo={eventInfo} />}
-      <Button
-        style={{
-          display: "block"
-        }}
-        onClick={() => localStorage.setItem("HAS_FILLED_IN_FORM", "true")}
-      >
-        Set local storage
-      </Button>
 
-      {/* <div className='new_participant_form_container'> */}
-      <div className='input_block'>
-        <h2 className='label primary-label'>Your Info</h2>
-        <TextField
-          className='text-input'
-          value={participantName}
-          name='participantName'
-          placeholder='Enter name'
-          onChange={handleNameInput}
-          required={true}
-          label='Name'
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-      </div>
-      <div className='input_block '>
-        <h2 className='label primary-label'>
-          Your available date and time slots
-        </h2>
-        <div className='new_participant_date_and_time_input'>
-          {dateAndTimeInputs.map((input, i) => (
-            <div className='sub_input_block can_be_deleted'>
-              <AvailableTimeSlotsInput
-                key={i}
-                periods={periods}
-                dateAndTimeInputLength={dateAndTimeInputs.length}
-                dateAndTimeInput={input}
-                dateIndex={i}
-                selectDate={selectDate}
-                selectTime={selectTime}
-                addTimeSlot={addTimeSlot}
-                deleteDateAndTimeInput={deleteDateAndTimeInput}
-                deleteTimeSlot={deleteTimeSlot}
-              />
-            </div>
-          ))}
+      <div className='new_participant_form_container'>
+        <div className='input_block'>
+          <h2 className='label primary-label'>Your Info</h2>
+          <TextField
+            className='text-input'
+            value={participantName}
+            name='participantName'
+            placeholder='Enter name'
+            onChange={handleNameInput}
+            required={true}
+            label='Name'
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+        </div>
+        <div className='input_block '>
+          <h2 className='label primary-label'>
+            Your available date and time slots
+          </h2>
+          <div className='new_participant_date_and_time_input'>
+            {dateAndTimeInputs.map((input, i) => (
+              <div className='sub_input_block can_be_deleted'>
+                <AvailableTimeSlotsInput
+                  key={i}
+                  periods={periods}
+                  dateAndTimeInputLength={dateAndTimeInputs.length}
+                  dateAndTimeInput={input}
+                  dateIndex={i}
+                  selectDate={selectDate}
+                  selectTime={selectTime}
+                  addTimeSlot={addTimeSlot}
+                  deleteDateAndTimeInput={deleteDateAndTimeInput}
+                  deleteTimeSlot={deleteTimeSlot}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className='add_one_input_block_button'>
+            <Button
+              onClick={addDateAndTimeInput}
+              variant='contained'
+              className='Button'
+            >
+              Add another date
+            </Button>
+          </div>
         </div>
 
-        <div className='add_one_input_block_button'>
-          <Button
-            onClick={addDateAndTimeInput}
-            variant='contained'
-            className='Button'
-          >
-            Add another date
+        <div className='submit_button_container'>
+          <Button onClick={submitForm} className='proceed_button' size='large'>
+            Submit
           </Button>
         </div>
       </div>
-
-      <div className='submit_button_container'>
-        <Button onClick={submitForm} className='proceed_button' size='large'>
-          Submit
-        </Button>
-      </div>
     </div>
-    // </div>
   );
 };
