@@ -191,7 +191,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       {event.info && <EventInfoBlock eventInfo={eventInfo} />}
 
       <div className='new_participant_form_container'>
-        <div className='test_class_name'>
+        <div className='input_block'>
           <h2 className='label primary_label'>Your Info</h2>
           <TextField
             className='text-input'
@@ -206,7 +206,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
             }}
           />
         </div>
-        <div className='test_class_name'>
+        <div className='input_block'>
           <h2 className='label primary_label'>
             Your available date and time slots
           </h2>
