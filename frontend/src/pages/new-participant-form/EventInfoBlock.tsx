@@ -63,6 +63,7 @@ export const EventInfoBlock: React.FC<EventInfoBlockProps> = props => {
                 <DateAndTimeSlotDisplay
                   date={dateAndTime.dateRange}
                   timeSlot={dateAndTime.timeRange}
+                  withIcon={false}
                 />
               </div>
             ))}

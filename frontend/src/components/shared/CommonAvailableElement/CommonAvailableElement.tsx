@@ -1,7 +1,11 @@
 import React, { useMemo } from "react";
 import { TimeAvailable } from "../../../../../types";
 import { DateAndTimeSlotDisplay } from "../../../shared/conponents/DateAndTimeSlotDisplay";
-import "./CommonAvailableElement.css";
+import "./CommonAvailableElement.scss";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import { DateWithIcon } from "./DateWithIcon";
+import { TImeSlotWithIcon } from "./TimeSlotWithIcon";
+import { Box } from "@material-ui/core";
 
 interface CommonAvailableElementProps {
   index: number;
@@ -35,18 +39,17 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
   };
 
   return (
-    <div className='common_available_element' style={elementStyle}>
-      <h3>
-        #{index}: {date}
-      </h3>
+    <div className='common_available_element'>
+      <DateWithIcon date={date} />
 
-      <DateAndTimeSlotDisplay
-        date={date}
-        timeSlot={[timeSlot[0], timeSlot[1]]}
-      />
+      <Box my={0.7} />
 
-      <h3>
-        Available People:{" "}
+      <TImeSlotWithIcon fromTime={timeSlot[0]} toTime={timeSlot[1]} />
+
+      <Box my={0.7} />
+
+      <div className='icon_with_data'>
+        <PeopleAltIcon />{" "}
         {availablePeople.map((name, index) => {
           return (
             <span key={index}>
@@ -56,7 +59,7 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
             </span>
           );
         })}
-      </h3>
+      </div>
     </div>
   );
 };

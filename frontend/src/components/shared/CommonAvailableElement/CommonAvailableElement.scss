@@ -1,0 +1,14 @@
+@import "../../../App.scss";
+
+.common_available_category_group {
+  background-color: $thirdColor;
+  padding: 8px;
+
+  .common_available_element {
+    color: white !important;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: $secondaryColor;
+    border-radius: 5px;
+  }
+}
