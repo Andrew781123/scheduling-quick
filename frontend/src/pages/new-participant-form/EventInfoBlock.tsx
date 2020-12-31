@@ -48,26 +48,42 @@ export const EventInfoBlock: React.FC<EventInfoBlockProps> = props => {
           <span className='information_type_text'>
             Event possible date and time:
           </span>
-          <IconButton
-            onClick={() => setDoShowPossibleDateAndTime(state => !state)}
-          >
-            {doShowPossibleDateAndTime ? (
-              <ExpandLessOutlinedIcon />
-            ) : (
-              <ExpandMoreOutlinedIcon />
-            )}
-          </IconButton>
-          <Collapse in={doShowPossibleDateAndTime}>
-            {evnetPossibleDataAndTime.map(dateAndTime => (
-              <div className='information_data'>
-                <DateAndTimeSlotDisplay
-                  date={dateAndTime.dateRange}
-                  timeSlot={dateAndTime.timeRange}
-                  withIcon={false}
-                />
+
+          {evnetPossibleDataAndTime.length > 3 ? (
+            <>
+              <IconButton
+                onClick={() => setDoShowPossibleDateAndTime(state => !state)}
+              >
+                {doShowPossibleDateAndTime ? (
+                  <ExpandLessOutlinedIcon />
+                ) : (
+                  <ExpandMoreOutlinedIcon />
+                )}
+              </IconButton>
+              <Collapse in={doShowPossibleDateAndTime}>
+                {evnetPossibleDataAndTime.map(dateAndTime => (
+                  <div className='information_data'>
+                    <DateAndTimeSlotDisplay
+                      date={dateAndTime.dateRange}
+                      timeSlot={dateAndTime.timeRange}
+                    />
+                  </div>
+                ))}
+              </Collapse>
+            </>
+          ) : (
+            evnetPossibleDataAndTime.map((dateAndTime, i) => (
+              <div className='information_data_container'>
+                <span>#{i + 1}</span>
+                <div className='information_data'>
+                  <DateAndTimeSlotDisplay
+                    date={dateAndTime.dateRange}
+                    timeSlot={dateAndTime.timeRange}
+                  />
+                </div>
               </div>
-            ))}
-          </Collapse>
+            ))
+          )}
         </div>
       </div>
     </div>

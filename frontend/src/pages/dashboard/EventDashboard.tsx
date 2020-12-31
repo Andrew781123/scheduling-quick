@@ -1,8 +1,10 @@
-import { Button } from "@material-ui/core";
+import { Box, Button, Divider } from "@material-ui/core";
 import React, { useContext, useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { CommonAvailableCategoryGroup } from "../../components/shared/Dashboard/CommonAvailableCategoryGroup";
 import { EventContext } from "../../context/event-context/EventProvider";
+import { EventInfoBlock } from "../new-participant-form/EventInfoBlock";
+import "./EventDashBoard.scss";
 
 interface routeProps {
   id: string;
@@ -23,7 +25,14 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
   } = props;
 
   const { event, fetchEvent } = useContext(EventContext);
-  const { commonAvailable, commonAvailableCategory, participants } = event;
+  const {
+    commonAvailable,
+    commonAvailableCategory,
+    participants,
+    info: { venue, organizer },
+    periods,
+    duration
+  } = event;
 
   useEffect(() => {
     //update the commonAvailable if redirected from form
@@ -46,11 +55,25 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     return (
       <>
         <h1>Dashboard</h1>
-        <h2>id: {eventId}</h2>
+        <EventInfoBlock
+          eventInfo={{
+            venue: venue.name,
+            organizer: organizer,
+            evnetPossibleDataAndTime: periods,
+            participantCount: participants.length,
+            eventDuration: duration
+          }}
+        />
 
-        {commonAvailable && commonAvailableCategory && (
-          <div className='dashboard_common_available'>
-            {Object.keys(commonAvailableCategory).map((categoryIndex, i) => (
+        <Box my={5} />
+
+        <div className='dashboard_common_available'>
+          <h1 className='header'>Results</h1>
+          <Divider />
+          <Box mb={1.5} />
+          {commonAvailable &&
+            commonAvailableCategory &&
+            Object.keys(commonAvailableCategory).map((categoryIndex, i) => (
               <CommonAvailableCategoryGroup
                 key={i}
                 category={commonAvailableCategory[+categoryIndex]}
@@ -59,8 +82,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
                 index={i + 1}
               />
             ))}
-          </div>
-        )}
+        </div>
 
         <Button
           onClick={() => {
@@ -71,9 +93,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
           }}
         >
           Go to form
-        </Button>
-        <Button onClick={() => localStorage.removeItem("HAS_FILLED_IN_FORM")}>
-          Clear local storage
         </Button>
       </>
     );

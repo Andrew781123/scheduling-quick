@@ -15,32 +15,6 @@
     margin-bottom: 10px;
   }
 
-  .event_info_container {
-    background-color: $forthColor;
-    padding: 5px;
-    border-radius: 10px;
-
-    .event_info_header {
-      text-align: center;
-      color: $labelColor;
-    }
-
-    .event_info {
-      background-color: $thirdColor;
-      padding: 5px;
-      border-radius: 10px;
-
-      .information_type_data_pair_container {
-        color: $labelColor;
-        font-weight: bold;
-        font-size: 1.05rem;
-
-        .information_type {
-        }
-      }
-    }
-  }
-
   .new_participant_date_and_time_input {
     display: flex;
     flex-direction: column;
@@ -63,6 +37,32 @@
       .add_one_time_slot_button {
         margin-top: 10px;
         display: block;
+      }
+    }
+  }
+}
+
+.event_info_container {
+  background-color: $forthColor;
+  padding: 5px;
+  border-radius: 10px;
+
+  .event_info_header {
+    text-align: center;
+    color: $labelColor;
+  }
+
+  .event_info {
+    background-color: $thirdColor;
+    padding: 5px;
+    border-radius: 10px;
+
+    .information_type_data_pair_container {
+      color: $labelColor;
+      font-weight: bold;
+      font-size: 1.05rem;
+
+      .information_type {
       }
     }
   }

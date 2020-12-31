@@ -1,16 +1,20 @@
+import { SvgIconTypeMap } from "@material-ui/core";
+import { OverridableComponent } from "@material-ui/core/OverridableComponent";
 import React from "react";
 
 interface RangeDisplayProps {
   fromRange: string;
   toRange: string;
+  icon: JSX.Element;
 }
 
 export const RangeDisplay: React.FC<RangeDisplayProps> = props => {
-  const { fromRange, toRange } = props;
+  const { fromRange, toRange, icon } = props;
 
   return (
-    <span className='dataText'>
+    <div className='icon_with_data'>
+      {icon}
       {fromRange} - {toRange}
-    </span>
+    </div>
   );
 };

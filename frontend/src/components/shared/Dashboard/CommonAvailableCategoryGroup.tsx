@@ -2,7 +2,7 @@ import React from "react";
 import { CommonByPeopleElement, TimeAvailable } from "../../../../../types";
 import { CommonAvailableElement } from "../CommonAvailableElement/CommonAvailableElement";
 import { CategoryTitle } from "../../../pages/dashboard/CategoryTitle";
-import { Box } from "@material-ui/core";
+import { Box, Divider } from "@material-ui/core";
 
 interface CommonAvailableCategoryGroupProps {
   index: number;
@@ -18,6 +18,10 @@ export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroup
     <>
       <div className='common_available_category_group'>
         <CategoryTitle categoryType={index} />
+
+        <Divider />
+
+        <Box mb={1} />
 
         {category.length > 0 ? (
           category.map((element, i) => (

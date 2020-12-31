@@ -15,7 +15,7 @@ export const CategoryTitleIcons: React.FC<CategoryTitleIconsProps> = props => {
   const peopleIconColor = peopleOk ? "green" : "red";
 
   return (
-    <div>
+    <div className='category_title_icons'>
       <WatchLaterIcon style={{ fill: timeIconColor }} fontSize='large' />
       <Box component='span' mx={0.7} />
       <PeopleAltIcon style={{ fill: peopleIconColor }} fontSize='large' />

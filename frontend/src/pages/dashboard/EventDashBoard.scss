@@ -1,0 +1,11 @@
+@import "../../App.scss";
+
+.dashboard_common_available {
+  background-color: $secondaryColor;
+  padding: 10px;
+  border-radius: 10px;
+
+  .common_available_category_group {
+    border-radius: 10px;
+  }
+}
