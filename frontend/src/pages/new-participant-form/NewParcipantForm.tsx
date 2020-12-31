@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
-import { Button, TextField } from "@material-ui/core";
+import { Box, Button, CircularProgress, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
 import { EventInfo, NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
-import { generateRequestData } from "./utils";
+import { generateRequestData, validateInput } from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
 import { EventInfoBlock } from "./EventInfoBlock";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
+import { inherits } from "util";
 
 interface routeParams {
   id: string;
@@ -66,6 +67,9 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   );
 
   const [participantName, setParticaipantName] = useState("");
+  const [nameError, setNameError] = useState(false);
+
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   useEffect(() => {
     fetchEvent(eventId);
@@ -149,6 +153,15 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   const submitForm = async () => {
+    setDisableSubmitButton(true);
+
+    const areInputsValid = validateInput(participantName);
+    if (!areInputsValid) {
+      setNameError(true);
+      setDisableSubmitButton(false);
+      return;
+    }
+
     const requestData = generateRequestData(participantName, dateAndTimeInputs);
 
     try {
@@ -190,10 +203,14 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
       {event.info && <EventInfoBlock eventInfo={eventInfo} />}
 
+      <Box my={5} />
+
       <div className='new_participant_form_container'>
         <div className='input_block'>
           <h2 className='label primary_label'>Your Info</h2>
           <TextField
+            error={nameError}
+            helperText={nameError && "empty name"}
             className='text-input'
             value={participantName}
             name='participantName'
@@ -241,8 +258,13 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         </div>
 
         <div className='submit_button_container'>
-          <Button onClick={submitForm} className='proceed_button' size='large'>
-            Submit
+          <Button
+            onClick={submitForm}
+            className='proceed_button'
+            size='large'
+            disabled={disableSubmitButton}
+          >
+            {disableSubmitButton ? <CircularProgress size={25} /> : "submit"}
           </Button>
         </div>
       </div>

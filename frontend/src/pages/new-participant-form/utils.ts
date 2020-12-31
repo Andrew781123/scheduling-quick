@@ -134,10 +134,15 @@ export const simplifyTimeSlots = (participantInput: participant) => {
         //update time-slot to compare
         comparatorPointer++;
         currentPointer = comparatorPointer;
-        if(nextEnd) potentialNewEnd = nextEnd;
+        if (nextEnd) potentialNewEnd = nextEnd;
       }
     }
   });
 
   return simplifiedTimeSlots;
+};
+
+export const validateInput = (name: string) => {
+  if (name.length === 0) return false;
+  else return true;
 };
