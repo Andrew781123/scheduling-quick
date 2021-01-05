@@ -1,1 +1,0 @@
-web: ls && ls backend && cd backend && npm run build && node app.js
