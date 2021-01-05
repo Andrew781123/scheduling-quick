@@ -1,0 +1,29 @@
+@import "../../App.scss";
+
+.home_page {
+  background-color: $secondaryColor;
+  color: $labelColor;
+  border-radius: 10px;
+  padding: 10px;
+
+  .home_page_instructions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .home_page_header {
+      color: $labelColor;
+    }
+
+    .home_page_shceduling_steps {
+      .home_page_scheduling_step {
+        font-size: 1.2rem;
+      }
+    }
+  }
+  .host_new_event_button_container {
+    display: flex;
+    justify-content: center;
+  }
+}

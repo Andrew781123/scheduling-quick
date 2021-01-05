@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { PageHeader } from "../../shared/conponents/PageHeader";
+import CheckIcon from "@material-ui/icons/Check";
 
 interface EventLinkPageProps {}
 
@@ -14,12 +16,16 @@ export const EventLinkPage: React.FC<
   const eventId = props.location.state.eventId;
 
   const link = useMemo(() => {
-    return `http://localhost:3000/events/${eventId}`;
+    return `${process.env.REACT_APP_CLIENT_URL}/events/${eventId}`;
   }, [eventId]);
 
   return (
-    <>
-      <h1>Link to dashboard of event</h1>
+    <div className='page_container'>
+      <PageHeader
+        icon={<CheckIcon fontSize='large' />}
+        headerText='Event Created'
+      />
+      <h3>Send the following link to participants</h3>
       <Link
         to={{
           pathname: `/events/${eventId}/dashboard`
@@ -27,6 +33,6 @@ export const EventLinkPage: React.FC<
       >
         {link}
       </Link>
-    </>
+    </div>
   );
 };
