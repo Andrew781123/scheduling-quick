@@ -1,43 +1,27 @@
 @import "../../App.scss";
 
-.new_participant_page_container {
-  background-color: $thirdColor;
-  padding: 15px;
-  border-radius: 10px;
+.new_participant_date_and_time_input {
+  display: flex;
+  flex-direction: column;
 
-  .new_participant_page_header {
-    color: $labelColor;
-    font-weight: bold;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .date_input {
     margin-bottom: 10px;
   }
 
-  .new_participant_date_and_time_input {
-    display: flex;
-    flex-direction: column;
+  .time_range_input {
+    margin-top: 10px;
+    margin-bottom: 10px;
 
-    .date_input {
+    .time_pickers {
+      position: relative;
+      background-color: #ebf5fc;
+      border-radius: 5px;
       margin-bottom: 10px;
     }
 
-    .time_range_input {
+    .add_one_time_slot_button {
       margin-top: 10px;
-      margin-bottom: 10px;
-
-      .time_pickers {
-        position: relative;
-        background-color: #ebf5fc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
-
-      .add_one_time_slot_button {
-        margin-top: 10px;
-        display: block;
-      }
+      display: block;
     }
   }
 }

@@ -10,7 +10,7 @@ import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
 import { EventInfoBlock } from "./EventInfoBlock";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
-import { inherits } from "util";
+import { PageHeader } from "../../shared/conponents/PageHeader";
 
 interface routeParams {
   id: string;
@@ -193,13 +193,11 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   return (
-    <div className='new_participant_page_container'>
-      <div className='new_participant_page_header'>
-        <span className='new_participant_page_header_text'>
-          New participant
-        </span>
-        <PeopleOutlineOutlinedIcon fontSize='large' />
-      </div>
+    <div className='page_container'>
+      <PageHeader
+        icon={<PeopleOutlineOutlinedIcon fontSize='large' />}
+        headerText='New participant'
+      />
 
       {event.info && <EventInfoBlock eventInfo={eventInfo} />}
 

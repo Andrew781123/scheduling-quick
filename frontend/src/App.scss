@@ -116,3 +116,20 @@ body {
   display: flex;
   align-items: center;
 }
+
+// page
+.page_container {
+  background-color: $thirdColor;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.page_header {
+  color: $labelColor;
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}

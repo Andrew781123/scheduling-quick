@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import { Header } from "../../components/shared/Header";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
 import setupInfoReducer from "./setupInfoReducer";
 import moment, { Moment } from "moment";
@@ -21,6 +20,9 @@ import { formatPeriods } from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";
 import { EVENT_MIN_DURATION_HOURS, EVENT_MIN_DURATION_MIN } from "./constants";
+import { ComponentDivider } from "../../shared/conponents/ComponentDivider";
+import { PageHeader } from "../../shared/conponents/PageHeader";
+import EventIcon from "@material-ui/icons/Event";
 
 interface SetupFormProps {
   history: H.History;
@@ -127,76 +129,91 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   };
 
   return (
-    <div>
-      <Header title='Setup Event' />
+    <div className='page_container'>
+      <PageHeader
+        icon={<EventIcon fontSize='large' />}
+        headerText='Setup Event'
+      />
 
-      <div>
-        <TextField
-          value={organizerName}
-          name='organizerName'
-          onChange={hanleTextInput}
-          placeholder='Enter name'
-          required={true}
-          label='Name of organizer'
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-      </div>
-      <div>
-        <TextField
-          value={venue}
-          name='venue'
-          onChange={hanleTextInput}
-          label='Venue'
-          placeholder='Enter venue of event'
-          InputLabelProps={{
-            shrink: true
-          }}
-        />
-      </div>
-      {periods.map((period, i) => {
-        return (
-          <DateAndTimeInput
-            selectPeriod={selectPeriod}
-            period={period}
-            index={i}
-            key={i}
+      <div className='input_block'>
+        <h2 className='label primary_label'>Event Info</h2>
+        <div className='sub_input_block'>
+          <TextField
+            value={organizerName}
+            name='organizerName'
+            onChange={hanleTextInput}
+            placeholder='Enter name'
+            required={true}
+            label='Name of organizer'
+            InputLabelProps={{
+              shrink: true
+            }}
           />
-        );
-      })}
-      <button onClick={() => dispatch({ type: "ADD_DATE_AND_TIME_COMPONENT" })}>
-        Add
-      </button>
+          <TextField
+            value={venue}
+            name='venue'
+            onChange={hanleTextInput}
+            label='Venue'
+            placeholder='Enter venue of event'
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <ComponentDivider />
+          <div>
+            <InputLabel id='event_min_duration'>Min duration</InputLabel>
+            <Select
+              labelId='event_min_duration'
+              id='min_duration_hour'
+              value={setupInfo.duration.durationHour}
+              onChange={selectDurationHour}
+            >
+              {EVENT_MIN_DURATION_HOURS.map(hour => {
+                return <MenuItem value={hour}>{hour}</MenuItem>;
+              })}
+            </Select>
+            <span>hours</span>
 
-      <div>
-        <InputLabel id='event_min_duration'>Min duration</InputLabel>
-        <Select
-          labelId='event_min_duration'
-          id='min_duration_hour'
-          value={setupInfo.duration.durationHour}
-          onChange={selectDurationHour}
-        >
-          {EVENT_MIN_DURATION_HOURS.map(hour => {
-            return <MenuItem value={hour}>{hour}</MenuItem>;
-          })}
-        </Select>
-        <span>hours</span>
-
-        <Select
-          labelId='event_min_duration'
-          id='min_duration_min'
-          value={setupInfo.duration.durationMin}
-          onChange={selectDurationMin}
-        >
-          {EVENT_MIN_DURATION_MIN.map(min => {
-            return <MenuItem value={min}>{min}</MenuItem>;
-          })}
-        </Select>
-        <span>minutes</span>
+            <Select
+              labelId='event_min_duration'
+              id='min_duration_min'
+              value={setupInfo.duration.durationMin}
+              onChange={selectDurationMin}
+            >
+              {EVENT_MIN_DURATION_MIN.map(min => {
+                return <MenuItem value={min}>{min}</MenuItem>;
+              })}
+            </Select>
+            <span>minutes</span>
+          </div>
+        </div>
       </div>
 
-      <div>
+      <div className='input_block'>
+        <h2 className='label primary_label'>Possible date and time</h2>
+        <div className='sub_input_block'>
+          {periods.map((period, i) => {
+            return (
+              <DateAndTimeInput
+                selectPeriod={selectPeriod}
+                period={period}
+                index={i}
+                key={i}
+              />
+            );
+          })}
+
+          {/* add time slot button */}
+          {/* <button
+            onClick={() => dispatch({ type: "ADD_DATE_AND_TIME_COMPONENT" })}
+          >
+            Add
+          </button> */}
+        </div>
+      </div>
+
+      {/* auth (may be later) */}
+      {/* <div>
         <div>
           <TextField
             value={linkPassword}
@@ -219,11 +236,17 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
             }}
           />
         </div>
-      </div>
+      </div> */}
 
-      <Button variant='contained' onClick={submitForm}>
-        Next
-      </Button>
+      <div className='submit_button_container'>
+        <Button
+          variant='contained'
+          onClick={submitForm}
+          className='proceed_button'
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 };
