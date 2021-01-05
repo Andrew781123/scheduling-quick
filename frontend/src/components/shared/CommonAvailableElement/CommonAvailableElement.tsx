@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { TimeAvailable } from "../../../../../types";
-import { DateAndTimeSlotDisplay } from "../../../shared/conponents/DateAndTimeSlotDisplay";
 import "./CommonAvailableElement.scss";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import { DateWithIcon } from "./DateWithIcon";
@@ -16,13 +15,7 @@ interface CommonAvailableElementProps {
 }
 
 export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = props => {
-  const {
-    index,
-    date,
-    timeSlotIndex,
-    commonAvailable,
-    participantCount
-  } = props;
+  const { date, timeSlotIndex, commonAvailable } = props;
 
   const [timeSlot, availablePeople] = useMemo(() => {
     const timeSlot = commonAvailable[date][timeSlotIndex];
@@ -30,13 +23,6 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
 
     return [timeSlot, availablePeople];
   }, [commonAvailable, date, timeSlotIndex]);
-
-  const elementBackgroundColor =
-    participantCount == availablePeople.length ? "#b3ffc7" : "#ffb3b3";
-
-  const elementStyle = {
-    backgroundColor: elementBackgroundColor
-  };
 
   return (
     <div className='common_available_element'>

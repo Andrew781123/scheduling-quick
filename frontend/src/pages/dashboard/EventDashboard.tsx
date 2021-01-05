@@ -3,8 +3,10 @@ import React, { useContext, useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import { CommonAvailableCategoryGroup } from "../../components/shared/Dashboard/CommonAvailableCategoryGroup";
 import { EventContext } from "../../context/event-context/EventProvider";
+import { PageHeader } from "../../shared/conponents/PageHeader";
 import { EventInfoBlock } from "../new-participant-form/EventInfoBlock";
 import "./EventDashBoard.scss";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 interface routeProps {
   id: string;
@@ -53,8 +55,8 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     );
   } else
     return (
-      <>
-        <h1>Dashboard</h1>
+      <div className='page_container'>
+        <PageHeader icon={<DashboardIcon />} headerText='Dashboard' />
         <EventInfoBlock
           eventInfo={{
             venue: venue.name,
@@ -94,6 +96,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
         >
           Go to form
         </Button>
-      </>
+      </div>
     );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { SetupForm } from "./pages/setup-form/SetupForm";
 import "./App.scss";
@@ -11,6 +11,8 @@ import { EventDashboard } from "./pages/dashboard/EventDashboard";
 import { NewParcipantForm } from "./pages/new-participant-form/NewParcipantForm";
 import EventProvider from "./context/event-context/EventProvider";
 import { NotFound } from "./NotFound";
+import Navbar from "./Navbar";
+
 dotenv.config();
 
 const App: React.FC = () => {
@@ -18,6 +20,7 @@ const App: React.FC = () => {
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <EventProvider>
         <Router>
+          <Navbar />
           <Switch>
             <Route
               exact

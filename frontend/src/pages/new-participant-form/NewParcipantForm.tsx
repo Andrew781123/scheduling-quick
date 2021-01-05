@@ -11,6 +11,7 @@ import "./NewParticipantForm.scss";
 import { EventInfoBlock } from "./EventInfoBlock";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
 import { PageHeader } from "../../shared/conponents/PageHeader";
+import Alert from "@material-ui/lab/Alert";
 
 interface routeParams {
   id: string;
@@ -194,6 +195,23 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   return (
     <div className='page_container'>
+      <Alert
+        severity='info'
+        action={
+          <Button
+            color='inherit'
+            size='small'
+            onClick={() =>
+              history.push({ pathname: `/events/${eventId}/dashboard` })
+            }
+          >
+            See result
+          </Button>
+        }
+      >
+        Already joined?
+      </Alert>
+
       <PageHeader
         icon={<PeopleOutlineOutlinedIcon fontSize='large' />}
         headerText='New participant'

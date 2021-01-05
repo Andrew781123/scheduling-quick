@@ -1,4 +1,3 @@
-import { Box } from "@material-ui/core";
 import React from "react";
 import { dateRange, timeRange } from "../../../../types";
 import { RangeDisplay } from "./RangeDisplay";

@@ -117,6 +117,10 @@ body {
   align-items: center;
 }
 
+.menu_button {
+  position: absolute !important;
+  top: 5px;
+}
 // page
 .page_container {
   background-color: $thirdColor;

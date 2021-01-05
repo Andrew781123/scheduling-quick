@@ -57,9 +57,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   const {
     periods,
     organizerName,
-    venue,
-    linkPassword,
-    authPassword
+    venue
+    //linkPassword,
+    //authPassword
   } = setupInfo;
 
   const selectPeriod = (
@@ -239,11 +239,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       </div> */}
 
       <div className='submit_button_container'>
-        <Button
-          variant='contained'
-          onClick={submitForm}
-          className='proceed_button'
-        >
+        <Button variant='contained' onClick={submitForm} className='Button'>
           Next
         </Button>
       </div>
