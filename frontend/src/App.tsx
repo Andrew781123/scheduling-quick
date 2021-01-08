@@ -21,6 +21,7 @@ const App: React.FC = () => {
       <EventProvider>
         <Router>
           <Navbar />
+
           <Switch>
             <Route
               exact

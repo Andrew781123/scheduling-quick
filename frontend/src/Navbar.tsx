@@ -31,36 +31,44 @@ const Navbar: React.FC<NavbarProps> = props => {
   };
 
   return (
-    <React.Fragment key='left'>
-      <IconButton
-        aria-label='delete'
-        className='menu_button'
-        onClick={() => setDrawerOpen(true)}
-      >
-        <MenuIcon />
-      </IconButton>
+    <div className='navbar_container'>
+      <React.Fragment key='left'>
+        <div className='navbar_items'>
+          <IconButton
+            aria-label='delete'
+            className='menu_button'
+            onClick={() => setDrawerOpen(true)}
+          >
+            <MenuIcon />
+          </IconButton>
 
-      <Drawer
-        anchor='left'
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <List>
-          <ListItem button key='Home' onClick={goToHomePage}>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary='Home' />
-          </ListItem>
-          <ListItem button key='Host event' onClick={goToSetupPage}>
-            <ListItemIcon>
-              <EventIcon />
-            </ListItemIcon>
-            <ListItemText primary='Host event' />
-          </ListItem>
-        </List>
-      </Drawer>
-    </React.Fragment>
+          <div className='icon_container'>
+            <img src='icon.png' alt='' height={65} width='auto' />
+          </div>
+        </div>
+
+        <Drawer
+          anchor='left'
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        >
+          <List>
+            <ListItem button key='Home' onClick={goToHomePage}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary='Home' />
+            </ListItem>
+            <ListItem button key='Host event' onClick={goToSetupPage}>
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText primary='Host event' />
+            </ListItem>
+          </List>
+        </Drawer>
+      </React.Fragment>
+    </div>
   );
 };
 
