@@ -98,6 +98,21 @@ body {
   margin-top: 10px;
 }
 
+// media query work on later
+// @media screen and (max-width: 700) {
+//   .sub_input_block {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//   }
+
+//   .input_field {
+//     background-color: red;
+//     width: 80%;
+//     max-width: 311px;
+//   }
+// }
+
 .can_be_deleted {
   position: relative;
 }
@@ -122,7 +137,7 @@ body {
 
 .menu_button {
   position: absolute !important;
-  top: 17px;
+  top: 12px;
 }
 // page
 .page_container {
