@@ -48,6 +48,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   ) => {
     let errorMessage: FormErrors | undefined;
 
+    //validate data or time
     if (periodField === "dateRange") {
       (errorMessage as "Invalid date range" | undefined) = validateDateRange({
         fromDate: isFromField
@@ -68,6 +69,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
       });
     }
 
+    //set or reset error messages
     if (errorMessage && arePeriodFieldsValid[dateAndTimeFromToField]) {
       setArePeriodFieldsValid(fields => ({
         ...fields,

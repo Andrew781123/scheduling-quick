@@ -1,7 +1,6 @@
 import { FormErrors, periodState } from "./types";
 import { period } from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
-import { strict } from "assert";
 
 export const formatPeriods = (periods: periodState[]): period[] => {
   const formattedPeriods: period[] = [];
