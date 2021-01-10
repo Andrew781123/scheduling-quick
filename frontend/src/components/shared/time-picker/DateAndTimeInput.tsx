@@ -20,12 +20,13 @@ interface DateAndTimeInputProps {
     index: number
   ) => void;
   autoSetToTime: (fromTime: Moment) => void;
+  autoSetToDate: (fromDate: Moment) => void;
   period: periodState;
   index: number;
 }
 
 export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
-  const { selectPeriod, autoSetToTime, period, index } = props;
+  const { selectPeriod, autoSetToTime, autoSetToDate, period, index } = props;
   const { dateRange, timeRange } = period;
 
   const [userSetFromFieldFirstTime, setUserSetFromFieldFirstTime] = useState({
@@ -87,7 +88,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
     selectPeriod("dateRange", "fromDate", date!, index);
 
     if (userSetFromFieldFirstTime.date) {
-      autoSetToTime(date!);
+      autoSetToDate(date!);
       setUserSetFromFieldFirstTime(state => ({
         ...state,
         date: false

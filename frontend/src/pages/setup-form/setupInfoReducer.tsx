@@ -29,6 +29,10 @@ type setupInfoActions =
   | {
       type: "AUTO_SET_TO_TIME";
       toTime: Moment;
+    }
+  | {
+      type: "AUTO_SET_TO_DATE";
+      toDate: Moment;
     };
 const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
   switch (action.type) {
@@ -92,6 +96,21 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
             timeRange: {
               ...state.periods[0].timeRange,
               toTime: action.toTime
+            }
+          }
+        ]
+      };
+    }
+
+    case "AUTO_SET_TO_DATE": {
+      return {
+        ...state,
+        periods: [
+          {
+            ...state.periods[0],
+            dateRange: {
+              ...state.periods[0].dateRange,
+              toDate: action.toDate
             }
           }
         ]

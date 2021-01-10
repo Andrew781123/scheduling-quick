@@ -103,6 +103,17 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     });
   };
 
+  const autoSetToDate = (fromDate: Moment) => {
+    //need to make a copy because fromTime is passed by reference
+    const fromDateCopy = fromDate.clone();
+    const toDate = fromDateCopy.add(1, "d");
+
+    dispatch({
+      type: "AUTO_SET_TO_DATE",
+      toDate
+    });
+  };
+
   const selectDurationHour = (event: React.ChangeEvent<{ value: unknown }>) => {
     dispatch({
       type: "DURATION_SELECT",
@@ -272,6 +283,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
               <DateAndTimeInput
                 selectPeriod={selectPeriod}
                 autoSetToTime={autoSetToTime}
+                autoSetToDate={autoSetToDate}
                 period={period}
                 index={i}
                 key={i}
