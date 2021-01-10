@@ -17,9 +17,7 @@ interface routeParams {
   id: string;
 }
 
-type routeStates = {
-  hasFilledInForm?: boolean;
-};
+type routeStates = {};
 
 interface NewParcipantFormProps
   extends RouteComponentProps<routeParams, any, routeStates> {}
@@ -41,10 +39,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const {
     match: {
       params: { id: eventId }
-    },
-    location: {
-      //hasFilledInForm is default to false because we can't determine if the user has filled in the form or not if he manually reach this route
-      state = { hasFilledInForm: false }
     }
   } = props;
 
@@ -186,10 +180,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       history.push({ pathname: `/events/${eventId}/dashboard` });
     } catch (err) {
       console.error(err.message);
-    }
-
-    if (!state.hasFilledInForm) {
-      localStorage.setItem("HAS_FILLED_IN_FORM", "true");
     }
   };
 

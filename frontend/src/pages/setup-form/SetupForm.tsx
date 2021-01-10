@@ -133,7 +133,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     <div className='page_container'>
       <PageHeader
         icon={<EventIcon fontSize='large' />}
-        headerText='Setup Event'
+        headerText='Setup an Event'
       />
 
       <div className='input_block'>
@@ -164,7 +164,9 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
           />
           <ComponentDivider />
           <div>
-            <InputLabel id='event_min_duration'>Min duration</InputLabel>
+            <InputLabel id='event_min_duration'>
+              Event minimum duration
+            </InputLabel>
             <div className='min_duration_selects'>
               <Select
                 labelId='event_min_duration'

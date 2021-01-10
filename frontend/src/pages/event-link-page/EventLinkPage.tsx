@@ -28,7 +28,7 @@ export const EventLinkPage: React.FC<
       <h3>Send the following link to participants</h3>
       <Link
         to={{
-          pathname: `/events/${eventId}/dashboard`
+          pathname: `/events/${eventId}/new-participant`
         }}
       >
         {link}
