@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = props => {
             <img
               src='https://schedulingquick.com/icon.png'
               alt=''
-              height={55}
+              height={50}
               width='auto'
             />
           </div>

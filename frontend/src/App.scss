@@ -137,7 +137,8 @@ body {
 
 .menu_button {
   position: absolute !important;
-  top: 12px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 // page
 .page_container {
@@ -164,7 +165,7 @@ body {
 .navbar_container {
   position: relative;
   background-color: $secondaryColor;
-  padding: 10px;
+  padding: 5px;
 
   .navbar_items {
     .icon_container {
