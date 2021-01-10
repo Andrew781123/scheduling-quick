@@ -24,7 +24,7 @@ export interface EventDuration {
 export interface setupInfoTextFields {
   organizerName: string;
   venue: string;
-  duration: EventDuration
+  duration: EventDuration;
   linkPassword: string;
   authPassword: string;
 }
@@ -34,5 +34,7 @@ export interface setupInfoDateAndTimeFields {
 }
 
 export type setupInfo = setupInfoDateAndTimeFields & setupInfoTextFields;
+
+export type FormErrors = "Invalid time-slot input" | "Name can't be empty";
 
 //backend

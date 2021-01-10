@@ -1,9 +1,10 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
 import setupInfoReducer from "./setupInfoReducer";
 import moment, { Moment } from "moment";
 import {
   dateRangeState,
+  FormErrors,
   periodState,
   setupInfo,
   timeRangeState
@@ -14,9 +15,11 @@ import {
   TextField,
   Select,
   MenuItem,
-  InputLabel
+  InputLabel,
+  Collapse,
+  IconButton
 } from "@material-ui/core";
-import { formatPeriods } from "./utils";
+import { formatPeriods, validateInputOnSubmit } from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";
 import { EVENT_MIN_DURATION_HOURS, EVENT_MIN_DURATION_MIN } from "./constants";
@@ -25,6 +28,8 @@ import { PageHeader } from "../../shared/conponents/PageHeader";
 import EventIcon from "@material-ui/icons/Event";
 import "./SetupForm.scss";
 import { TIME_STRING } from "../../shared/constants";
+import Alert from "@material-ui/lab/Alert";
+import CloseIcon from "@material-ui/icons/Close";
 
 interface SetupFormProps {
   history: H.History;
@@ -79,6 +84,25 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     });
   };
 
+  const [formErrors, setFormErrors] = useState<{
+    errors: FormErrors[];
+    show: boolean;
+  }>({
+    errors: [],
+    show: false
+  });
+
+  const autoSetToTime = (fromTime: Moment) => {
+    //need to make a copy because fromTime is passed by reference
+    const fromTimeCopy = fromTime.clone();
+    const toTime = fromTimeCopy.add(1, "h");
+
+    dispatch({
+      type: "AUTO_SET_TO_TIME",
+      toTime
+    });
+  };
+
   const selectDurationHour = (event: React.ChangeEvent<{ value: unknown }>) => {
     dispatch({
       type: "DURATION_SELECT",
@@ -103,6 +127,15 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   };
 
   const submitForm = async () => {
+    const errors = validateInputOnSubmit(organizerName);
+
+    if (errors.length > 0) {
+      return setFormErrors({
+        errors,
+        show: true
+      });
+    }
+
     const formattedPeriods = formatPeriods(periods);
 
     const newEvent: IEvent = {
@@ -132,6 +165,32 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
 
   return (
     <div className='page_container'>
+      {formErrors.errors.length > 0 &&
+        formErrors.errors.map((error, i) => (
+          <Collapse in={formErrors.show} key={i}>
+            <Alert
+              severity='error'
+              action={
+                <IconButton
+                  aria-label='close'
+                  color='inherit'
+                  size='small'
+                  onClick={() => {
+                    setFormErrors(errors => ({
+                      ...errors,
+                      show: false
+                    }));
+                  }}
+                >
+                  <CloseIcon fontSize='inherit' />
+                </IconButton>
+              }
+            >
+              {error}
+            </Alert>
+          </Collapse>
+        ))}
+
       <PageHeader
         icon={<EventIcon fontSize='large' />}
         headerText='Setup an Event'
@@ -175,8 +234,12 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
                 value={setupInfo.duration.durationHour}
                 onChange={selectDurationHour}
               >
-                {EVENT_MIN_DURATION_HOURS.map(hour => {
-                  return <MenuItem value={hour}>{hour}</MenuItem>;
+                {EVENT_MIN_DURATION_HOURS.map((hour, i) => {
+                  return (
+                    <MenuItem value={hour} key={i}>
+                      {hour}
+                    </MenuItem>
+                  );
                 })}
               </Select>
               <span className='min_duration_select_unit'>hours</span>
@@ -187,8 +250,12 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
                 value={setupInfo.duration.durationMin}
                 onChange={selectDurationMin}
               >
-                {EVENT_MIN_DURATION_MIN.map(min => {
-                  return <MenuItem value={min}>{min}</MenuItem>;
+                {EVENT_MIN_DURATION_MIN.map((min, i) => {
+                  return (
+                    <MenuItem value={min} key={i}>
+                      {min}
+                    </MenuItem>
+                  );
                 })}
               </Select>
               <span className='min_duration_select_unit'>minutes</span>
@@ -204,6 +271,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
             return (
               <DateAndTimeInput
                 selectPeriod={selectPeriod}
+                autoSetToTime={autoSetToTime}
                 period={period}
                 index={i}
                 key={i}

@@ -9,6 +9,8 @@ $primaryButtonColor: #dea24b;
 $primaryButtonHoveredColor: #bd8b3f;
 $primaryButtonTextColor: #000000de;
 
+$errorMessageColor: #f44336;
+
 $formContainerColor: #f5f5f5;
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
@@ -95,7 +97,6 @@ body {
   border-radius: 10px;
   padding: 0 5px 5px 5px;
   background-color: $thirdColor;
-  margin-top: 10px;
 }
 
 // media query work on later
@@ -120,6 +121,7 @@ body {
 .label {
   color: $labelColor;
   font-weight: bold;
+  padding: 5px 0;
 }
 
 .header {

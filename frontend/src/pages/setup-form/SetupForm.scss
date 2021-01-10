@@ -1,8 +1,30 @@
+@import "../../App.scss";
+
 .min_duration_selects {
   display: flex;
   align-items: center;
 
   .min_duration_select_unit {
     margin: 0 5px;
+  }
+}
+
+.error {
+  //underline
+  .MuiInput-underline::after {
+    border-bottom: 2px solid $errorMessageColor;
+  }
+
+  .MuiInput-underline::before {
+    border-bottom: 2px solid $errorMessageColor;
+  }
+
+  .MuiInput-underline:hover:not(.Mui-disabled)::before {
+    border-bottom: 2px solid $errorMessageColor;
+  }
+
+  // label
+  .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-shrink.MuiFormLabel-filled {
+    color: $errorMessageColor;
   }
 }

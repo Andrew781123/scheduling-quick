@@ -1,6 +1,7 @@
-import { periodState } from "./types";
+import { FormErrors, periodState } from "./types";
 import { period } from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
+import { strict } from "assert";
 
 export const formatPeriods = (periods: periodState[]): period[] => {
   const formattedPeriods: period[] = [];
@@ -26,4 +27,14 @@ export const formatPeriods = (periods: periodState[]): period[] => {
   });
 
   return formattedPeriods;
+};
+
+export const validateInputOnSubmit = (name: string) => {
+  const errors: FormErrors[] = [];
+
+  if (name.length === 0 || name.trim().length === 0) {
+    errors.push("Name can't be empty");
+  }
+
+  return errors;
 };
