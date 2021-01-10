@@ -43,7 +43,12 @@ const Navbar: React.FC<NavbarProps> = props => {
           </IconButton>
 
           <div className='icon_container'>
-            <img src='icon.png' alt='' height={55} width='auto' />
+            <img
+              src='https://schedulingquick.com/icon.png'
+              alt=''
+              height={55}
+              width='auto'
+            />
           </div>
         </div>
 
