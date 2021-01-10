@@ -1,6 +1,6 @@
 import { Box, Button, Divider } from "@material-ui/core";
 import React, { useContext, useEffect } from "react";
-import { RouteComponentProps, Redirect } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { CommonAvailableCategoryGroup } from "../../components/shared/Dashboard/CommonAvailableCategoryGroup";
 import { EventContext } from "../../context/event-context/EventProvider";
 import { PageHeader } from "../../shared/conponents/PageHeader";

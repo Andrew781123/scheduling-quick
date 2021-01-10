@@ -104,7 +104,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
       <div className='time_range_input '>
         <h3 className='label'>Time slots</h3>
         {timeSlots.map((timeSlot, i) => (
-          <div className='time_pickers'>
+          <div className='time_pickers' key={i}>
             <h4 className='index'>#{i + 1}</h4>
             <DeleteIconWithCondition componentLength={timeSlots.length}>
               <IconButton

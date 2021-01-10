@@ -61,8 +61,8 @@ export const EventInfoBlock: React.FC<EventInfoBlockProps> = props => {
                 )}
               </IconButton>
               <Collapse in={doShowPossibleDateAndTime}>
-                {evnetPossibleDataAndTime.map(dateAndTime => (
-                  <div className='information_data'>
+                {evnetPossibleDataAndTime.map((dateAndTime, i) => (
+                  <div className='information_data' key={i}>
                     <DateAndTimeSlotDisplay
                       date={dateAndTime.dateRange}
                       timeSlot={dateAndTime.timeRange}
@@ -73,7 +73,7 @@ export const EventInfoBlock: React.FC<EventInfoBlockProps> = props => {
             </>
           ) : (
             evnetPossibleDataAndTime.map((dateAndTime, i) => (
-              <div className='information_data_container'>
+              <div className='information_data_container' key={i}>
                 <span>#{i + 1}</span>
                 <div className='information_data'>
                   <DateAndTimeSlotDisplay

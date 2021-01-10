@@ -235,9 +235,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
           </h2>
           <div className='new_participant_date_and_time_input'>
             {dateAndTimeInputs.map((input, i) => (
-              <div className='sub_input_block can_be_deleted'>
+              <div className='sub_input_block can_be_deleted' key={i}>
                 <AvailableTimeSlotsInput
-                  key={i}
                   periods={periods}
                   dateAndTimeInputLength={dateAndTimeInputs.length}
                   dateAndTimeInput={input}
