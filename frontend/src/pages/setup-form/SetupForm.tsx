@@ -24,6 +24,7 @@ import { ComponentDivider } from "../../shared/conponents/ComponentDivider";
 import { PageHeader } from "../../shared/conponents/PageHeader";
 import EventIcon from "@material-ui/icons/Event";
 import "./SetupForm.scss";
+import { TIME_STRING } from "../../shared/constants";
 
 interface SetupFormProps {
   history: H.History;
@@ -33,7 +34,7 @@ const initialSetupInfo: setupInfo = {
   organizerName: "",
   venue: "",
   duration: {
-    durationHour: 0,
+    durationHour: 1,
     durationMin: 0
   },
   periods: [
@@ -43,8 +44,8 @@ const initialSetupInfo: setupInfo = {
         toDate: moment()
       },
       timeRange: {
-        fromTime: moment("0000"),
-        toTime: moment("0000")
+        fromTime: moment("0000", TIME_STRING),
+        toTime: moment("0100", TIME_STRING)
       }
     }
   ],

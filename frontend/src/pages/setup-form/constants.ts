@@ -1,7 +1,6 @@
 import { EventMinDurationMin, EventMinDurationHour } from "../../../../types";
 
 export const EVENT_MIN_DURATION_HOURS: EventMinDurationHour[] = [
-  0,
   1,
   2,
   3,
