@@ -16,7 +16,7 @@ export const EventLinkPage: React.FC<
   const eventId = props.location.state.eventId;
 
   const link = useMemo(() => {
-    return `${process.env.REACT_APP_CLIENT_URL}/events/${eventId}`;
+    return `${process.env.REACT_APP_CLIENT_URL}/events/${eventId}/new-participant`;
   }, [eventId]);
 
   return (

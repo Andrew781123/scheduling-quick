@@ -29,57 +29,60 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   const { selectPeriod, autoSetToTime, autoSetToDate, period, index } = props;
   const { dateRange, timeRange } = period;
 
-  const [userSetFromFieldFirstTime, setUserSetFromFieldFirstTime] = useState({
-    time: true,
-    date: true
+  const [userSetDateOrTimeFirstTime, setUserSetDateOrTimeFirstTime] = useState({
+    timeRange: true,
+    dateRange: true
   });
 
   const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
-    fromTime: true,
-    toTime: true,
-    fromDate: true,
-    toDate: true
+    timeRange: true,
+    dateRange: true
   });
 
   const validatePeriod = (
     periodField: keyof periodState,
-    dateAndTimeFromToField: keyof dateRangeState | keyof timeRangeState,
     data: Moment,
     isFromField: boolean
   ) => {
+    //auto set date/time if first select
+    if (userSetDateOrTimeFirstTime[periodField]) {
+      setUserSetDateOrTimeFirstTime(state => ({
+        ...state,
+        [periodField]: false
+      }));
+
+      //if set time/date field first time && set from field
+      if (isFromField) {
+        if (periodField === "dateRange") autoSetToDate(data);
+        else autoSetToTime(data);
+      }
+
+      return;
+    }
+
     let errorMessage: FormErrors | undefined;
 
     //validate data or time
     if (periodField === "dateRange") {
       (errorMessage as "Invalid date range" | undefined) = validateDateRange({
-        fromDate: isFromField
-          ? data
-          : period[periodField][dateAndTimeFromToField as keyof dateRangeState],
-        toDate: !isFromField
-          ? data
-          : period[periodField][dateAndTimeFromToField as keyof dateRangeState]
+        fromDate: isFromField ? data : period[periodField]["fromDate"],
+        toDate: !isFromField ? data : period[periodField]["toDate"]
       });
     } else {
       (errorMessage as "Invalid time range" | undefined) = validateTimeRange({
-        fromTime: isFromField
-          ? data
-          : period[periodField][dateAndTimeFromToField as keyof timeRangeState],
-        toTime: !isFromField
-          ? data
-          : period[periodField][dateAndTimeFromToField as keyof timeRangeState]
+        fromTime: isFromField ? data : period[periodField]["fromTime"],
+        toTime: !isFromField ? data : period[periodField]["toTime"]
       });
     }
 
-    //set or reset error messages
-    if (errorMessage && arePeriodFieldsValid[dateAndTimeFromToField]) {
+    //toggle isValid
+    if (
+      (errorMessage && arePeriodFieldsValid[periodField]) ||
+      (!errorMessage && !arePeriodFieldsValid[periodField])
+    ) {
       setArePeriodFieldsValid(fields => ({
         ...fields,
-        [dateAndTimeFromToField]: false
-      }));
-    } else if (!errorMessage && !arePeriodFieldsValid[dateAndTimeFromToField]) {
-      setArePeriodFieldsValid(fields => ({
-        ...fields,
-        [dateAndTimeFromToField]: true
+        [periodField]: !fields[periodField]
       }));
     }
   };
@@ -87,50 +90,32 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
   const handleFromDateSelect = (date: Moment | null) => {
     selectPeriod("dateRange", "fromDate", date!, index);
 
-    if (userSetFromFieldFirstTime.date) {
-      autoSetToDate(date!);
-      setUserSetFromFieldFirstTime(state => ({
-        ...state,
-        date: false
-      }));
-      return;
-    }
-
-    validatePeriod("dateRange", "fromDate", date!, true);
+    validatePeriod("dateRange", date!, true);
   };
 
   const handleToDateSelect = (date: Moment | null) => {
     selectPeriod("dateRange", "toDate", date!, index);
 
-    validatePeriod("dateRange", "toDate", date!, false);
+    validatePeriod("dateRange", date!, false);
   };
 
   const handleFromTimeSelect = (date: Moment | null) => {
     selectPeriod("timeRange", "fromTime", date!, index);
 
-    if (userSetFromFieldFirstTime.time) {
-      autoSetToTime(date!);
-      setUserSetFromFieldFirstTime(state => ({
-        ...state,
-        time: false
-      }));
-      return;
-    }
-
-    validatePeriod("timeRange", "fromTime", date!, true);
+    validatePeriod("timeRange", date!, true);
   };
 
   const handleToTimeSelect = (date: Moment | null) => {
     selectPeriod("timeRange", "toTime", date!, index);
 
-    validatePeriod("timeRange", "toTime", date!, false);
+    validatePeriod("timeRange", date!, false);
   };
 
   return (
     <div>
       <div>
         <DatePicker
-          className={!arePeriodFieldsValid.fromDate ? "error" : ""}
+          className={!arePeriodFieldsValid.dateRange ? "error" : ""}
           label='From Date'
           onChange={handleFromDateSelect}
           value={dateRange.fromDate}
@@ -140,7 +125,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
           }}
         ></DatePicker>
         <DatePicker
-          className={!arePeriodFieldsValid.toDate ? "error" : ""}
+          className={!arePeriodFieldsValid.dateRange ? "error" : ""}
           label='To Date'
           onChange={handleToDateSelect}
           value={dateRange.toDate}
@@ -153,7 +138,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
       <br />
       <div>
         <TimePicker
-          className={!arePeriodFieldsValid.fromTime ? "error" : ""}
+          className={!arePeriodFieldsValid.timeRange ? "error" : ""}
           label='From time'
           ampm={false}
           value={timeRange.fromTime}
@@ -164,7 +149,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
           }}
         />
         <TimePicker
-          className={!arePeriodFieldsValid.toTime ? "error" : ""}
+          className={!arePeriodFieldsValid.timeRange ? "error" : ""}
           label='To time'
           ampm={false}
           value={timeRange.toTime}

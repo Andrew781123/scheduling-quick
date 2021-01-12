@@ -33,6 +33,9 @@ type setupInfoActions =
   | {
       type: "AUTO_SET_TO_DATE";
       toDate: Moment;
+    }
+  | {
+      type: "SET_SETUP_FORM_LOADING";
     };
 const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
   switch (action.type) {
@@ -114,6 +117,13 @@ const setupInfoReducer = (state: setupInfo, action: setupInfoActions) => {
             }
           }
         ]
+      };
+    }
+
+    case "SET_SETUP_FORM_LOADING": {
+      return {
+        ...state,
+        loading: true
       };
     }
 

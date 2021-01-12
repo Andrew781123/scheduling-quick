@@ -27,6 +27,7 @@ export interface setupInfoTextFields {
   duration: EventDuration;
   linkPassword: string;
   authPassword: string;
+  loading: boolean;
 }
 
 export interface setupInfoDateAndTimeFields {
@@ -36,5 +37,7 @@ export interface setupInfoDateAndTimeFields {
 export type setupInfo = setupInfoDateAndTimeFields & setupInfoTextFields;
 
 export type FormErrors = "Invalid time-slot input" | "Name can't be empty";
+
+export type DateOrTime = "date" | "time";
 
 //backend

@@ -17,7 +17,8 @@ import {
   MenuItem,
   InputLabel,
   Collapse,
-  IconButton
+  IconButton,
+  CircularProgress
 } from "@material-ui/core";
 import { formatPeriods, validateInputOnSubmit } from "./utils";
 import axios from "../../api/proxy";
@@ -55,7 +56,8 @@ const initialSetupInfo: setupInfo = {
     }
   ],
   linkPassword: "",
-  authPassword: ""
+  authPassword: "",
+  loading: false
 };
 
 export const SetupForm: React.FC<SetupFormProps> = props => {
@@ -64,9 +66,10 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   const {
     periods,
     organizerName,
-    venue
+    venue,
     //linkPassword,
-    //authPassword
+    //authPassword,
+    loading
   } = setupInfo;
 
   const selectPeriod = (
@@ -138,6 +141,8 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   };
 
   const submitForm = async () => {
+    dispatch({ type: "SET_SETUP_FORM_LOADING" });
+
     const errors = validateInputOnSubmit(organizerName);
 
     if (errors.length > 0) {
@@ -327,8 +332,17 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       </div> */}
 
       <div className='submit_button_container'>
-        <Button variant='contained' onClick={submitForm} className='Button'>
-          Next
+        <Button
+          variant='contained'
+          onClick={submitForm}
+          className='Button'
+          disabled={loading}
+        >
+          {loading ? (
+            <CircularProgress size={25} className='spinner' />
+          ) : (
+            "Next"
+          )}
         </Button>
       </div>
     </div>

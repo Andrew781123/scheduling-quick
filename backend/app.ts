@@ -24,15 +24,6 @@ app.use("/api/events", eventRouter);
 import participantRouter from "./routes/participants/participants";
 app.use("/api/events", participantRouter);
 
-// //deploy
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("../frontend/build"));
-
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
-//   });
-// }
-
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`));

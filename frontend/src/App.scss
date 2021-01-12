@@ -73,6 +73,10 @@ body {
   );
 }
 
+.spinner {
+  color: $labelColor !important;
+}
+
 .text-input {
   color: red !important;
 }
