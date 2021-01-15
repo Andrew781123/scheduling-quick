@@ -41,8 +41,8 @@ export const formatData = (
   const formattedTimeAvilable: TimeAvailable = {};
 
   dateAndTimeInputs.forEach(dateAndTimeInput => {
-    const { date, timeSlots } = dateAndTimeInput;
-    const dateString: string = date!.format(DATE_STRING);
+    const { dateRange, timeSlots } = dateAndTimeInput;
+    //const dateString: string = date!.format(DATE_STRING);
 
     const formattedTimeSlots = timeSlots.map(timeSlot => {
       const { fromTime, toTime } = timeSlot;
@@ -59,7 +59,7 @@ export const formatData = (
       return formattedTimeSlot;
     });
 
-    formattedTimeAvilable[dateString] = formattedTimeSlots;
+    //formattedTimeAvilable[dateString] = formattedTimeSlots;
   });
 
   (formattedData as participant).name = participantName;

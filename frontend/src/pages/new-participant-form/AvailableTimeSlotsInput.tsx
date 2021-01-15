@@ -9,7 +9,7 @@ import { Moment } from "moment";
 import React from "react";
 import { period } from "../../../../types";
 import { TimePickers } from "./TimePickers";
-import { DateAndTimeInput, timeSlot } from "./types";
+import { DateAndTimeInput, DateRangeState, timeSlot } from "./types";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { DeleteIconWithCondition } from "../../components/shared/DeleteIconWithCondition";
@@ -23,7 +23,13 @@ interface AvailableTimeSlotsInputProps {
   dateAndTimeInputLength: number;
   dateAndTimeInput: DateAndTimeInput;
   dateIndex: number;
-  selectDate: (date: Moment, dateIndex: number) => void;
+  selectDate: (
+    date: Moment,
+    dateIndex: number,
+    dateRangeField: keyof DateRangeState
+  ) => void;
+  enableRange: (dateIndex: number, fromDate: Moment) => void;
+  disableRange: (dateIndex: number) => void;
   selectTime: (
     timeField: keyof timeSlot,
     time: Moment | null,
@@ -44,16 +50,27 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     dateAndTimeInput,
     dateIndex,
     selectDate,
+    enableRange,
+    disableRange,
     selectTime,
     addTimeSlot,
     deleteDateAndTimeInput,
     deleteTimeSlot
   } = props;
 
-  const { date, timeSlots } = dateAndTimeInput;
+  const { dateRange, timeSlots } = dateAndTimeInput;
 
-  const handleDateSelect = (date: Moment | null) => {
-    selectDate(date!, dateIndex);
+  const handleFromDateSelect = (date: Moment | null) => {
+    selectDate(date!, dateIndex, "fromDate");
+  };
+
+  const handleToDateSelect = (date: Moment | null) => {
+    selectDate(date!, dateIndex, "toDate");
+  };
+
+  const toggleEnableRange = () => {
+    if (dateRange.isRange) disableRange(dateIndex);
+    else enableRange(dateIndex, dateRange.fromDate!);
   };
 
   const styleClasses = switchStyles();
@@ -75,8 +92,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         <FormControlLabel
           control={
             <Switch
-              checked={true}
-              onChange={() => console.log("changed")}
+              checked={dateRange.isRange}
+              onChange={toggleEnableRange}
               name='checkedB'
               color='primary'
               size='small'
@@ -92,8 +109,9 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         <DatePickers
           minDate={minDate}
           maxDate={maxDate}
-          date={date}
-          handleDateSelect={handleDateSelect}
+          dateRange={dateRange}
+          handleFromDateSelect={handleFromDateSelect}
+          handleToDateSelect={handleToDateSelect}
         />
       </div>
       <Divider />

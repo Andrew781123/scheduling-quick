@@ -8,8 +8,14 @@ export interface timeSlot {
   toTime: Moment | null;
 }
 
+export interface DateRangeState {
+  fromDate: Moment | null;
+  toDate: Moment | null;
+  isRange: boolean;
+}
+
 export type DateAndTimeInput = {
-  date: Moment | null;
+  dateRange: DateRangeState;
   timeSlots: timeSlot[];
 };
 

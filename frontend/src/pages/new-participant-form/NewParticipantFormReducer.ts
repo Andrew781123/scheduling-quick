@@ -1,11 +1,29 @@
-import { NewParticipantDateAndTimeInput, timeSlot } from "./types";
+import {
+  DateRangeState,
+  NewParticipantDateAndTimeInput,
+  timeSlot
+} from "./types";
 import update from "immutability-helper";
 import { Moment } from "moment";
 import { initialDateAndTimeInputs, initialTimeSlot } from "./NewParcipantForm";
 
 type Actions =
   | { type: "INITIALIZE_MIN_DATE"; minDate: Moment }
-  | { type: "SELECT_DATE"; date: Moment; index: number }
+  | {
+      type: "SELECT_DATE";
+      date: Moment;
+      index: number;
+      dateRangeField: keyof DateRangeState;
+    }
+  | {
+      type: "ENABLE_RANGE";
+      dateIndex: number;
+      newToDate: Moment;
+    }
+  | {
+      type: "DISABLE_RANGE";
+      dateIndex: number;
+    }
   | {
       type: "SELECT_TIME";
       timeField: keyof timeSlot;
@@ -40,7 +58,7 @@ export const NewParticipantFormReducer = (
       console.log("updating");
       return update(state, {
         0: {
-          date: { $set: action.minDate }
+          dateRange: { fromDate: { $set: action.minDate } }
         }
       });
     }
@@ -48,7 +66,26 @@ export const NewParticipantFormReducer = (
     case "SELECT_DATE": {
       return update(state, {
         [action.index]: {
-          date: { $set: action.date }
+          dateRange: { [action.dateRangeField]: { $set: action.date } }
+        }
+      });
+    }
+
+    case "ENABLE_RANGE": {
+      return update(state, {
+        [action.dateIndex]: {
+          dateRange: {
+            isRange: { $set: true },
+            toDate: { $set: action.newToDate }
+          }
+        }
+      });
+    }
+
+    case "DISABLE_RANGE": {
+      return update(state, {
+        [action.dateIndex]: {
+          dateRange: { isRange: { $set: false } }
         }
       });
     }

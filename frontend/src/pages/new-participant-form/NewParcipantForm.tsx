@@ -8,7 +8,12 @@ import React, {
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { Box, Button, CircularProgress, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
-import { EventInfo, NewParticipantDateAndTimeInput, timeSlot } from "./types";
+import {
+  DateRangeState,
+  EventInfo,
+  NewParticipantDateAndTimeInput,
+  timeSlot
+} from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
 import { computeMinMaxDate, generateRequestData, validateInput } from "./utils";
@@ -36,7 +41,11 @@ export const initialTimeSlot: timeSlot = {
 };
 
 export const initialDateAndTimeInput = {
-  date: moment(),
+  dateRange: {
+    fromDate: moment(),
+    toDate: moment(),
+    isRange: false
+  },
   timeSlots: [initialTimeSlot]
 };
 export const initialDateAndTimeInputs: NewParticipantDateAndTimeInput = [
@@ -116,8 +125,22 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     setParticaipantName(e.target.value);
   };
 
-  const selectDate = (date: Moment, index: number) => {
-    dispatch({ type: "SELECT_DATE", date, index });
+  const selectDate = (
+    date: Moment,
+    index: number,
+    dateRangeField: keyof DateRangeState
+  ) => {
+    dispatch({ type: "SELECT_DATE", date, index, dateRangeField });
+  };
+
+  const enableRange = (dateIndex: number, fromDate: Moment) => {
+    const fromDateCopy = fromDate.clone();
+    const newToDate = fromDateCopy.add(1, "day");
+    dispatch({ type: "ENABLE_RANGE", dateIndex, newToDate });
+  };
+
+  const disableRange = (dateIndex: number) => {
+    dispatch({ type: "DISABLE_RANGE", dateIndex });
   };
 
   const selectTime = (
@@ -245,6 +268,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                     dateAndTimeInput={input}
                     dateIndex={i}
                     selectDate={selectDate}
+                    enableRange={enableRange}
+                    disableRange={disableRange}
                     selectTime={selectTime}
                     addTimeSlot={addTimeSlot}
                     deleteDateAndTimeInput={deleteDateAndTimeInput}
