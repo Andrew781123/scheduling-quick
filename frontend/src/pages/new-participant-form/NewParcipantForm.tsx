@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { Box, Button, CircularProgress, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
@@ -13,6 +13,7 @@ import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined"
 import { PageHeader } from "../../shared/conponents/PageHeader";
 import Alert from "@material-ui/lab/Alert";
 import { DATE_STRING } from "../../shared/constants";
+import { NewParticipantFormReducer } from "./NewParticipantFormReducer";
 
 interface routeParams {
   id: string;
@@ -23,16 +24,16 @@ type routeStates = {};
 interface NewParcipantFormProps
   extends RouteComponentProps<routeParams, any, routeStates> {}
 
-const initialTImeSlot: timeSlot = {
+export const initialTimeSlot: timeSlot = {
   fromTime: moment("0000"),
   toTime: moment("0000")
 };
 
 export const initialDateAndTimeInput = {
   date: moment(),
-  timeSlots: [initialTImeSlot]
+  timeSlots: [initialTimeSlot]
 };
-const initialDateAndTimeInputs: NewParticipantDateAndTimeInput = [
+export const initialDateAndTimeInputs: NewParticipantDateAndTimeInput = [
   initialDateAndTimeInput
 ];
 
@@ -58,7 +59,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     eventDuration: event.duration
   };
 
-  const [dateAndTimeInputs, setDateAndTimeInputs] = useState(
+  const [dateAndTimeInputs, dispatch] = useReducer(
+    NewParticipantFormReducer,
     initialDateAndTimeInputs
   );
 
@@ -77,15 +79,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   const selectDate = (date: Moment, index: number) => {
-    setDateAndTimeInputs(dateAndTimeInputs => {
-      return dateAndTimeInputs.map((input, i) => {
-        if (i !== index) return input;
-        return {
-          ...input,
-          date: date
-        };
-      });
-    });
+    dispatch({ type: "SELECT_DATE", date, index });
   };
 
   const selectTime = (
@@ -94,58 +88,23 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     dateIndex: number,
     timeIndex: number
   ) => {
-    setDateAndTimeInputs(dateAndTimeInputs =>
-      dateAndTimeInputs.map((dateAndTimeInput, i) => {
-        if (i !== dateIndex) return dateAndTimeInput;
-        return {
-          ...dateAndTimeInput,
-          timeSlots: dateAndTimeInput.timeSlots.map((timeSlot, j) => {
-            if (j !== timeIndex) return timeSlot;
-            return {
-              ...timeSlot,
-              [timeField]: time
-            };
-          })
-        };
-      })
-    );
+    dispatch({ type: "SELECT_TIME", timeField, time, dateIndex, timeIndex });
   };
 
   const addDateAndTimeInput = () => {
-    setDateAndTimeInputs(inputs => [...inputs, initialDateAndTimeInput]);
+    dispatch({ type: "ADD_DATE_AND_TIME_INPUT" });
   };
 
   const addTimeSlot = (dateIndex: number) => {
-    setDateAndTimeInputs(inputs =>
-      inputs.map((input, i) => {
-        if (dateIndex !== i) return input;
-        return {
-          ...input,
-          timeSlots: [...input.timeSlots, initialTImeSlot]
-        };
-      })
-    );
+    dispatch({ type: "ADD_TIME_SLOT", dateIndex });
   };
 
   const deleteDateAndTimeInput = (dateIndex: number) => {
-    setDateAndTimeInputs(inputs =>
-      inputs.filter((input, i) => i !== dateIndex)
-    );
+    dispatch({ type: "DELETE_DATE_AND_TIME_INPUT", dateIndex });
   };
 
   const deleteTimeSlot = (dateIndex: number, timeSlotIndex: number) => {
-    setDateAndTimeInputs(inputs =>
-      inputs.map((input, i) => {
-        if (dateIndex !== i) return input;
-
-        return {
-          ...input,
-          timeSlots: input.timeSlots.filter(
-            (timeSlot, j) => j !== timeSlotIndex
-          )
-        };
-      })
-    );
+    dispatch({ type: "DELETE_TIME_SLOT", dateIndex, timeSlotIndex });
   };
 
   const submitForm = async () => {
