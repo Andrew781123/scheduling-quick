@@ -4,7 +4,7 @@ import {
   timeSlot
 } from "./types";
 import update from "immutability-helper";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 import { initialDateAndTimeInputs, initialTimeSlot } from "./NewParcipantForm";
 
 type Actions =
@@ -106,7 +106,11 @@ export const NewParticipantFormReducer = (
       const newDateAndTimeInput = [
         {
           ...initialDateAndTimeInputs[0],
-          date: action.minDate
+          dateRange: {
+            fromDate: action.minDate,
+            toDate: moment(),
+            isRange: false
+          }
         }
       ];
 

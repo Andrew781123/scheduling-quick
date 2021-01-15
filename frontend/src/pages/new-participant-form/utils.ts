@@ -42,7 +42,6 @@ export const formatData = (
 
   dateAndTimeInputs.forEach(dateAndTimeInput => {
     const { dateRange, timeSlots } = dateAndTimeInput;
-    //const dateString: string = date!.format(DATE_STRING);
 
     const formattedTimeSlots = timeSlots.map(timeSlot => {
       const { fromTime, toTime } = timeSlot;
@@ -59,7 +58,20 @@ export const formatData = (
       return formattedTimeSlot;
     });
 
-    //formattedTimeAvilable[dateString] = formattedTimeSlots;
+    if (dateRange.isRange) {
+      let currentDate = dateRange.fromDate;
+
+      while (currentDate!.diff(dateRange.toDate) >= 0) {
+        const dateString: string = currentDate!.format(DATE_STRING);
+
+        formattedTimeAvilable[dateString] = formattedTimeSlots;
+
+        currentDate!.add(1, "day");
+      }
+    } else {
+      const dateString: string = dateRange.fromDate!.format(DATE_STRING);
+      formattedTimeAvilable[dateString] = formattedTimeSlots;
+    }
   });
 
   (formattedData as participant).name = participantName;
