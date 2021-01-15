@@ -12,6 +12,7 @@ import { EventInfoBlock } from "./EventInfoBlock";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
 import { PageHeader } from "../../shared/conponents/PageHeader";
 import Alert from "@material-ui/lab/Alert";
+import { DATE_STRING } from "../../shared/constants";
 
 interface routeParams {
   id: string;

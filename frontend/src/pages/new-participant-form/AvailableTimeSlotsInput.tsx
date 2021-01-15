@@ -51,8 +51,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     //not sure why length of periods is zero in first few renders
     if (periods.length === 0) return [moment(), moment()];
 
-    //min date must be the day when filling the form
-    let minDate = moment(moment());
+    let minDate = moment(periods[0].dateRange[0], DATE_STRING);
     let maxDate = moment(periods[0].dateRange[1], DATE_STRING);
 
     for (let i = 1; i < periods.length; i++) {
