@@ -1,6 +1,37 @@
-import { participant, TimeAvailable, TimeSlot } from "../../../../types";
+import {
+  dateRange,
+  participant,
+  period,
+  TimeAvailable,
+  TimeSlot
+} from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
 import { DateAndTimeInput } from "./types";
+import moment from "moment";
+
+export const computeMinMaxDate = (periods: period[]) => {
+  let minDate = moment(periods[0].dateRange[0], DATE_STRING);
+  let maxDate = moment(periods[0].dateRange[1], DATE_STRING);
+
+  for (let i = 1; i < periods.length; i++) {
+    const period = periods[i];
+
+    const { dateRange } = period;
+
+    const fromDateMoment = moment(dateRange[0], DATE_STRING);
+    const toDateMoment = moment(dateRange[1], DATE_STRING);
+
+    if (fromDateMoment.diff(minDate, "days") > 0) {
+      minDate = fromDateMoment;
+    }
+
+    if (toDateMoment.diff(maxDate, "days") > 0) {
+      maxDate = toDateMoment;
+    }
+  }
+
+  return [minDate, maxDate];
+};
 
 export const formatData = (
   participantName: string,

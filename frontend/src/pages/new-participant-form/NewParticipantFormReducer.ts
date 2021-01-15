@@ -4,6 +4,7 @@ import { Moment } from "moment";
 import { initialDateAndTimeInputs, initialTimeSlot } from "./NewParcipantForm";
 
 type Actions =
+  | { type: "INITIALIZE_MIN_DATE"; minDate: Moment }
   | { type: "SELECT_DATE"; date: Moment; index: number }
   | {
       type: "SELECT_TIME";
@@ -14,6 +15,7 @@ type Actions =
     }
   | {
       type: "ADD_DATE_AND_TIME_INPUT";
+      minDate: Moment;
     }
   | {
       type: "DELETE_DATE_AND_TIME_INPUT";
@@ -34,6 +36,15 @@ export const NewParticipantFormReducer = (
   action: Actions
 ) => {
   switch (action.type) {
+    case "INITIALIZE_MIN_DATE": {
+      console.log("updating");
+      return update(state, {
+        0: {
+          date: { $set: action.minDate }
+        }
+      });
+    }
+
     case "SELECT_DATE": {
       return update(state, {
         [action.index]: {
@@ -55,7 +66,14 @@ export const NewParticipantFormReducer = (
     }
 
     case "ADD_DATE_AND_TIME_INPUT": {
-      return update(state, { $push: initialDateAndTimeInputs });
+      const newDateAndTimeInput = [
+        {
+          ...initialDateAndTimeInputs[0],
+          date: action.minDate
+        }
+      ];
+
+      return update(state, { $push: newDateAndTimeInput });
     }
 
     case "DELETE_DATE_AND_TIME_INPUT": {

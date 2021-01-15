@@ -1,19 +1,25 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState
+} from "react";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import { Box, Button, CircularProgress, TextField } from "@material-ui/core";
 import { EventContext } from "../../context/event-context/EventProvider";
 import { EventInfo, NewParticipantDateAndTimeInput, timeSlot } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
-import { generateRequestData, validateInput } from "./utils";
+import { computeMinMaxDate, generateRequestData, validateInput } from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
 import { EventInfoBlock } from "./EventInfoBlock";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
 import { PageHeader } from "../../shared/conponents/PageHeader";
 import Alert from "@material-ui/lab/Alert";
-import { DATE_STRING } from "../../shared/constants";
 import { NewParticipantFormReducer } from "./NewParticipantFormReducer";
+import { DATE_STRING } from "../../shared/constants";
 
 interface routeParams {
   id: string;
@@ -46,10 +52,26 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const history = useHistory();
 
-  const { fetchEvent, updateEventAfterUserSubmit, event } = useContext(
-    EventContext
-  );
+  const {
+    fetchEvent,
+    updateEventAfterUserSubmit,
+    event,
+    loadingEvent
+  } = useContext(EventContext);
   const { periods } = event;
+
+  const minMaxDate = useMemo(() => {
+    // 1. wait for the event be fetched.
+    if (periods) {
+      if (periods.length === 0) return [moment(), moment()];
+
+      return computeMinMaxDate(periods);
+    }
+
+    return [null, null];
+  }, [periods]);
+  const [isMinDateSet, setIsMinDateSet] = useState(false);
+
   //this variable is for display event info
   const eventInfo: EventInfo = {
     venue: event.info.venue.name,
@@ -74,6 +96,22 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    // 2. wait for the value of minMaxDate be computed
+    if (minMaxDate[0]) {
+      dispatch({ type: "INITIALIZE_MIN_DATE", minDate: minMaxDate[0] });
+    }
+  }, [minMaxDate![0]]);
+
+  useEffect(() => {
+    // 3. wait the the dateRange be set
+    const startDate = periods[0].dateRange[0];
+
+    if (moment(startDate, DATE_STRING).diff(moment()) > 0) {
+      setIsMinDateSet(true);
+    }
+  }, [periods[0].dateRange[0]]);
+
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParticaipantName(e.target.value);
   };
@@ -92,7 +130,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   const addDateAndTimeInput = () => {
-    dispatch({ type: "ADD_DATE_AND_TIME_INPUT" });
+    dispatch({ type: "ADD_DATE_AND_TIME_INPUT", minDate: minMaxDate[0]! });
   };
 
   const addTimeSlot = (dateIndex: number) => {
@@ -167,7 +205,9 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         headerText='New participant'
       />
 
-      {event.info && <EventInfoBlock eventInfo={eventInfo} />}
+      {event.info && (
+        <EventInfoBlock eventInfo={eventInfo} loadingEvent={loadingEvent} />
+      )}
 
       <Box my={5} />
 
@@ -196,17 +236,21 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
           <div className='new_participant_date_and_time_input'>
             {dateAndTimeInputs.map((input, i) => (
               <div className='sub_input_block can_be_deleted' key={i}>
-                <AvailableTimeSlotsInput
-                  periods={periods}
-                  dateAndTimeInputLength={dateAndTimeInputs.length}
-                  dateAndTimeInput={input}
-                  dateIndex={i}
-                  selectDate={selectDate}
-                  selectTime={selectTime}
-                  addTimeSlot={addTimeSlot}
-                  deleteDateAndTimeInput={deleteDateAndTimeInput}
-                  deleteTimeSlot={deleteTimeSlot}
-                />
+                {!loadingEvent && isMinDateSet && (
+                  <AvailableTimeSlotsInput
+                    periods={periods}
+                    minDate={minMaxDate[0]!}
+                    maxDate={minMaxDate[1]!}
+                    dateAndTimeInputLength={dateAndTimeInputs.length}
+                    dateAndTimeInput={input}
+                    dateIndex={i}
+                    selectDate={selectDate}
+                    selectTime={selectTime}
+                    addTimeSlot={addTimeSlot}
+                    deleteDateAndTimeInput={deleteDateAndTimeInput}
+                    deleteTimeSlot={deleteTimeSlot}
+                  />
+                )}
               </div>
             ))}
           </div>

@@ -23,7 +23,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     history
   } = props;
 
-  const { event, fetchEvent } = useContext(EventContext);
+  const { event, loadingEvent, fetchEvent } = useContext(EventContext);
   const {
     commonAvailable,
     commonAvailableCategory,
@@ -62,6 +62,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
 
       <PageHeader icon={<DashboardIcon />} headerText='Dashboard' />
       <EventInfoBlock
+        loadingEvent={loadingEvent}
         eventInfo={{
           venue: venue.name,
           organizer: organizer,

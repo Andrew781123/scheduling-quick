@@ -12,6 +12,8 @@ import { DeleteIconWithCondition } from "../../components/shared/DeleteIconWithC
 
 interface AvailableTimeSlotsInputProps {
   periods: period[];
+  minDate: Moment;
+  maxDate: Moment;
   dateAndTimeInputLength: number;
   dateAndTimeInput: DateAndTimeInput;
   dateIndex: number;
@@ -30,6 +32,8 @@ interface AvailableTimeSlotsInputProps {
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
   const {
     periods,
+    minDate,
+    maxDate,
     dateAndTimeInputLength,
     dateAndTimeInput,
     dateIndex,
@@ -45,34 +49,6 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
   const handleDateSelect = (date: Moment | null) => {
     selectDate(date!, dateIndex);
   };
-
-  //Only enable dates within the event period
-  const [minDate, maxDate] = useMemo(() => {
-    //not sure why length of periods is zero in first few renders
-    if (periods.length === 0) return [moment(), moment()];
-
-    let minDate = moment(periods[0].dateRange[0], DATE_STRING);
-    let maxDate = moment(periods[0].dateRange[1], DATE_STRING);
-
-    for (let i = 1; i < periods.length; i++) {
-      const period = periods[i];
-
-      const { dateRange } = period;
-
-      const fromDateMoment = moment(dateRange[0], DATE_STRING);
-      const toDateMoment = moment(dateRange[1], DATE_STRING);
-
-      if (fromDateMoment.diff(minDate, "days") > 0) {
-        minDate = fromDateMoment;
-      }
-
-      if (toDateMoment.diff(maxDate, "days") > 0) {
-        maxDate = toDateMoment;
-      }
-    }
-
-    return [minDate, maxDate];
-  }, [periods]);
 
   return (
     <>

@@ -6,6 +6,7 @@ import {
 } from "../../../../types";
 
 type actions =
+  | { type: "SET_EVENT_LOADING" }
   | { type: "FETCH_EVENT"; event: getEventResponse }
   | {
       type: "UPDATE_COMMON_AVAILABLE";
@@ -14,12 +15,23 @@ type actions =
       participants: participant[];
     };
 
-const eventReducer = (state: { event: getEventResponse }, action: actions) => {
+const eventReducer = (
+  state: { event: getEventResponse; loadingEvent: boolean },
+  action: actions
+) => {
   switch (action.type) {
+    case "SET_EVENT_LOADING": {
+      return {
+        ...state,
+        loadingEvent: true
+      };
+    }
+
     case "FETCH_EVENT": {
       return {
         ...state,
-        event: action.event
+        event: action.event,
+        loadingEvent: false
       };
     }
 
