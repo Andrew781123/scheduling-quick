@@ -1,14 +1,20 @@
-import { Button, Divider, IconButton } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
-import moment, { Moment } from "moment";
-import React, { useMemo } from "react";
+import {
+  Button,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  Switch
+} from "@material-ui/core";
+import { Moment } from "moment";
+import React from "react";
 import { period } from "../../../../types";
-import { DATE_STRING } from "../../shared/constants";
 import { TimePickers } from "./TimePickers";
 import { DateAndTimeInput, timeSlot } from "./types";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { DeleteIconWithCondition } from "../../components/shared/DeleteIconWithCondition";
+import { DatePickers } from "./DatePickers";
+import { switchStyles } from "./Styles";
 
 interface AvailableTimeSlotsInputProps {
   periods: period[];
@@ -50,6 +56,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     selectDate(date!, dateIndex);
   };
 
+  const styleClasses = switchStyles();
+
   return (
     <>
       <div className='date_input'>
@@ -64,16 +72,29 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         </DeleteIconWithCondition>
 
         <h3 className='label'>Date</h3>
-        <DatePicker
+        <FormControlLabel
+          control={
+            <Switch
+              checked={true}
+              onChange={() => console.log("changed")}
+              name='checkedB'
+              color='primary'
+              size='small'
+            />
+          }
+          label='Range'
+          labelPlacement='start'
+          classes={{
+            root: styleClasses.root,
+            label: styleClasses.label
+          }}
+        />
+        <DatePickers
           minDate={minDate}
           maxDate={maxDate}
-          onChange={handleDateSelect}
-          value={date}
-          disablePast={true}
-          InputLabelProps={{
-            shrink: true
-          }}
-        ></DatePicker>
+          date={date}
+          handleDateSelect={handleDateSelect}
+        />
       </div>
       <Divider />
       <div className='time_range_input '>
