@@ -180,24 +180,23 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
     const requestData = generateRequestData(participantName, dateAndTimeInputs);
 
+    console.log(requestData);
+
     try {
       const res = await axios.post(
         `/events/${eventId}/participants`,
         requestData
       );
-
       const {
         newCommonAvailable,
         commonAvailableCategory,
         participants
       } = res.data;
-
       updateEventAfterUserSubmit(
         newCommonAvailable,
         commonAvailableCategory,
         participants
       );
-
       history.push({ pathname: `/events/${eventId}/dashboard` });
     } catch (err) {
       console.error(err.message);

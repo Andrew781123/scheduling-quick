@@ -28,3 +28,7 @@ export interface EventInfo {
   participantCount: number;
   eventDuration: EventDuration;
 }
+
+export interface SelectedDateMap {
+  [key: string]: boolean;
+}

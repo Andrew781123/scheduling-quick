@@ -40,6 +40,7 @@ export const formatData = (
   let formattedData: {} = {};
   const formattedTimeAvilable: TimeAvailable = {};
 
+  //format the timeSlots first
   dateAndTimeInputs.forEach(dateAndTimeInput => {
     const { dateRange, timeSlots } = dateAndTimeInput;
 
@@ -58,15 +59,17 @@ export const formatData = (
       return formattedTimeSlot;
     });
 
+    //push the time slots to corresponding dates
     if (dateRange.isRange) {
-      let currentDate = dateRange.fromDate;
+      const currentDate = dateRange.fromDate;
+      let currentDateCopy = currentDate!.clone();
 
-      while (currentDate!.diff(dateRange.toDate) >= 0) {
-        const dateString: string = currentDate!.format(DATE_STRING);
+      while (currentDateCopy!.diff(dateRange.toDate) <= 0) {
+        const dateString: string = currentDateCopy!.format(DATE_STRING);
 
         formattedTimeAvilable[dateString] = formattedTimeSlots;
 
-        currentDate!.add(1, "day");
+        currentDateCopy!.add(1, "day");
       }
     } else {
       const dateString: string = dateRange.fromDate!.format(DATE_STRING);
@@ -188,4 +191,16 @@ export const simplifyTimeSlots = (participantInput: participant) => {
 export const validateInput = (name: string) => {
   if (name.length === 0) return false;
   else return true;
+};
+
+const checkInBetween = (
+  start1: string,
+  start2: string,
+  end1: string,
+  end2: string
+) => {
+  return !(
+    (+start1 - +end2 <= 0 && +end1 - +start2 <= 0) ||
+    (+start1 - +end2 >= 0 && +end1 - +start2 >= 0)
+  );
 };
