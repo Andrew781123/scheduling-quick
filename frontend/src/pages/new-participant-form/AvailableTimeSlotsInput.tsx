@@ -9,12 +9,18 @@ import { Moment } from "moment";
 import React from "react";
 import { period } from "../../../../types";
 import { TimePickers } from "./TimePickers";
-import { DateAndTimeInput, DateRangeState, timeSlot } from "./types";
+import {
+  DateAndTimeInput,
+  DateRangeState,
+  SelectedDateMap,
+  timeSlot
+} from "./types";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { DeleteIconWithCondition } from "../../components/shared/DeleteIconWithCondition";
 import { DatePickers } from "./DatePickers";
 import { switchStyles } from "./Styles";
+import { DATE_STRING } from "../../shared/constants";
 
 interface AvailableTimeSlotsInputProps {
   periods: period[];
@@ -28,7 +34,7 @@ interface AvailableTimeSlotsInputProps {
     dateIndex: number,
     dateRangeField: keyof DateRangeState
   ) => void;
-  enableRange: (dateIndex: number, fromDate: Moment) => void;
+  enableRange: (dateIndex: number, newToDate: Moment) => void;
   disableRange: (dateIndex: number) => void;
   selectTime: (
     timeField: keyof timeSlot,
@@ -39,6 +45,7 @@ interface AvailableTimeSlotsInputProps {
   addTimeSlot: (dateIndex: number) => void;
   deleteDateAndTimeInput: (dateIndex: number) => void;
   deleteTimeSlot: (dateIndex: number, timeSlotIndex: number) => void;
+  setSelectedDatesMap: React.Dispatch<React.SetStateAction<SelectedDateMap>>;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
@@ -55,22 +62,64 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     selectTime,
     addTimeSlot,
     deleteDateAndTimeInput,
-    deleteTimeSlot
+    deleteTimeSlot,
+    setSelectedDatesMap
   } = props;
 
   const { dateRange, timeSlots } = dateAndTimeInput;
 
   const handleFromDateSelect = (date: Moment | null) => {
+    //remove old from date from map and add the new one
+    toggleKeysFromSelectedDateMap(date!, "fromDate", true);
+
     selectDate(date!, dateIndex, "fromDate");
   };
 
   const handleToDateSelect = (date: Moment | null) => {
+    //remove old to date from map and add the new one
+    toggleKeysFromSelectedDateMap(date!, "toDate", true);
+
     selectDate(date!, dateIndex, "toDate");
   };
 
   const toggleEnableRange = () => {
-    if (dateRange.isRange) disableRange(dateIndex);
-    else enableRange(dateIndex, dateRange.fromDate!);
+    if (dateRange.isRange) {
+      addOrRemoveKeyFromSelectedDateMap(dateRange.toDate!, false);
+      disableRange(dateIndex);
+    } else {
+      const fromDateCopy = dateRange.fromDate!.clone();
+      const newToDate = fromDateCopy.add(1, "day");
+
+      addOrRemoveKeyFromSelectedDateMap(newToDate, true);
+
+      enableRange(dateIndex, newToDate);
+    }
+  };
+
+  //used when date selected is changed, remove current date and add new date to map
+  const toggleKeysFromSelectedDateMap = (
+    date: Moment,
+    fromToField: keyof Omit<DateRangeState, "isRange">,
+    doAdd: boolean
+  ) => {
+    const dateString = date!.format(DATE_STRING);
+    const currentDateString = dateRange[fromToField]!.format(DATE_STRING);
+
+    setSelectedDatesMap(map => ({
+      ...map,
+      [dateString]: doAdd,
+      [currentDateString]: false
+    }));
+  };
+
+  //used when isRange is toggled
+  const addOrRemoveKeyFromSelectedDateMap = (date: Moment, doAdd: boolean) => {
+    const dateString = date.format(DATE_STRING);
+
+    setSelectedDatesMap(map => ({
+      ...map,
+      [dateString]: doAdd
+    }));
   };
 
   const styleClasses = switchStyles();

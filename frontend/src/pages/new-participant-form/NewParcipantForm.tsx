@@ -12,6 +12,7 @@ import {
   DateRangeState,
   EventInfo,
   NewParticipantDateAndTimeInput,
+  SelectedDateMap,
   timeSlot
 } from "./types";
 import moment, { Moment } from "moment";
@@ -100,15 +101,24 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
+  const [selectedDatesMap, setSelectedDatesMap] = useState<SelectedDateMap>({});
+
+  //Effects
   useEffect(() => {
     fetchEvent(eventId);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+    const minDate = minMaxDate[0];
     // 2. wait for the value of minMaxDate be computed
-    if (minMaxDate[0]) {
-      dispatch({ type: "INITIALIZE_MIN_DATE", minDate: minMaxDate[0] });
+    if (minDate) {
+      dispatch({ type: "INITIALIZE_MIN_DATE", minDate: minDate });
+
+      const minDateString = minDate.format(DATE_STRING);
+
+      //initialize selectedDateMap
+      setSelectedDatesMap({ [minDateString]: true });
     }
   }, [minMaxDate![0]]);
 
@@ -120,6 +130,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       setIsMinDateSet(true);
     }
   }, [periods[0].dateRange[0]]);
+
+  useEffect(() => {
+    console.log(selectedDatesMap);
+  }, [selectedDatesMap]);
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParticaipantName(e.target.value);
@@ -133,9 +147,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     dispatch({ type: "SELECT_DATE", date, index, dateRangeField });
   };
 
-  const enableRange = (dateIndex: number, fromDate: Moment) => {
-    const fromDateCopy = fromDate.clone();
-    const newToDate = fromDateCopy.add(1, "day");
+  const enableRange = (dateIndex: number, newToDate: Moment) => {
     dispatch({ type: "ENABLE_RANGE", dateIndex, newToDate });
   };
 
@@ -180,8 +192,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
     const requestData = generateRequestData(participantName, dateAndTimeInputs);
 
-    console.log(requestData);
-
     try {
       const res = await axios.post(
         `/events/${eventId}/participants`,
@@ -202,6 +212,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       console.error(err.message);
     }
   };
+
+  console.log(isMinDateSet, loadingEvent);
 
   return (
     <div className='page_container'>
@@ -273,6 +285,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                     addTimeSlot={addTimeSlot}
                     deleteDateAndTimeInput={deleteDateAndTimeInput}
                     deleteTimeSlot={deleteTimeSlot}
+                    setSelectedDatesMap={setSelectedDatesMap}
                   />
                 )}
               </div>

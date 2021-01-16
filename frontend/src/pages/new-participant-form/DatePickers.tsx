@@ -32,6 +32,7 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
         InputLabelProps={{
           shrink: true
         }}
+        className='error'
       ></DatePicker>
 
       {dateRange.isRange && (
