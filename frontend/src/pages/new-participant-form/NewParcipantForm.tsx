@@ -17,7 +17,12 @@ import {
 } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
-import { computeMinMaxDate, generateRequestData, validateInput } from "./utils";
+import {
+  computeMinMaxDate,
+  findSmallestNotSelectedDate,
+  generateRequestData,
+  validateInput
+} from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
 import { EventInfoBlock } from "./EventInfoBlock";
@@ -131,10 +136,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     }
   }, [periods[0].dateRange[0]]);
 
-  useEffect(() => {
-    console.log(selectedDatesMap);
-  }, [selectedDatesMap]);
-
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParticaipantName(e.target.value);
   };
@@ -165,7 +166,19 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   const addDateAndTimeInput = () => {
-    dispatch({ type: "ADD_DATE_AND_TIME_INPUT", minDate: minMaxDate[0]! });
+    //fromDate of the newly added input block
+    const fromDate = findSmallestNotSelectedDate(
+      selectedDatesMap,
+      minMaxDate[0]!,
+      minMaxDate[1]!
+    );
+
+    if (fromDate) {
+      addOrRemoveKeyFromSelectedDateMap(fromDate, true);
+      dispatch({ type: "ADD_DATE_AND_TIME_INPUT", fromDate });
+    } else {
+      //throw error: all dates are selected
+    }
   };
 
   const addTimeSlot = (dateIndex: number) => {
@@ -174,6 +187,16 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const deleteDateAndTimeInput = (dateIndex: number) => {
     dispatch({ type: "DELETE_DATE_AND_TIME_INPUT", dateIndex });
+  };
+
+  //used when isRange is toggled
+  const addOrRemoveKeyFromSelectedDateMap = (date: Moment, doAdd: boolean) => {
+    const dateString = date.format(DATE_STRING);
+
+    setSelectedDatesMap(map => ({
+      ...map,
+      [dateString]: doAdd
+    }));
   };
 
   const deleteTimeSlot = (dateIndex: number, timeSlotIndex: number) => {
@@ -286,6 +309,9 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                     deleteDateAndTimeInput={deleteDateAndTimeInput}
                     deleteTimeSlot={deleteTimeSlot}
                     setSelectedDatesMap={setSelectedDatesMap}
+                    addOrRemoveKeyFromSelectedDateMap={
+                      addOrRemoveKeyFromSelectedDateMap
+                    }
                   />
                 )}
               </div>

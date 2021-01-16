@@ -46,6 +46,7 @@ interface AvailableTimeSlotsInputProps {
   deleteDateAndTimeInput: (dateIndex: number) => void;
   deleteTimeSlot: (dateIndex: number, timeSlotIndex: number) => void;
   setSelectedDatesMap: React.Dispatch<React.SetStateAction<SelectedDateMap>>;
+  addOrRemoveKeyFromSelectedDateMap: (date: Moment, doAdd: boolean) => void;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
@@ -63,7 +64,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     addTimeSlot,
     deleteDateAndTimeInput,
     deleteTimeSlot,
-    setSelectedDatesMap
+    setSelectedDatesMap,
+    addOrRemoveKeyFromSelectedDateMap
   } = props;
 
   const { dateRange, timeSlots } = dateAndTimeInput;
@@ -77,7 +79,15 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 
   const handleToDateSelect = (date: Moment | null) => {
     //remove old to date from map and add the new one
-    toggleKeysFromSelectedDateMap(date!, "toDate", true);
+    addOrRemoveKeyFromSelectedDateMap(dateRange.toDate!, false);
+
+    let dateToBeAdded: Moment = date!.clone();
+
+    while (dateToBeAdded.diff(dateRange.fromDate, "days") >= 0) {
+      addOrRemoveKeyFromSelectedDateMap(dateToBeAdded, true);
+
+      dateToBeAdded.subtract(1, "day");
+    }
 
     selectDate(date!, dateIndex, "toDate");
   };
@@ -109,16 +119,6 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
       ...map,
       [dateString]: doAdd,
       [currentDateString]: false
-    }));
-  };
-
-  //used when isRange is toggled
-  const addOrRemoveKeyFromSelectedDateMap = (date: Moment, doAdd: boolean) => {
-    const dateString = date.format(DATE_STRING);
-
-    setSelectedDatesMap(map => ({
-      ...map,
-      [dateString]: doAdd
     }));
   };
 

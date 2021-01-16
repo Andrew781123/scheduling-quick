@@ -6,8 +6,8 @@ import {
   TimeSlot
 } from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
-import { DateAndTimeInput } from "./types";
-import moment from "moment";
+import { DateAndTimeInput, SelectedDateMap } from "./types";
+import moment, { Moment } from "moment";
 
 export const computeMinMaxDate = (periods: period[]) => {
   let minDate = moment(periods[0].dateRange[0], DATE_STRING);
@@ -191,6 +191,27 @@ export const simplifyTimeSlots = (participantInput: participant) => {
 export const validateInput = (name: string) => {
   if (name.length === 0) return false;
   else return true;
+};
+
+export const findSmallestNotSelectedDate = (
+  map: SelectedDateMap,
+  minDate: Moment,
+  maxDate: Moment
+) => {
+  const minDateClone = minDate.clone();
+  let foundDate = minDateClone;
+
+  while (foundDate.diff(maxDate) <= 0) {
+    const foundDateString = foundDate.format(DATE_STRING);
+
+    if (!map[foundDateString]) break;
+
+    foundDate.add(1, "day");
+  }
+
+  //that means all dates are selected
+  if (foundDate.diff(maxDate) > 0) return null;
+  else return foundDate;
 };
 
 const checkInBetween = (

@@ -33,7 +33,7 @@ type Actions =
     }
   | {
       type: "ADD_DATE_AND_TIME_INPUT";
-      minDate: Moment;
+      fromDate: Moment;
     }
   | {
       type: "DELETE_DATE_AND_TIME_INPUT";
@@ -107,7 +107,7 @@ export const NewParticipantFormReducer = (
         {
           ...initialDateAndTimeInputs[0],
           dateRange: {
-            fromDate: action.minDate,
+            fromDate: action.fromDate,
             toDate: moment(),
             isRange: false
           }
