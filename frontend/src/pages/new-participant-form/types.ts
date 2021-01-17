@@ -36,3 +36,5 @@ export interface SelectedDateMap {
 export interface TwoDimentionalMap {
   [key: string]: boolean;
 }
+
+export type FormErrors = "Invalid time range";

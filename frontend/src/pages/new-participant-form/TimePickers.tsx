@@ -1,7 +1,13 @@
 import { TimePicker, validate } from "@material-ui/pickers";
 import { Moment } from "moment";
-import React, { useState } from "react";
-import { DateAndTimeInput, timeSlot, TwoDimentionalMap } from "./types";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { validateTimeRange } from "../../shared/validation";
+import {
+  DateAndTimeInput,
+  FormErrors,
+  timeSlot,
+  TwoDimentionalMap
+} from "./types";
 import { convertCoordinatesToKey } from "./utils";
 
 interface TimePickersProps {
@@ -13,12 +19,6 @@ interface TimePickersProps {
     time: Moment | null,
     dateIndex: number,
     timeIndex: number
-  ) => void;
-  validatePeriod: (
-    periodField: keyof DateAndTimeInput,
-    data: Moment,
-    isFromField: boolean,
-    timeIndex?: number | undefined
   ) => void;
   autoSetToTime: (
     fromTime: Moment,
@@ -33,7 +33,6 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
     timeSlotIndex,
     dateIndex,
     handleTimeSelect,
-    validatePeriod,
     autoSetToTime
   } = props;
 
@@ -42,8 +41,24 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
     setUserSetTimeSlotBefore
   ] = useState<TwoDimentionalMap>({});
 
+  const [areTimeSlotsValid, setAreTimeSlosValid] = useState<TwoDimentionalMap>(
+    {}
+  );
+
+  useLayoutEffect(() => {
+    //initialize the map
+    setAreTimeSlosValid(map => ({
+      ...map,
+      [key]: true
+    }));
+  }, []);
+
+  const key = useMemo(() => {
+    return convertCoordinatesToKey(dateIndex, timeSlotIndex);
+  }, [dateIndex, timeSlotIndex]);
+
   const handleFromTimeSelect = (time: Moment | null) => {
-    const key = convertCoordinatesToKey(dateIndex, timeSlotIndex);
+    handleTimeSelect("fromTime", time, dateIndex, timeSlotIndex);
 
     if (!userSetTimeSlotBefore[key]) {
       autoSetToTime(time!, dateIndex, timeSlotIndex);
@@ -52,13 +67,15 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
         ...map,
         [key]: true
       }));
+
+      return;
     }
 
-    handleTimeSelect("fromTime", time, dateIndex, timeSlotIndex);
+    validDateTimeSlot(time!, true);
   };
 
   const handleToTimeSelect = (time: Moment | null) => {
-    const key = convertCoordinatesToKey(dateIndex, timeSlotIndex);
+    handleTimeSelect("toTime", time, dateIndex, timeSlotIndex);
 
     if (!userSetTimeSlotBefore[key]) {
       setUserSetTimeSlotBefore(map => ({
@@ -67,7 +84,26 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
       }));
     }
 
-    handleTimeSelect("toTime", time, dateIndex, timeSlotIndex);
+    validDateTimeSlot(time!, false);
+  };
+
+  const validDateTimeSlot = (time: Moment, isFromTime: boolean) => {
+    let errorMessage: FormErrors | undefined;
+
+    errorMessage = validateTimeRange({
+      fromTime: isFromTime ? time : timeSlot.fromTime,
+      toTime: isFromTime ? timeSlot.toTime : time
+    });
+
+    if (
+      (errorMessage && areTimeSlotsValid[key]) ||
+      (!errorMessage && !areTimeSlotsValid[key])
+    ) {
+      setAreTimeSlosValid(map => ({
+        ...map,
+        [key]: !map[key]
+      }));
+    }
   };
 
   return (
@@ -81,6 +117,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
         InputLabelProps={{
           shrink: true
         }}
+        className={areTimeSlotsValid[key] ? "" : "error"}
       />
       <TimePicker
         label='To time'
@@ -91,6 +128,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
         InputLabelProps={{
           shrink: true
         }}
+        className={areTimeSlotsValid[key] ? "" : "error"}
       />
     </>
   );
