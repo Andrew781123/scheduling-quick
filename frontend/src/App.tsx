@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { SetupForm } from "./pages/setup-form/SetupForm";
 import "./App.scss";
@@ -13,6 +13,7 @@ import EventProvider from "./context/event-context/EventProvider";
 import { NotFound } from "./NotFound";
 import Navbar from "./Navbar";
 import { ErrorProvider } from "./context/error-context/ErrorProvider";
+import { Alerts } from "./shared/conponents/Alerts";
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ const App: React.FC = () => {
         <EventProvider>
           <Router>
             <Navbar />
-
+            <Alerts />
             <Switch>
               <Route
                 exact

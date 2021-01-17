@@ -31,6 +31,7 @@ import { PageHeader } from "../../shared/conponents/PageHeader";
 import Alert from "@material-ui/lab/Alert";
 import { NewParticipantFormReducer } from "./NewParticipantFormReducer";
 import { DATE_STRING } from "../../shared/constants";
+import { ErrorContext } from "../../context/error-context/ErrorProvider";
 
 interface routeParams {
   id: string;
@@ -67,6 +68,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const history = useHistory();
 
+  //useContext
   const {
     fetchEvent,
     updateEventAfterUserSubmit,
@@ -74,6 +76,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     loadingEvent
   } = useContext(EventContext);
   const { periods } = event;
+
+  const { errors, pushErrors, clearErrors } = useContext(ErrorContext);
 
   const minMaxDate = useMemo(() => {
     // 1. wait for the event be fetched.
@@ -177,7 +181,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       addOrRemoveKeyFromSelectedDateMap(fromDate, true);
       dispatch({ type: "ADD_DATE_AND_TIME_INPUT", fromDate });
     } else {
-      //throw error: all dates are selected
+      pushErrors(["All available dates are input already"]);
     }
   };
 
@@ -204,6 +208,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   const submitForm = async () => {
+    clearErrors();
     setDisableSubmitButton(true);
 
     const areInputsValid = validateInput(participantName);
@@ -235,8 +240,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       console.error(err.message);
     }
   };
-
-  console.log(isMinDateSet, loadingEvent);
 
   return (
     <div className='page_container'>
