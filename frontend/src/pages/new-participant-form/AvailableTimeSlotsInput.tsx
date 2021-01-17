@@ -6,8 +6,7 @@ import {
   Switch
 } from "@material-ui/core";
 import { Moment } from "moment";
-import React from "react";
-import { period } from "../../../../types";
+import React, { useState } from "react";
 import { TimePickers } from "./TimePickers";
 import {
   DateAndTimeInput,
@@ -41,6 +40,11 @@ interface AvailableTimeSlotsInputProps {
     dateIndex: number,
     timeIndex: number
   ) => void;
+  autoSetToTime: (
+    fromTime: Moment,
+    dateIndex: number,
+    timeIndex: number
+  ) => void;
   addTimeSlot: (dateIndex: number) => void;
   deleteDateAndTimeInput: (dateIndex: number) => void;
   deleteTimeSlot: (dateIndex: number, timeSlotIndex: number) => void;
@@ -60,6 +64,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     enableRange,
     disableRange,
     selectTime,
+    autoSetToTime,
     addTimeSlot,
     deleteDateAndTimeInput,
     deleteTimeSlot,
@@ -68,9 +73,43 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     pushErrors
   } = props;
 
-  //const [];
+  const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
+    timeSlots: true,
+    dateRange: true
+  });
 
   const { dateRange, timeSlots } = dateAndTimeInput;
+
+  const validatePeriod = (
+    periodField: keyof DateAndTimeInput,
+    data: Moment,
+    isFromField: boolean,
+    timeIndex?: number
+  ) => {
+    // let errorMessage: FormErrors | undefined;
+    // //validate data or time
+    // if (periodField === "dateRange") {
+    //   (errorMessage as "Invalid date range" | undefined) = validateDateRange({
+    //     fromDate: isFromField ? data : period[periodField]["fromDate"],
+    //     toDate: !isFromField ? data : period[periodField]["toDate"]
+    //   });
+    // } else {
+    //   (errorMessage as "Invalid time range" | undefined) = validateTimeRange({
+    //     fromTime: isFromField ? data : period[periodField]["fromTime"],
+    //     toTime: !isFromField ? data : period[periodField]["toTime"]
+    //   });
+    // }
+    // //toggle isValid
+    // if (
+    //   (errorMessage && arePeriodFieldsValid[periodField]) ||
+    //   (!errorMessage && !arePeriodFieldsValid[periodField])
+    // ) {
+    //   setArePeriodFieldsValid(fields => ({
+    //     ...fields,
+    //     [periodField]: !fields[periodField]
+    //   }));
+    // }
+  };
 
   const handleFromDateSelect = (date: Moment | null) => {
     //remove old from date from map and add the new one
@@ -177,6 +216,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
               dateIndex={dateIndex}
               timeSlotIndex={i}
               handleTimeSelect={selectTime}
+              validatePeriod={validatePeriod}
+              autoSetToTime={autoSetToTime}
             />
           </div>
         ))}

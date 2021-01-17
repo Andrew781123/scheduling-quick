@@ -32,3 +32,7 @@ export interface EventInfo {
 export interface SelectedDateMap {
   [key: string]: boolean;
 }
+
+export interface TwoDimentionalMap {
+  [key: string]: boolean;
+}

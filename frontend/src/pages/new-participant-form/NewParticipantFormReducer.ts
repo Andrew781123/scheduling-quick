@@ -32,6 +32,12 @@ type Actions =
       timeIndex: number;
     }
   | {
+      type: "AUTO_SET_TO_TIME";
+      toTime: Moment;
+      dateIndex: number;
+      timeIndex: number;
+    }
+  | {
       type: "ADD_DATE_AND_TIME_INPUT";
       fromDate: Moment;
     }
@@ -96,6 +102,18 @@ export const NewParticipantFormReducer = (
           timeSlots: {
             [action.timeIndex]: {
               [action.timeField]: { $set: action.time }
+            }
+          }
+        }
+      });
+    }
+
+    case "AUTO_SET_TO_TIME": {
+      return update(state, {
+        [action.dateIndex]: {
+          timeSlots: {
+            [action.timeIndex]: {
+              toTime: { $set: action.toTime }
             }
           }
         }

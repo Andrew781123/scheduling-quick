@@ -169,6 +169,17 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     dispatch({ type: "SELECT_TIME", timeField, time, dateIndex, timeIndex });
   };
 
+  const autoSetToTime = (
+    fromTime: Moment,
+    dateIndex: number,
+    timeIndex: number
+  ) => {
+    const fromTimeClone = fromTime.clone();
+    const toTime = fromTimeClone.add(1, "hour");
+
+    dispatch({ type: "AUTO_SET_TO_TIME", toTime, dateIndex, timeIndex });
+  };
+
   const addDateAndTimeInput = () => {
     //fromDate of the newly added input block
     const fromDate = findSmallestNotSelectedDate(
@@ -309,6 +320,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                     enableRange={enableRange}
                     disableRange={disableRange}
                     selectTime={selectTime}
+                    autoSetToTime={autoSetToTime}
                     addTimeSlot={addTimeSlot}
                     deleteDateAndTimeInput={deleteDateAndTimeInput}
                     deleteTimeSlot={deleteTimeSlot}

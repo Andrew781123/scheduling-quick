@@ -214,6 +214,10 @@ export const findSmallestNotSelectedDate = (
   else return foundDate;
 };
 
+export const convertCoordinatesToKey = (x: number, y: number) => {
+  return x.toString() + y.toString();
+};
+
 const checkInBetween = (
   start1: string,
   start2: string,
