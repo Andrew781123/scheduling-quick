@@ -23,7 +23,6 @@ import { switchStyles } from "./Styles";
 import { DATE_STRING } from "../../shared/constants";
 
 interface AvailableTimeSlotsInputProps {
-  periods: period[];
   minDate: Moment;
   maxDate: Moment;
   dateAndTimeInputLength: number;
@@ -45,13 +44,13 @@ interface AvailableTimeSlotsInputProps {
   addTimeSlot: (dateIndex: number) => void;
   deleteDateAndTimeInput: (dateIndex: number) => void;
   deleteTimeSlot: (dateIndex: number, timeSlotIndex: number) => void;
-  setSelectedDatesMap: React.Dispatch<React.SetStateAction<SelectedDateMap>>;
+  selectedDatesMap: SelectedDateMap;
   addOrRemoveKeyFromSelectedDateMap: (date: Moment, doAdd: boolean) => void;
+  pushErrors: (newErrors: string[]) => void;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
   const {
-    periods,
     minDate,
     maxDate,
     dateAndTimeInputLength,
@@ -64,9 +63,12 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     addTimeSlot,
     deleteDateAndTimeInput,
     deleteTimeSlot,
-    setSelectedDatesMap,
-    addOrRemoveKeyFromSelectedDateMap
+    selectedDatesMap,
+    addOrRemoveKeyFromSelectedDateMap,
+    pushErrors
   } = props;
+
+  //const [];
 
   const { dateRange, timeSlots } = dateAndTimeInput;
 
@@ -101,6 +103,10 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     } else {
       const fromDateCopy = dateRange.fromDate!.clone();
       const newToDate = fromDateCopy.add(1, "day");
+
+      const newToDateString = newToDate.format(DATE_STRING);
+      if (selectedDatesMap[newToDateString] || newToDate.diff(maxDate) > 0)
+        return pushErrors(["Cannot set range"]);
 
       addOrRemoveKeyFromSelectedDateMap(newToDate, true);
 

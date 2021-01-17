@@ -300,7 +300,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
               <div className='sub_input_block can_be_deleted' key={i}>
                 {!loadingEvent && isMinDateSet && (
                   <AvailableTimeSlotsInput
-                    periods={periods}
                     minDate={minMaxDate[0]!}
                     maxDate={minMaxDate[1]!}
                     dateAndTimeInputLength={dateAndTimeInputs.length}
@@ -313,10 +312,11 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                     addTimeSlot={addTimeSlot}
                     deleteDateAndTimeInput={deleteDateAndTimeInput}
                     deleteTimeSlot={deleteTimeSlot}
-                    setSelectedDatesMap={setSelectedDatesMap}
+                    selectedDatesMap={selectedDatesMap}
                     addOrRemoveKeyFromSelectedDateMap={
                       addOrRemoveKeyFromSelectedDateMap
                     }
+                    pushErrors={pushErrors}
                   />
                 )}
               </div>
