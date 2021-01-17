@@ -12,37 +12,40 @@ import { NewParcipantForm } from "./pages/new-participant-form/NewParcipantForm"
 import EventProvider from "./context/event-context/EventProvider";
 import { NotFound } from "./NotFound";
 import Navbar from "./Navbar";
+import { ErrorProvider } from "./context/error-context/ErrorProvider";
 
 dotenv.config();
 
 const App: React.FC = () => {
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
-      <EventProvider>
-        <Router>
-          <Navbar />
+      <ErrorProvider>
+        <EventProvider>
+          <Router>
+            <Navbar />
 
-          <Switch>
-            <Route
-              exact
-              path='/events/new'
-              render={props => <SetupForm {...props} />}
-            />
-            <Route exact path='/' component={HomePage} />
-            <Route
-              path='/events/new/success'
-              render={props => <EventLinkPage {...props} />}
-            />
-            <Route path='/events/:id/dashboard' component={EventDashboard} />
-            <Route
-              path='/events/:id/new-participant'
-              component={NewParcipantForm}
-            />
+            <Switch>
+              <Route
+                exact
+                path='/events/new'
+                render={props => <SetupForm {...props} />}
+              />
+              <Route exact path='/' component={HomePage} />
+              <Route
+                path='/events/new/success'
+                render={props => <EventLinkPage {...props} />}
+              />
+              <Route path='/events/:id/dashboard' component={EventDashboard} />
+              <Route
+                path='/events/:id/new-participant'
+                component={NewParcipantForm}
+              />
 
-            <Route path='*' component={NotFound} />
-          </Switch>
-        </Router>
-      </EventProvider>
+              <Route path='*' component={NotFound} />
+            </Switch>
+          </Router>
+        </EventProvider>
+      </ErrorProvider>
     </MuiPickersUtilsProvider>
   );
 };
