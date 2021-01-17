@@ -77,7 +77,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   } = useContext(EventContext);
   const { periods } = event;
 
-  const { errors, pushErrors, clearErrors } = useContext(ErrorContext);
+  const { pushErrors, clearErrors } = useContext(ErrorContext);
 
   const minMaxDate = useMemo(() => {
     // 1. wait for the event be fetched.
@@ -225,6 +225,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         `/events/${eventId}/participants`,
         requestData
       );
+
       const {
         newCommonAvailable,
         commonAvailableCategory,
@@ -235,6 +236,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
         commonAvailableCategory,
         participants
       );
+
       history.push({ pathname: `/events/${eventId}/dashboard` });
     } catch (err) {
       console.error(err.message);

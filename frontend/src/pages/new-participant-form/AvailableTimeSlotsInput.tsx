@@ -72,7 +72,9 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 
   const handleFromDateSelect = (date: Moment | null) => {
     //remove old from date from map and add the new one
-    toggleKeysFromSelectedDateMap(date!, "fromDate", true);
+    addOrRemoveKeyFromSelectedDateMap(dateRange.fromDate!, false);
+
+    addOrRemoveKeyFromSelectedDateMap(date!, true);
 
     selectDate(date!, dateIndex, "fromDate");
   };
@@ -104,22 +106,6 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 
       enableRange(dateIndex, newToDate);
     }
-  };
-
-  //used when date selected is changed, remove current date and add new date to map
-  const toggleKeysFromSelectedDateMap = (
-    date: Moment,
-    fromToField: keyof Omit<DateRangeState, "isRange">,
-    doAdd: boolean
-  ) => {
-    const dateString = date!.format(DATE_STRING);
-    const currentDateString = dateRange[fromToField]!.format(DATE_STRING);
-
-    setSelectedDatesMap(map => ({
-      ...map,
-      [dateString]: doAdd,
-      [currentDateString]: false
-    }));
   };
 
   const styleClasses = switchStyles();
