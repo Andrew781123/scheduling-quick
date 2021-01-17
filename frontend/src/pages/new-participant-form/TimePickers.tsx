@@ -71,7 +71,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
       return;
     }
 
-    validDateTimeSlot(time!, true);
+    validateTimeSlot(time!, true);
   };
 
   const handleToTimeSelect = (time: Moment | null) => {
@@ -84,10 +84,10 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
       }));
     }
 
-    validDateTimeSlot(time!, false);
+    validateTimeSlot(time!, false);
   };
 
-  const validDateTimeSlot = (time: Moment, isFromTime: boolean) => {
+  const validateTimeSlot = (time: Moment, isFromTime: boolean) => {
     let errorMessage: FormErrors | undefined;
 
     errorMessage = validateTimeRange({

@@ -156,6 +156,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           }}
         />
         <DatePickers
+          dateIndex={dateIndex}
           minDate={minDate}
           maxDate={maxDate}
           dateRange={dateRange}

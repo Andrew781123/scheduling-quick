@@ -37,4 +37,4 @@ export interface TwoDimentionalMap {
   [key: string]: boolean;
 }
 
-export type FormErrors = "Invalid time range";
+export type FormErrors = "Invalid time range" | "Invalid date range";

@@ -1,9 +1,12 @@
+import { FormControl } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
-import React from "react";
-import { DateRangeState } from "./types";
+import React, { useLayoutEffect, useState } from "react";
+import { validateDateRange } from "../../shared/validation";
+import { DateRangeState, FormErrors } from "./types";
 
 interface DatePickersProps {
+  dateIndex: number;
   minDate: Moment;
   maxDate: Moment;
   handleFromDateSelect: (date: Moment | null) => void;
@@ -13,6 +16,7 @@ interface DatePickersProps {
 
 export const DatePickers: React.FC<DatePickersProps> = props => {
   const {
+    dateIndex,
     minDate,
     maxDate,
     dateRange,
@@ -20,19 +24,61 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
     handleToDateSelect
   } = props;
 
+  const [areDatesValid, setAreDatesValid] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  useLayoutEffect(() => {
+    setAreDatesValid(map => ({
+      ...map,
+      [dateIndex]: true
+    }));
+  }, []);
+
+  const selectFromDate = (date: Moment | null) => {
+    handleFromDateSelect(date);
+
+    validateDate(date!, true);
+  };
+
+  const selectToDate = (date: Moment | null) => {
+    handleToDateSelect(date);
+
+    validateDate(date!, false);
+  };
+
+  const validateDate = (time: Moment, isFromDate: boolean) => {
+    let errorMessage: FormErrors | undefined;
+
+    errorMessage = validateDateRange({
+      fromDate: isFromDate ? time : dateRange.fromDate,
+      toDate: isFromDate ? dateRange.toDate : time
+    });
+
+    if (
+      (errorMessage && areDatesValid[dateIndex]) ||
+      (!errorMessage && !areDatesValid[dateIndex])
+    ) {
+      setAreDatesValid(map => ({
+        ...map,
+        [dateIndex]: !map[dateIndex]
+      }));
+    }
+  };
+
   return (
     <div>
       <DatePicker
         minDate={minDate}
         maxDate={maxDate}
         label={dateRange.isRange ? "From date" : ""}
-        onChange={handleFromDateSelect}
+        onChange={selectFromDate}
         value={dateRange.fromDate}
         disablePast={true}
         InputLabelProps={{
           shrink: true
         }}
-        className='error'
+        className={areDatesValid[dateIndex] ? "" : "error"}
       ></DatePicker>
 
       {dateRange.isRange && (
@@ -40,12 +86,13 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
           minDate={minDate}
           maxDate={maxDate}
           label={dateRange.isRange ? "To date" : ""}
-          onChange={handleToDateSelect}
+          onChange={selectToDate}
           value={dateRange.toDate}
           disablePast={true}
           InputLabelProps={{
             shrink: true
           }}
+          className={areDatesValid[dateIndex] ? "" : "error"}
         ></DatePicker>
       )}
     </div>
