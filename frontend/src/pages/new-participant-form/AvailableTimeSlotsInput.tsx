@@ -144,6 +144,16 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     selectDate(date!, dateIndex, "toDate");
   };
 
+  const handleDeleteDateAndTimeInput = () => {
+    addOrRemoveKeyFromSelectedDateMap(
+      [dateRange.fromDate!, dateRange.toDate!],
+      false,
+      [true, true]
+    );
+
+    deleteDateAndTimeInput(dateIndex);
+  };
+
   const toggleEnableRange = () => {
     if (dateRange.isRange) {
       addOrRemoveKeyFromSelectedDateMap(
@@ -178,7 +188,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
       <div className='date_input'>
         <DeleteIconWithCondition componentLength={dateAndTimeInputLength}>
           <IconButton
-            onClick={() => deleteDateAndTimeInput(dateIndex)}
+            onClick={handleDeleteDateAndTimeInput}
             style={cancelIconStyle}
             size='small'
           >
