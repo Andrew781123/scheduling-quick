@@ -104,12 +104,12 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         false
       ]);
     } else {
-      addOrRemoveKeyFromSelectedDateMap([date!, date!], true, [true, true]);
       addOrRemoveKeyFromSelectedDateMap(
         [dateRange.fromDate!, dateRange.fromDate!],
         false,
         [true, true]
       );
+      addOrRemoveKeyFromSelectedDateMap([date!, date!], true, [true, true]);
     }
 
     selectDate(date!, dateIndex, "fromDate");
@@ -133,13 +133,12 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         true
       ]);
     } else {
-      console.log("should not be here");
-      addOrRemoveKeyFromSelectedDateMap([date!, date!], true, [true, true]);
       addOrRemoveKeyFromSelectedDateMap(
         [dateRange.toDate!, dateRange.toDate!],
         false,
         [true, true]
       );
+      addOrRemoveKeyFromSelectedDateMap([date!, date!], true, [true, true]);
     }
 
     selectDate(date!, dateIndex, "toDate");
@@ -148,9 +147,9 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
   const toggleEnableRange = () => {
     if (dateRange.isRange) {
       addOrRemoveKeyFromSelectedDateMap(
-        [dateRange.toDate!, dateRange.toDate!],
+        [dateRange.fromDate!, dateRange.toDate!],
         false,
-        [true, true]
+        [false, true]
       );
 
       disableRange(dateIndex);

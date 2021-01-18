@@ -62,6 +62,13 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
   const selectToDate = (date: Moment | null) => {
     handleToDateSelect(date);
 
+    if (!userSetDateRangeBefore[dateIndex]) {
+      setUserSetDateRangeBefore(map => ({
+        ...map,
+        [dateIndex]: true
+      }));
+    }
+
     validateDate(date!, false);
   };
 
