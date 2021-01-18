@@ -38,6 +38,11 @@ type Actions =
       timeIndex: number;
     }
   | {
+      type: "AUTO_SET_TO_DATE";
+      toDate: Moment;
+      dateIndex: number;
+    }
+  | {
       type: "ADD_DATE_AND_TIME_INPUT";
       fromDate: Moment;
     }
@@ -116,6 +121,14 @@ export const NewParticipantFormReducer = (
               toTime: { $set: action.toTime }
             }
           }
+        }
+      });
+    }
+
+    case "AUTO_SET_TO_DATE": {
+      return update(state, {
+        [action.dateIndex]: {
+          dateRange: { toDate: { $set: action.toDate } }
         }
       });
     }

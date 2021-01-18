@@ -45,11 +45,16 @@ interface AvailableTimeSlotsInputProps {
     dateIndex: number,
     timeIndex: number
   ) => void;
+  autoSetToDate: (fromDate: Moment, dateIndex: number) => void;
   addTimeSlot: (dateIndex: number) => void;
   deleteDateAndTimeInput: (dateIndex: number) => void;
   deleteTimeSlot: (dateIndex: number, timeSlotIndex: number) => void;
   selectedDatesMap: SelectedDateMap;
-  addOrRemoveKeyFromSelectedDateMap: (date: Moment, doAdd: boolean) => void;
+  addOrRemoveKeyFromSelectedDateMap: (
+    dateRange: [Moment, Moment],
+    doAdd: boolean,
+    inclusive: [boolean, boolean]
+  ) => void;
   pushErrors: (newErrors: string[]) => void;
 }
 
@@ -65,6 +70,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     disableRange,
     selectTime,
     autoSetToTime,
+    autoSetToDate,
     addTimeSlot,
     deleteDateAndTimeInput,
     deleteTimeSlot,
@@ -81,24 +87,59 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
   const { dateRange, timeSlots } = dateAndTimeInput;
 
   const handleFromDateSelect = (date: Moment | null) => {
-    //remove old from date from map and add the new one
-    addOrRemoveKeyFromSelectedDateMap(dateRange.fromDate!, false);
+    //include start, exclude end
+    if (dateRange.isRange) {
+      //new date > old date => remove (old -> new)
+      //new date < old date => add (new -> old)
+      const isNewDateBigger = date!.diff(dateRange.fromDate, "days") > 0;
 
-    addOrRemoveKeyFromSelectedDateMap(date!, true);
+      const dateRangeToAddOrRemove: [Moment, Moment] = isNewDateBigger
+        ? [dateRange.fromDate!, date!]
+        : [date!, dateRange.fromDate!];
+
+      const doAdd = !isNewDateBigger;
+
+      addOrRemoveKeyFromSelectedDateMap(dateRangeToAddOrRemove, doAdd, [
+        true,
+        false
+      ]);
+    } else {
+      addOrRemoveKeyFromSelectedDateMap([date!, date!], true, [true, true]);
+      addOrRemoveKeyFromSelectedDateMap(
+        [dateRange.fromDate!, dateRange.fromDate!],
+        false,
+        [true, true]
+      );
+    }
 
     selectDate(date!, dateIndex, "fromDate");
   };
 
   const handleToDateSelect = (date: Moment | null) => {
-    //remove old to date from map and add the new one
-    addOrRemoveKeyFromSelectedDateMap(dateRange.toDate!, false);
+    //exclude start, include end
+    if (dateRange.isRange) {
+      //new date > old date => add (old -> new)
+      //new date < old date => remove (new -> old)
+      const isNewDateBigger = date!.diff(dateRange.toDate, "days") > 0;
 
-    let dateToBeAdded: Moment = date!.clone();
+      const dateRangeToAddOrRemove: [Moment, Moment] = isNewDateBigger
+        ? [dateRange.toDate!, date!]
+        : [date!, dateRange.toDate!];
 
-    while (dateToBeAdded.diff(dateRange.fromDate, "days") >= 0) {
-      addOrRemoveKeyFromSelectedDateMap(dateToBeAdded, true);
+      const doAdd = isNewDateBigger;
 
-      dateToBeAdded.subtract(1, "day");
+      addOrRemoveKeyFromSelectedDateMap(dateRangeToAddOrRemove, doAdd, [
+        false,
+        true
+      ]);
+    } else {
+      console.log("should not be here");
+      addOrRemoveKeyFromSelectedDateMap([date!, date!], true, [true, true]);
+      addOrRemoveKeyFromSelectedDateMap(
+        [dateRange.toDate!, dateRange.toDate!],
+        false,
+        [true, true]
+      );
     }
 
     selectDate(date!, dateIndex, "toDate");
@@ -106,17 +147,26 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 
   const toggleEnableRange = () => {
     if (dateRange.isRange) {
-      addOrRemoveKeyFromSelectedDateMap(dateRange.toDate!, false);
+      addOrRemoveKeyFromSelectedDateMap(
+        [dateRange.toDate!, dateRange.toDate!],
+        false,
+        [true, true]
+      );
+
       disableRange(dateIndex);
     } else {
       const fromDateCopy = dateRange.fromDate!.clone();
       const newToDate = fromDateCopy.add(1, "day");
 
       const newToDateString = newToDate.format(DATE_STRING);
+
       if (selectedDatesMap[newToDateString] || newToDate.diff(maxDate) > 0)
         return pushErrors(["Cannot set range"]);
 
-      addOrRemoveKeyFromSelectedDateMap(newToDate, true);
+      addOrRemoveKeyFromSelectedDateMap([newToDate, newToDate], true, [
+        true,
+        true
+      ]);
 
       enableRange(dateIndex, newToDate);
     }
@@ -162,6 +212,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           dateRange={dateRange}
           handleFromDateSelect={handleFromDateSelect}
           handleToDateSelect={handleToDateSelect}
+          autoSetToDate={autoSetToDate}
         />
       </div>
       <Divider />

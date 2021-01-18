@@ -13,9 +13,11 @@ export const Alerts: React.FC<AlertsProps> = props => {
 
   if (errors.length > 0)
     return (
-      <div style={{ position: "sticky" }}>
-        {errors.map(error => (
-          <Alert severity='error'>{error}</Alert>
+      <div style={{ position: "static" }}>
+        {errors.map((error, i) => (
+          <Alert key={i} severity='error'>
+            {error}
+          </Alert>
         ))}
       </div>
     );

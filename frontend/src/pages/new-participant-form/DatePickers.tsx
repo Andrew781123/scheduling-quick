@@ -12,6 +12,7 @@ interface DatePickersProps {
   handleFromDateSelect: (date: Moment | null) => void;
   handleToDateSelect: (date: Moment | null) => void;
   dateRange: DateRangeState;
+  autoSetToDate: (fromDate: Moment, dateIndex: number) => void;
 }
 
 export const DatePickers: React.FC<DatePickersProps> = props => {
@@ -21,8 +22,13 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
     maxDate,
     dateRange,
     handleFromDateSelect,
-    handleToDateSelect
+    handleToDateSelect,
+    autoSetToDate
   } = props;
+
+  const [userSetDateRangeBefore, setUserSetDateRangeBefore] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const [areDatesValid, setAreDatesValid] = useState<{
     [key: string]: boolean;
@@ -38,7 +44,19 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
   const selectFromDate = (date: Moment | null) => {
     handleFromDateSelect(date);
 
-    validateDate(date!, true);
+    if (dateRange.isRange && !userSetDateRangeBefore[dateIndex]) {
+      autoSetToDate(date!, dateIndex);
+
+      setUserSetDateRangeBefore(map => ({
+        ...map,
+        [dateIndex]: true
+      }));
+
+      return;
+    }
+
+    //only need to validate if it is range
+    if (dateRange.isRange) validateDate(date!, true);
   };
 
   const selectToDate = (date: Moment | null) => {

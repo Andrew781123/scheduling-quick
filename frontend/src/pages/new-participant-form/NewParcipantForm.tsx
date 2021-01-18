@@ -112,6 +112,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const [selectedDatesMap, setSelectedDatesMap] = useState<SelectedDateMap>({});
 
+  useEffect(() => {
+    console.log(selectedDatesMap);
+  }, [selectedDatesMap]);
+
   //Effects
   useEffect(() => {
     fetchEvent(eventId);
@@ -180,6 +184,13 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     dispatch({ type: "AUTO_SET_TO_TIME", toTime, dateIndex, timeIndex });
   };
 
+  const autoSetToDate = (fromDate: Moment, dateIndex: number) => {
+    const fromDateClone = fromDate.clone();
+    const toDate = fromDateClone.add(1, "day");
+
+    dispatch({ type: "AUTO_SET_TO_DATE", toDate, dateIndex });
+  };
+
   const addDateAndTimeInput = () => {
     //fromDate of the newly added input block
     const fromDate = findSmallestNotSelectedDate(
@@ -189,7 +200,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     );
 
     if (fromDate) {
-      addOrRemoveKeyFromSelectedDateMap(fromDate, true);
+      addOrRemoveKeyFromSelectedDateMap([fromDate, fromDate], true, [
+        true,
+        true
+      ]);
       dispatch({ type: "ADD_DATE_AND_TIME_INPUT", fromDate });
     } else {
       pushErrors(["All available dates are input already"]);
@@ -205,13 +219,32 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   };
 
   //used when isRange is toggled
-  const addOrRemoveKeyFromSelectedDateMap = (date: Moment, doAdd: boolean) => {
-    const dateString = date.format(DATE_STRING);
+  //default will include both value (lower & upper)
+  const addOrRemoveKeyFromSelectedDateMap = (
+    dateRange: [Moment, Moment],
+    doAdd: boolean,
+    inclusive: [boolean, boolean]
+  ) => {
+    const [includeStart, includeEnd] = inclusive;
 
-    setSelectedDatesMap(map => ({
-      ...map,
-      [dateString]: doAdd
-    }));
+    const lowerValue = dateRange[0].clone();
+    const upperValue = dateRange[1].clone();
+
+    const startValue = includeStart ? lowerValue : lowerValue.add(1, "day");
+    const stopValue = includeEnd ? upperValue : upperValue.subtract(1, "day");
+
+    let currentValue = startValue;
+
+    while (currentValue.diff(stopValue, "days") <= 0) {
+      const dateString = currentValue.format(DATE_STRING);
+
+      setSelectedDatesMap(map => ({
+        ...map,
+        [dateString]: doAdd
+      }));
+
+      currentValue.add(1, "day");
+    }
   };
 
   const deleteTimeSlot = (dateIndex: number, timeSlotIndex: number) => {
@@ -321,6 +354,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                     disableRange={disableRange}
                     selectTime={selectTime}
                     autoSetToTime={autoSetToTime}
+                    autoSetToDate={autoSetToDate}
                     addTimeSlot={addTimeSlot}
                     deleteDateAndTimeInput={deleteDateAndTimeInput}
                     deleteTimeSlot={deleteTimeSlot}
