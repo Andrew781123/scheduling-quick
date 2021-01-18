@@ -30,10 +30,10 @@ interface AvailableTimeSlotsInputProps {
   selectDate: (
     date: Moment,
     dateIndex: number,
-    dateRangeField: keyof DateRangeState
+    dateRangeField: keyof DateRangeState<Moment>
   ) => void;
   enableRange: (dateIndex: number, newToDate: Moment) => void;
-  disableRange: (dateIndex: number) => void;
+  disableRange: (dateIndex: number, fromDate: Moment) => void;
   selectTime: (
     timeField: keyof timeSlot,
     time: Moment | null,
@@ -162,7 +162,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
         [false, true]
       );
 
-      disableRange(dateIndex);
+      disableRange(dateIndex, dateRange.fromDate!);
     } else {
       const fromDateCopy = dateRange.fromDate!.clone();
       const newToDate = fromDateCopy.add(1, "day");

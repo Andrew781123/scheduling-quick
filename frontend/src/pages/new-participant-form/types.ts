@@ -8,14 +8,14 @@ export interface timeSlot {
   toTime: Moment | null;
 }
 
-export interface DateRangeState {
-  fromDate: Moment | null;
-  toDate: Moment | null;
+export interface DateRangeState<T> {
+  fromDate: T;
+  toDate: T;
   isRange: boolean;
 }
 
 export type DateAndTimeInput = {
-  dateRange: DateRangeState;
+  dateRange: DateRangeState<Moment | null>;
   timeSlots: timeSlot[];
 };
 
@@ -37,4 +37,8 @@ export interface TwoDimentionalMap {
   [key: string]: boolean;
 }
 
-export type FormErrors = "Invalid time range" | "Invalid date range";
+export type FormErrors =
+  | "Invalid time range"
+  | "Invalid date range"
+  | "Name cannot be empty"
+  | "There are overlap dates";

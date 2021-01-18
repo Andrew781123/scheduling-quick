@@ -13,7 +13,7 @@ type Actions =
       type: "SELECT_DATE";
       date: Moment;
       index: number;
-      dateRangeField: keyof DateRangeState;
+      dateRangeField: keyof DateRangeState<Moment | null>;
     }
   | {
       type: "ENABLE_RANGE";
@@ -23,6 +23,7 @@ type Actions =
   | {
       type: "DISABLE_RANGE";
       dateIndex: number;
+      fromDate: Moment;
     }
   | {
       type: "SELECT_TIME";
@@ -69,7 +70,10 @@ export const NewParticipantFormReducer = (
       console.log("updating");
       return update(state, {
         0: {
-          dateRange: { fromDate: { $set: action.minDate } }
+          dateRange: {
+            fromDate: { $set: action.minDate },
+            toDate: { $set: action.minDate }
+          }
         }
       });
     }
@@ -96,7 +100,10 @@ export const NewParticipantFormReducer = (
     case "DISABLE_RANGE": {
       return update(state, {
         [action.dateIndex]: {
-          dateRange: { isRange: { $set: false } }
+          dateRange: {
+            isRange: { $set: false },
+            toDate: { $set: action.fromDate }
+          }
         }
       });
     }
@@ -139,7 +146,7 @@ export const NewParticipantFormReducer = (
           ...initialDateAndTimeInputs[0],
           dateRange: {
             fromDate: action.fromDate,
-            toDate: moment(),
+            toDate: action.fromDate,
             isRange: false
           }
         }

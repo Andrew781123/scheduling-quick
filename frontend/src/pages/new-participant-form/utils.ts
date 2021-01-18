@@ -6,8 +6,15 @@ import {
   TimeSlot
 } from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
-import { DateAndTimeInput, SelectedDateMap } from "./types";
+import {
+  DateAndTimeInput,
+  DateRangeState,
+  NewParticipantDateAndTimeInput,
+  SelectedDateMap
+} from "./types";
 import moment, { Moment } from "moment";
+import { StayCurrentLandscapeTwoTone } from "@material-ui/icons";
+import { FormErrors } from "./types";
 
 export const computeMinMaxDate = (periods: period[]) => {
   let minDate = moment(periods[0].dateRange[0], DATE_STRING);
@@ -188,9 +195,26 @@ export const simplifyTimeSlots = (participantInput: participant) => {
   return simplifiedTimeSlots;
 };
 
-export const validateInput = (name: string) => {
-  if (name.length === 0) return false;
-  else return true;
+export const validateInput = (
+  name: string,
+  dateAndTimeInputs: NewParticipantDateAndTimeInput
+): FormErrors[] | undefined => {
+  let errors: FormErrors[] = [];
+
+  if (name.length === 0) errors.push("Name cannot be empty");
+
+  let dateRangeArr: DateRangeState<Moment | null>[] = [];
+  for (const input of dateAndTimeInputs) {
+    const { dateRange } = input;
+
+    dateRangeArr.push(dateRange);
+  }
+
+  const dateError = checkOverLapDates(dateRangeArr);
+
+  if (dateError) errors.push("There are overlap dates");
+
+  return errors;
 };
 
 export const findSmallestNotSelectedDate = (
@@ -218,9 +242,34 @@ export const convertCoordinatesToKey = (x: number, y: number) => {
   return x.toString() + y.toString();
 };
 
-// export const checkOverLapDates = (dateRange) => {
+export const checkOverLapDates = (
+  dateRangeArr: DateRangeState<Moment | null>[]
+) => {
+  const selectedDateMap: SelectedDateMap = {};
 
-// }
+  for (const dateRange of dateRangeArr) {
+    const { fromDate, toDate } = dateRange;
+    console.log(toDate);
+
+    const fromDateClone = fromDate!.clone();
+    const toDateClone = toDate!.clone() || fromDateClone;
+
+    const currentDate = fromDateClone;
+    while (currentDate.diff(toDateClone, "days") <= 0) {
+      const dateString = currentDate.format(DATE_STRING);
+      console.log(selectedDateMap);
+      console.log(dateString);
+
+      if (selectedDateMap[dateString]) return true;
+
+      selectedDateMap[dateString] = true;
+
+      currentDate.add(1, "day");
+    }
+  }
+
+  return false;
+};
 
 const checkInBetween = (
   start1: string,

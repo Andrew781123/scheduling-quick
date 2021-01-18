@@ -11,7 +11,7 @@ interface DatePickersProps {
   maxDate: Moment;
   handleFromDateSelect: (date: Moment | null) => void;
   handleToDateSelect: (date: Moment | null) => void;
-  dateRange: DateRangeState;
+  dateRange: DateRangeState<Moment | null>;
   autoSetToDate: (fromDate: Moment, dateIndex: number) => void;
 }
 

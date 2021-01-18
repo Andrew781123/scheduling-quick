@@ -151,7 +151,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const selectDate = (
     date: Moment,
     index: number,
-    dateRangeField: keyof DateRangeState
+    dateRangeField: keyof DateRangeState<Moment>
   ) => {
     dispatch({ type: "SELECT_DATE", date, index, dateRangeField });
   };
@@ -160,8 +160,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     dispatch({ type: "ENABLE_RANGE", dateIndex, newToDate });
   };
 
-  const disableRange = (dateIndex: number) => {
-    dispatch({ type: "DISABLE_RANGE", dateIndex });
+  const disableRange = (dateIndex: number, fromDate: Moment) => {
+    dispatch({ type: "DISABLE_RANGE", dateIndex, fromDate });
   };
 
   const selectTime = (
@@ -255,10 +255,14 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     clearErrors();
     setDisableSubmitButton(true);
 
-    const areInputsValid = validateInput(participantName);
-    if (!areInputsValid) {
-      setNameError(true);
+    const errorMessages = validateInput(participantName, dateAndTimeInputs);
+    if (errorMessages) {
+      if (errorMessages.includes("Name cannot be empty")) setNameError(true);
+
+      pushErrors(errorMessages);
+
       setDisableSubmitButton(false);
+
       return;
     }
 
