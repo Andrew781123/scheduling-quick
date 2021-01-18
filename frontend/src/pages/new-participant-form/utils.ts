@@ -197,8 +197,10 @@ export const simplifyTimeSlots = (participantInput: participant) => {
 
 export const validateInput = (
   name: string,
-  dateAndTimeInputs: NewParticipantDateAndTimeInput
-): FormErrors[] | undefined => {
+  dateAndTimeInputs: NewParticipantDateAndTimeInput,
+  areDatesValidMap: { [key: string]: boolean },
+  areTimeSlotsValidMap: { [key: string]: boolean }
+): FormErrors[] => {
   let errors: FormErrors[] = [];
 
   if (name.length === 0) errors.push("Name cannot be empty");
@@ -210,9 +212,16 @@ export const validateInput = (
     dateRangeArr.push(dateRange);
   }
 
-  const dateError = checkOverLapDates(dateRangeArr);
+  const dateOverlapError = checkOverLapDates(dateRangeArr);
 
-  if (dateError) errors.push("There are overlap dates");
+  if (dateOverlapError) errors.push("There are overlap dates");
+
+  const dateErrors = checkAnyErrorInMap(areDatesValidMap);
+  const timeErrors = checkAnyErrorInMap(areTimeSlotsValidMap);
+  console.log(areTimeSlotsValidMap);
+  if (dateErrors) errors.push("There are invalid date inputs");
+
+  if (timeErrors) errors.push("There are invalid time inputs");
 
   return errors;
 };
@@ -249,7 +258,6 @@ export const checkOverLapDates = (
 
   for (const dateRange of dateRangeArr) {
     const { fromDate, toDate } = dateRange;
-    console.log(toDate);
 
     const fromDateClone = fromDate!.clone();
     const toDateClone = toDate!.clone() || fromDateClone;
@@ -257,8 +265,6 @@ export const checkOverLapDates = (
     const currentDate = fromDateClone;
     while (currentDate.diff(toDateClone, "days") <= 0) {
       const dateString = currentDate.format(DATE_STRING);
-      console.log(selectedDateMap);
-      console.log(dateString);
 
       if (selectedDateMap[dateString]) return true;
 
@@ -266,6 +272,14 @@ export const checkOverLapDates = (
 
       currentDate.add(1, "day");
     }
+  }
+
+  return false;
+};
+
+export const checkAnyErrorInMap = (map: { [key: string]: boolean }) => {
+  for (const key in map) {
+    if (!map[key]) return true;
   }
 
   return false;

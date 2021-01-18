@@ -12,7 +12,8 @@ import {
   DateAndTimeInput,
   DateRangeState,
   SelectedDateMap,
-  timeSlot
+  timeSlot,
+  TwoDimentionalMap
 } from "./types";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -56,6 +57,14 @@ interface AvailableTimeSlotsInputProps {
     inclusive: [boolean, boolean]
   ) => void;
   pushErrors: (newErrors: string[]) => void;
+  areDatesValid: { [key: string]: boolean };
+  setAreDatesValid: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: boolean;
+    }>
+  >;
+  areTimeSlotsValid: TwoDimentionalMap;
+  setAreTimeSlosValid: React.Dispatch<React.SetStateAction<TwoDimentionalMap>>;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
@@ -76,7 +85,11 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     deleteTimeSlot,
     selectedDatesMap,
     addOrRemoveKeyFromSelectedDateMap,
-    pushErrors
+    pushErrors,
+    areDatesValid,
+    setAreDatesValid,
+    areTimeSlotsValid,
+    setAreTimeSlosValid
   } = props;
 
   const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
@@ -222,6 +235,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           handleFromDateSelect={handleFromDateSelect}
           handleToDateSelect={handleToDateSelect}
           autoSetToDate={autoSetToDate}
+          areDatesValid={areDatesValid}
+          setAreDatesValid={setAreDatesValid}
         />
       </div>
       <Divider />
@@ -247,6 +262,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
               timeSlotIndex={i}
               handleTimeSelect={selectTime}
               autoSetToTime={autoSetToTime}
+              areTimeSlotsValid={areTimeSlotsValid}
+              setAreTimeSlosValid={setAreTimeSlosValid}
             />
           </div>
         ))}

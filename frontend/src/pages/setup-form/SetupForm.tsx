@@ -141,11 +141,13 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   };
 
   const submitForm = async () => {
-    dispatch({ type: "SET_SETUP_FORM_LOADING" });
+    dispatch({ type: "TOGGLE_SETUP_FORM_LOADING" });
 
     const errors = validateInputOnSubmit(organizerName);
 
     if (errors.length > 0) {
+      dispatch({ type: "TOGGLE_SETUP_FORM_LOADING" });
+
       return setFormErrors({
         errors,
         show: true

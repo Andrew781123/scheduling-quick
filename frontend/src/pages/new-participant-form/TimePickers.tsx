@@ -25,6 +25,8 @@ interface TimePickersProps {
     dateIndex: number,
     timeIndex: number
   ) => void;
+  areTimeSlotsValid: TwoDimentionalMap;
+  setAreTimeSlosValid: React.Dispatch<React.SetStateAction<TwoDimentionalMap>>;
 }
 
 export const TimePickers: React.FC<TimePickersProps> = props => {
@@ -33,17 +35,15 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
     timeSlotIndex,
     dateIndex,
     handleTimeSelect,
-    autoSetToTime
+    autoSetToTime,
+    areTimeSlotsValid,
+    setAreTimeSlosValid
   } = props;
 
   const [
     userSetTimeSlotBefore,
     setUserSetTimeSlotBefore
   ] = useState<TwoDimentionalMap>({});
-
-  const [areTimeSlotsValid, setAreTimeSlosValid] = useState<TwoDimentionalMap>(
-    {}
-  );
 
   useLayoutEffect(() => {
     //initialize the map

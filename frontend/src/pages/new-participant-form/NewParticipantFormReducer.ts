@@ -4,7 +4,7 @@ import {
   timeSlot
 } from "./types";
 import update from "immutability-helper";
-import moment, { Moment } from "moment";
+import { Moment } from "moment";
 import { initialDateAndTimeInputs, initialTimeSlot } from "./NewParcipantForm";
 
 type Actions =
@@ -67,7 +67,6 @@ export const NewParticipantFormReducer = (
 ) => {
   switch (action.type) {
     case "INITIALIZE_MIN_DATE": {
-      console.log("updating");
       return update(state, {
         0: {
           dateRange: {

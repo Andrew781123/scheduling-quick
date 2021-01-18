@@ -13,7 +13,8 @@ import {
   EventInfo,
   NewParticipantDateAndTimeInput,
   SelectedDateMap,
-  timeSlot
+  timeSlot,
+  TwoDimentionalMap
 } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
@@ -21,7 +22,8 @@ import {
   computeMinMaxDate,
   findSmallestNotSelectedDate,
   generateRequestData,
-  validateInput
+  validateInput,
+  checkAnyErrorInMap
 } from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
@@ -30,7 +32,7 @@ import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined"
 import { PageHeader } from "../../shared/conponents/PageHeader";
 import Alert from "@material-ui/lab/Alert";
 import { NewParticipantFormReducer } from "./NewParticipantFormReducer";
-import { DATE_STRING } from "../../shared/constants";
+import { DATE_STRING, TIME_STRING } from "../../shared/constants";
 import { ErrorContext } from "../../context/error-context/ErrorProvider";
 
 interface routeParams {
@@ -44,7 +46,7 @@ interface NewParcipantFormProps
 
 export const initialTimeSlot: timeSlot = {
   fromTime: moment("0000"),
-  toTime: moment("0000")
+  toTime: moment("0100", TIME_STRING)
 };
 
 export const initialDateAndTimeInput = {
@@ -108,13 +110,21 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const [participantName, setParticaipantName] = useState("");
   const [nameError, setNameError] = useState(false);
 
+  const [areDatesValid, setAreDatesValid] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const [areTimeSlotsValid, setAreTimeSlosValid] = useState<TwoDimentionalMap>(
+    {}
+  );
+
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   const [selectedDatesMap, setSelectedDatesMap] = useState<SelectedDateMap>({});
 
-  useEffect(() => {
-    console.log(selectedDatesMap);
-  }, [selectedDatesMap]);
+  // useEffect(() => {
+  //   console.log(selectedDatesMap);
+  // }, [selectedDatesMap]);
 
   //Effects
   useEffect(() => {
@@ -253,10 +263,16 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   const submitForm = async () => {
     clearErrors();
+    setNameError(false);
     setDisableSubmitButton(true);
 
-    const errorMessages = validateInput(participantName, dateAndTimeInputs);
-    if (errorMessages) {
+    const errorMessages = validateInput(
+      participantName,
+      dateAndTimeInputs,
+      areDatesValid,
+      areTimeSlotsValid
+    );
+    if (errorMessages.length > 0) {
       if (errorMessages.includes("Name cannot be empty")) setNameError(true);
 
       pushErrors(errorMessages);
@@ -367,6 +383,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                       addOrRemoveKeyFromSelectedDateMap
                     }
                     pushErrors={pushErrors}
+                    areDatesValid={areDatesValid}
+                    setAreDatesValid={setAreDatesValid}
+                    areTimeSlotsValid={areTimeSlotsValid}
+                    setAreTimeSlosValid={setAreTimeSlosValid}
                   />
                 )}
               </div>

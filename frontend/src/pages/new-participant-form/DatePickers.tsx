@@ -13,6 +13,12 @@ interface DatePickersProps {
   handleToDateSelect: (date: Moment | null) => void;
   dateRange: DateRangeState<Moment | null>;
   autoSetToDate: (fromDate: Moment, dateIndex: number) => void;
+  areDatesValid: { [key: string]: boolean };
+  setAreDatesValid: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: boolean;
+    }>
+  >;
 }
 
 export const DatePickers: React.FC<DatePickersProps> = props => {
@@ -23,14 +29,12 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
     dateRange,
     handleFromDateSelect,
     handleToDateSelect,
-    autoSetToDate
+    autoSetToDate,
+    areDatesValid,
+    setAreDatesValid
   } = props;
 
   const [userSetDateRangeBefore, setUserSetDateRangeBefore] = useState<{
-    [key: string]: boolean;
-  }>({});
-
-  const [areDatesValid, setAreDatesValid] = useState<{
     [key: string]: boolean;
   }>({});
 

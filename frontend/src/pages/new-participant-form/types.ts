@@ -41,4 +41,6 @@ export type FormErrors =
   | "Invalid time range"
   | "Invalid date range"
   | "Name cannot be empty"
-  | "There are overlap dates";
+  | "There are overlap dates"
+  | "There are invalid date inputs"
+  | "There are invalid time inputs";
