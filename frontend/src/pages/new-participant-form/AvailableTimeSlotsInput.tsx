@@ -169,6 +169,14 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
 
   const toggleEnableRange = () => {
     if (dateRange.isRange) {
+      //clear date input error if exists
+      if (!areDatesValid[dateIndex]) {
+        setAreDatesValid(map => ({
+          ...map,
+          [dateIndex]: true
+        }));
+      }
+
       addOrRemoveKeyFromSelectedDateMap(
         [dateRange.fromDate!, dateRange.toDate!],
         false,
