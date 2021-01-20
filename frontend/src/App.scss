@@ -89,12 +89,13 @@ body {
   padding: 5px;
 }
 
-.new_class_name {
+.input_block {
   background-color: $secondaryColor;
   margin-bottom: 20px;
   opacity: 80%;
   padding: 0 5px 5px 5px;
   border-radius: 10px;
+  opacity: 100% !important;
 }
 
 .sub_input_block {
