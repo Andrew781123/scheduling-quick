@@ -6,7 +6,7 @@ import {
   Switch
 } from "@material-ui/core";
 import { Moment } from "moment";
-import React, { useState } from "react";
+import React from "react";
 import { TimePickers } from "./TimePickers";
 import {
   DateAndTimeInput,
@@ -86,11 +86,6 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     setIsDateValid,
     setIsTimeSlotValid
   } = props;
-
-  const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
-    timeSlots: true,
-    dateRange: true
-  });
 
   const { dateRange, timeSlots } = dateAndTimeInput;
 

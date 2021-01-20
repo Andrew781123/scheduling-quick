@@ -1,7 +1,6 @@
-import { FormControl } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import { validateDateRange } from "../../shared/validation";
 import { DateRangeState, FormErrors } from "./types";
 

@@ -1,5 +1,4 @@
 import {
-  dateRange,
   participant,
   period,
   TimeAvailable,
@@ -13,7 +12,6 @@ import {
   SelectedDateMap
 } from "./types";
 import moment, { Moment } from "moment";
-import { StayCurrentLandscapeTwoTone } from "@material-ui/icons";
 import { FormErrors } from "./types";
 
 export const computeMinMaxDate = (periods: period[]) => {
@@ -299,15 +297,3 @@ export const checkAnyInvalidDateAndTimeInputs = (
 export const checkAnyInvalidTimeSlots = (
   dateAndTimeInputs: NewParticipantDateAndTimeInput
 ) => {};
-
-const checkInBetween = (
-  start1: string,
-  start2: string,
-  end1: string,
-  end2: string
-) => {
-  return !(
-    (+start1 - +end2 <= 0 && +end1 - +start2 <= 0) ||
-    (+start1 - +end2 >= 0 && +end1 - +start2 >= 0)
-  );
-};
