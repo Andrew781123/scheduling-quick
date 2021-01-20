@@ -1,13 +1,8 @@
-import { TimePicker, validate } from "@material-ui/pickers";
+import { TimePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
-import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { validateTimeRange } from "../../shared/validation";
-import {
-  DateAndTimeInput,
-  FormErrors,
-  timeSlot,
-  TwoDimentionalMap
-} from "./types";
+import { FormErrors, timeSlot, TwoDimentionalMap } from "./types";
 import { convertCoordinatesToKey } from "./utils";
 
 interface TimePickersProps {

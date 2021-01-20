@@ -12,8 +12,7 @@ import {
   DateAndTimeInput,
   DateRangeState,
   SelectedDateMap,
-  timeSlot,
-  TwoDimentionalMap
+  timeSlot
 } from "./types";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DeleteIcon from "@material-ui/icons/Delete";

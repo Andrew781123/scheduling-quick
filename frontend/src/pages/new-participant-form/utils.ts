@@ -201,7 +201,7 @@ export const validateInput = (
 ): FormErrors[] => {
   let errors: FormErrors[] = [];
 
-  if (name.length === 0) errors.push("Name cannot be empty");
+  if (name.trim().length === 0) errors.push("Name cannot be empty");
 
   let dateRangeArr: DateRangeState<Moment | null>[] = [];
   for (const input of dateAndTimeInputs) {
