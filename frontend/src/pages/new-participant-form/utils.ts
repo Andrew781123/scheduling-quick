@@ -260,6 +260,7 @@ export const checkOverLapDates = (
     const { fromDate, toDate } = dateRange;
 
     const fromDateClone = fromDate!.clone();
+    //if !isRange, toDate === fromDate
     const toDateClone = toDate!.clone() || fromDateClone;
 
     const currentDate = fromDateClone;

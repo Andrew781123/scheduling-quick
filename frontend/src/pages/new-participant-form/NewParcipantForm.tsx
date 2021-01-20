@@ -51,8 +51,8 @@ export const initialTimeSlot: timeSlot = {
 
 export const initialDateAndTimeInput = {
   dateRange: {
-    fromDate: moment(),
-    toDate: moment(),
+    fromDate: null,
+    toDate: null,
     isRange: false
   },
   timeSlots: [initialTimeSlot]
@@ -136,7 +136,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     const minDate = minMaxDate[0];
     // 2. wait for the value of minMaxDate be computed
     if (minDate) {
-      dispatch({ type: "INITIALIZE_MIN_DATE", minDate: minDate });
+      const minDateToBeSet =
+        minDate.diff(moment(), "days") <= 0 ? moment() : minDate;
+
+      dispatch({ type: "INITIALIZE_MIN_DATE", minDate: minDateToBeSet });
 
       const minDateString = minDate.format(DATE_STRING);
 
@@ -149,10 +152,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     // 3. wait the the dateRange be set
     const startDate = periods[0].dateRange[0];
 
-    if (moment(startDate, DATE_STRING).diff(moment()) > 0) {
+    if (dateAndTimeInputs[0].dateRange.fromDate) {
       setIsMinDateSet(true);
     }
-  }, [periods[0].dateRange[0]]);
+  }, [dateAndTimeInputs[0].dateRange]);
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParticaipantName(e.target.value);
