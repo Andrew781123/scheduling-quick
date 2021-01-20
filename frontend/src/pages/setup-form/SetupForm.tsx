@@ -214,7 +214,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
         headerText='Setup an Event'
       />
 
-      <div className='input_block'>
+      <div className='new_class_name'>
         <h2 className='label primary_label'>Event Info</h2>
         <div className='sub_input_block'>
           <TextField
@@ -282,7 +282,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
         </div>
       </div>
 
-      <div className='input_block'>
+      <div className='new_class_name'>
         <h2 className='label primary_label'>Possible date and time</h2>
         <div className='sub_input_block'>
           {periods.map((period, i) => {

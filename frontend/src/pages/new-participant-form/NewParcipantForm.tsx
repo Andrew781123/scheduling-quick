@@ -345,7 +345,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       <Box my={5} />
 
       <div className='new_participant_form_container'>
-        <div className='input_block'>
+        <div className='new_class_name'>
           <h2 className='label primary_label'>Your Info</h2>
           <TextField
             error={nameError}
@@ -362,7 +362,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
             }}
           />
         </div>
-        <div className='input_block'>
+        <div className='new_class_name'>
           <h2 className='label primary_label'>
             Your available date and time slots
           </h2>
