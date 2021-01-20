@@ -6,11 +6,13 @@ export type queryString = "form" | "dashboard";
 export interface timeSlot {
   fromTime: Moment | null;
   toTime: Moment | null;
+  isValid: boolean;
 }
 
 export interface DateRangeState<T> {
   fromDate: T;
   toDate: T;
+  isValid: boolean;
   isRange: boolean;
 }
 
@@ -30,10 +32,6 @@ export interface EventInfo {
 }
 
 export interface SelectedDateMap {
-  [key: string]: boolean;
-}
-
-export interface TwoDimentionalMap {
   [key: string]: boolean;
 }
 

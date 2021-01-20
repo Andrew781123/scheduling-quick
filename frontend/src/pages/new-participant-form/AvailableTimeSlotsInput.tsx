@@ -57,14 +57,12 @@ interface AvailableTimeSlotsInputProps {
     inclusive: [boolean, boolean]
   ) => void;
   pushErrors: (newErrors: string[]) => void;
-  areDatesValid: { [key: string]: boolean };
-  setAreDatesValid: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: boolean;
-    }>
-  >;
-  areTimeSlotsValid: TwoDimentionalMap;
-  setAreTimeSlosValid: React.Dispatch<React.SetStateAction<TwoDimentionalMap>>;
+  setIsDateValid: (dateIndex: number, isValid: boolean) => void;
+  setIsTimeSlotValid: (
+    dateIndex: number,
+    timeSlotIndex: number,
+    isValid: boolean
+  ) => void;
 }
 
 export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = props => {
@@ -86,10 +84,8 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
     selectedDatesMap,
     addOrRemoveKeyFromSelectedDateMap,
     pushErrors,
-    areDatesValid,
-    setAreDatesValid,
-    areTimeSlotsValid,
-    setAreTimeSlosValid
+    setIsDateValid,
+    setIsTimeSlotValid
   } = props;
 
   const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
@@ -170,12 +166,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
   const toggleEnableRange = () => {
     if (dateRange.isRange) {
       //clear date input error if exists
-      if (!areDatesValid[dateIndex]) {
-        setAreDatesValid(map => ({
-          ...map,
-          [dateIndex]: true
-        }));
-      }
+      setIsDateValid(dateIndex, true);
 
       addOrRemoveKeyFromSelectedDateMap(
         [dateRange.fromDate!, dateRange.toDate!],
@@ -243,8 +234,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
           handleFromDateSelect={handleFromDateSelect}
           handleToDateSelect={handleToDateSelect}
           autoSetToDate={autoSetToDate}
-          areDatesValid={areDatesValid}
-          setAreDatesValid={setAreDatesValid}
+          setIsDateValid={setIsDateValid}
         />
       </div>
       <Divider />
@@ -270,8 +260,7 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
               timeSlotIndex={i}
               handleTimeSelect={selectTime}
               autoSetToTime={autoSetToTime}
-              areTimeSlotsValid={areTimeSlotsValid}
-              setAreTimeSlosValid={setAreTimeSlosValid}
+              setIsTimeSlotValid={setIsTimeSlotValid}
             />
           </div>
         ))}

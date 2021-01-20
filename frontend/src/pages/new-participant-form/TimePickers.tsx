@@ -25,8 +25,11 @@ interface TimePickersProps {
     dateIndex: number,
     timeIndex: number
   ) => void;
-  areTimeSlotsValid: TwoDimentionalMap;
-  setAreTimeSlosValid: React.Dispatch<React.SetStateAction<TwoDimentionalMap>>;
+  setIsTimeSlotValid: (
+    dateIndex: number,
+    timeSlotIndex: number,
+    isValid: boolean
+  ) => void;
 }
 
 export const TimePickers: React.FC<TimePickersProps> = props => {
@@ -36,22 +39,13 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
     dateIndex,
     handleTimeSelect,
     autoSetToTime,
-    areTimeSlotsValid,
-    setAreTimeSlosValid
+    setIsTimeSlotValid
   } = props;
 
   const [
     userSetTimeSlotBefore,
     setUserSetTimeSlotBefore
   ] = useState<TwoDimentionalMap>({});
-
-  useLayoutEffect(() => {
-    //initialize the map
-    setAreTimeSlosValid(map => ({
-      ...map,
-      [key]: true
-    }));
-  }, []);
 
   const key = useMemo(() => {
     return convertCoordinatesToKey(dateIndex, timeSlotIndex);
@@ -96,13 +90,10 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
     });
 
     if (
-      (errorMessage && areTimeSlotsValid[key]) ||
-      (!errorMessage && !areTimeSlotsValid[key])
+      (errorMessage && timeSlot.isValid) ||
+      (!errorMessage && !timeSlot.isValid)
     ) {
-      setAreTimeSlosValid(map => ({
-        ...map,
-        [key]: !map[key]
-      }));
+      setIsTimeSlotValid(dateIndex, timeSlotIndex, !timeSlot.isValid);
     }
   };
 
@@ -117,7 +108,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
         InputLabelProps={{
           shrink: true
         }}
-        className={areTimeSlotsValid[key] ? "" : "error"}
+        className={timeSlot.isValid ? "" : "error"}
       />
       <TimePicker
         label='To time'
@@ -128,7 +119,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
         InputLabelProps={{
           shrink: true
         }}
-        className={areTimeSlotsValid[key] ? "" : "error"}
+        className={timeSlot.isValid ? "" : "error"}
       />
     </>
   );

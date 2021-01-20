@@ -197,9 +197,7 @@ export const simplifyTimeSlots = (participantInput: participant) => {
 
 export const validateInput = (
   name: string,
-  dateAndTimeInputs: NewParticipantDateAndTimeInput,
-  areDatesValidMap: { [key: string]: boolean },
-  areTimeSlotsValidMap: { [key: string]: boolean }
+  dateAndTimeInputs: NewParticipantDateAndTimeInput
 ): FormErrors[] => {
   let errors: FormErrors[] = [];
 
@@ -216,12 +214,8 @@ export const validateInput = (
 
   if (dateOverlapError) errors.push("There are overlap dates");
 
-  const dateErrors = checkAnyErrorInMap(areDatesValidMap);
-  const timeErrors = checkAnyErrorInMap(areTimeSlotsValidMap);
-  console.log(areTimeSlotsValidMap);
-  if (dateErrors) errors.push("There are invalid date inputs");
-
-  if (timeErrors) errors.push("There are invalid time inputs");
+  //check any date and time input error
+  errors.push(...checkAnyInvalidDateAndTimeInputs(dateAndTimeInputs));
 
   return errors;
 };
@@ -278,13 +272,33 @@ export const checkOverLapDates = (
   return false;
 };
 
-export const checkAnyErrorInMap = (map: { [key: string]: boolean }) => {
-  for (const key in map) {
-    if (!map[key]) return true;
-  }
+export const checkAnyInvalidDateAndTimeInputs = (
+  dateAndTimeInputs: NewParticipantDateAndTimeInput
+) => {
+  let errors: FormErrors[] = [];
 
-  return false;
+  const INVALID_DATE_MESSAGE = "There are invalid date inputs";
+  const INVALID_TIME_SLOT_MESSAGE = "There are invalid time inputs";
+
+  dateAndTimeInputs.forEach(input => {
+    const { dateRange, timeSlots } = input;
+
+    if (!errors.includes(INVALID_DATE_MESSAGE) && !dateRange.isValid)
+      errors.push(INVALID_DATE_MESSAGE);
+
+    if (!errors.includes(INVALID_TIME_SLOT_MESSAGE)) {
+      for (const timeSlot of timeSlots) {
+        if (!timeSlot.isValid) errors.push(INVALID_TIME_SLOT_MESSAGE);
+      }
+    }
+  });
+
+  return errors;
 };
+
+export const checkAnyInvalidTimeSlots = (
+  dateAndTimeInputs: NewParticipantDateAndTimeInput
+) => {};
 
 const checkInBetween = (
   start1: string,

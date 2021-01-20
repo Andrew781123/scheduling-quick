@@ -59,6 +59,17 @@ type Actions =
       type: "DELETE_TIME_SLOT";
       dateIndex: number;
       timeSlotIndex: number;
+    }
+  | {
+      type: "SET_IS_DATE_VALID";
+      dateIndex: number;
+      isValid: boolean;
+    }
+  | {
+      type: "SET_IS_TIME_SLOT_VALID";
+      dateIndex: number;
+      timeSlotIndex: number;
+      isValid: boolean;
     };
 
 export const NewParticipantFormReducer = (
@@ -146,6 +157,7 @@ export const NewParticipantFormReducer = (
           dateRange: {
             fromDate: action.fromDate,
             toDate: action.fromDate,
+            isValid: true,
             isRange: false
           }
         }
@@ -171,6 +183,24 @@ export const NewParticipantFormReducer = (
         [action.dateIndex]: {
           timeSlots: {
             $splice: [[action.timeSlotIndex, 1]]
+          }
+        }
+      });
+    }
+
+    case "SET_IS_DATE_VALID": {
+      return update(state, {
+        [action.dateIndex]: { dateRange: { isValid: { $set: action.isValid } } }
+      });
+    }
+
+    case "SET_IS_TIME_SLOT_VALID": {
+      return update(state, {
+        [action.dateIndex]: {
+          timeSlots: {
+            [action.timeSlotIndex]: {
+              isValid: { $set: action.isValid }
+            }
           }
         }
       });

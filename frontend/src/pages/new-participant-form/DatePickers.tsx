@@ -13,12 +13,7 @@ interface DatePickersProps {
   handleToDateSelect: (date: Moment | null) => void;
   dateRange: DateRangeState<Moment | null>;
   autoSetToDate: (fromDate: Moment, dateIndex: number) => void;
-  areDatesValid: { [key: string]: boolean };
-  setAreDatesValid: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: boolean;
-    }>
-  >;
+  setIsDateValid: (dateIndex: number, isValid: boolean) => void;
 }
 
 export const DatePickers: React.FC<DatePickersProps> = props => {
@@ -30,20 +25,12 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
     handleFromDateSelect,
     handleToDateSelect,
     autoSetToDate,
-    areDatesValid,
-    setAreDatesValid
+    setIsDateValid
   } = props;
 
   const [userSetDateRangeBefore, setUserSetDateRangeBefore] = useState<{
     [key: string]: boolean;
   }>({});
-
-  useLayoutEffect(() => {
-    setAreDatesValid(map => ({
-      ...map,
-      [dateIndex]: true
-    }));
-  }, []);
 
   const selectFromDate = (date: Moment | null) => {
     handleFromDateSelect(date);
@@ -85,13 +72,10 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
     });
 
     if (
-      (errorMessage && areDatesValid[dateIndex]) ||
-      (!errorMessage && !areDatesValid[dateIndex])
+      (errorMessage && dateRange.isValid) ||
+      (!errorMessage && !dateRange.isValid)
     ) {
-      setAreDatesValid(map => ({
-        ...map,
-        [dateIndex]: !map[dateIndex]
-      }));
+      setIsDateValid(dateIndex, !dateRange.isValid);
     }
   };
 
@@ -107,7 +91,7 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
         InputLabelProps={{
           shrink: true
         }}
-        className={areDatesValid[dateIndex] ? "" : "error"}
+        className={dateRange.isValid ? "" : "error"}
       ></DatePicker>
 
       {dateRange.isRange && (
@@ -121,7 +105,7 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
           InputLabelProps={{
             shrink: true
           }}
-          className={areDatesValid[dateIndex] ? "" : "error"}
+          className={dateRange.isValid ? "" : "error"}
         ></DatePicker>
       )}
     </div>

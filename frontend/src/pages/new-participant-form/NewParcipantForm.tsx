@@ -13,8 +13,7 @@ import {
   EventInfo,
   NewParticipantDateAndTimeInput,
   SelectedDateMap,
-  timeSlot,
-  TwoDimentionalMap
+  timeSlot
 } from "./types";
 import moment, { Moment } from "moment";
 import { AvailableTimeSlotsInput } from "./AvailableTimeSlotsInput";
@@ -22,8 +21,7 @@ import {
   computeMinMaxDate,
   findSmallestNotSelectedDate,
   generateRequestData,
-  validateInput,
-  checkAnyErrorInMap
+  validateInput
 } from "./utils";
 import axios from "../../api/proxy";
 import "./NewParticipantForm.scss";
@@ -46,13 +44,15 @@ interface NewParcipantFormProps
 
 export const initialTimeSlot: timeSlot = {
   fromTime: moment("0000"),
-  toTime: moment("0100", TIME_STRING)
+  toTime: moment("0100", TIME_STRING),
+  isValid: true
 };
 
 export const initialDateAndTimeInput = {
   dateRange: {
     fromDate: null,
     toDate: null,
+    isValid: true,
     isRange: false
   },
   timeSlots: [initialTimeSlot]
@@ -110,14 +110,6 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const [participantName, setParticaipantName] = useState("");
   const [nameError, setNameError] = useState(false);
 
-  const [areDatesValid, setAreDatesValid] = useState<{
-    [key: string]: boolean;
-  }>({});
-
-  const [areTimeSlotsValid, setAreTimeSlosValid] = useState<TwoDimentionalMap>(
-    {}
-  );
-
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   const [selectedDatesMap, setSelectedDatesMap] = useState<SelectedDateMap>({});
@@ -136,6 +128,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     const minDate = minMaxDate[0];
     // 2. wait for the value of minMaxDate be computed
     if (minDate) {
+      //set date of first input block be now if moment() >= minDate
+      //else set it as minDate
       const minDateToBeSet =
         minDate.diff(moment(), "days") <= 0 ? moment() : minDate;
 
@@ -150,12 +144,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
 
   useEffect(() => {
     // 3. wait the the dateRange be set
-    const startDate = periods[0].dateRange[0];
-
     if (dateAndTimeInputs[0].dateRange.fromDate) {
       setIsMinDateSet(true);
     }
-  }, [dateAndTimeInputs[0].dateRange]);
+  }, [dateAndTimeInputs[0].dateRange.fromDate]);
 
   const handleNameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setParticaipantName(e.target.value);
@@ -231,6 +223,23 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     dispatch({ type: "DELETE_DATE_AND_TIME_INPUT", dateIndex });
   };
 
+  const setIsDateValid = (dateIndex: number, isValid: boolean) => {
+    dispatch({ type: "SET_IS_DATE_VALID", dateIndex, isValid });
+  };
+
+  const setIsTimeSlotValid = (
+    dateIndex: number,
+    timeSlotIndex: number,
+    isValid: boolean
+  ) => {
+    dispatch({
+      type: "SET_IS_TIME_SLOT_VALID",
+      dateIndex,
+      timeSlotIndex,
+      isValid
+    });
+  };
+
   //used when isRange is toggled
   //default will include both value (lower & upper)
   const addOrRemoveKeyFromSelectedDateMap = (
@@ -269,12 +278,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
     setNameError(false);
     setDisableSubmitButton(true);
 
-    const errorMessages = validateInput(
-      participantName,
-      dateAndTimeInputs,
-      areDatesValid,
-      areTimeSlotsValid
-    );
+    const errorMessages = validateInput(participantName, dateAndTimeInputs);
     if (errorMessages.length > 0) {
       if (errorMessages.includes("Name cannot be empty")) setNameError(true);
 
@@ -386,10 +390,8 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
                       addOrRemoveKeyFromSelectedDateMap
                     }
                     pushErrors={pushErrors}
-                    areDatesValid={areDatesValid}
-                    setAreDatesValid={setAreDatesValid}
-                    areTimeSlotsValid={areTimeSlotsValid}
-                    setAreTimeSlosValid={setAreTimeSlosValid}
+                    setIsDateValid={setIsDateValid}
+                    setIsTimeSlotValid={setIsTimeSlotValid}
                   />
                 )}
               </div>
