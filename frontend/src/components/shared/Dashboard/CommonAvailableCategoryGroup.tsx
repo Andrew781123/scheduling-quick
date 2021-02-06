@@ -28,10 +28,8 @@ export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroup
           />
         ))
       ) : (
-        <h2>Empty</h2>
+        <h2 style={{ color: "#868686", textAlign: "center" }}>Empty</h2>
       )}
-
-      <Box mb={3} />
     </>
   );
 };

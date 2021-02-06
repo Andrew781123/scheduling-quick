@@ -85,16 +85,6 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
           participantCount={participants.length}
         />
       )}
-
-      <Button
-        onClick={() => {
-          history.push({
-            pathname: `/events/${eventId}/new-participant`
-          });
-        }}
-      >
-        Go to form
-      </Button>
     </div>
   );
 };

@@ -11,8 +11,8 @@ interface CategoryTitleIconsProps {
 export const CategoryTitleIcons: React.FC<CategoryTitleIconsProps> = props => {
   const { durationOk, peopleOk } = props;
 
-  const timeIconColor = durationOk ? "green" : "red";
-  const peopleIconColor = peopleOk ? "green" : "red";
+  const timeIconColor = durationOk ? "#52E77D" : "#FA9599";
+  const peopleIconColor = peopleOk ? "#52E77D" : "#FA9599";
 
   return (
     <div className='category_title_icons'>
