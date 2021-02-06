@@ -41,7 +41,7 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
             <span key={index}>
               {" "}
               {name}
-              {index < availablePeople.length - 1 && ","}
+              {index < availablePeople.length - 1 && ", "}
             </span>
           );
         })}

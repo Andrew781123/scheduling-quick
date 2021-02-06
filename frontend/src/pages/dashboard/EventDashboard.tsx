@@ -8,6 +8,7 @@ import { EventInfoBlock } from "../new-participant-form/EventInfoBlock";
 import "./EventDashBoard.scss";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import Alert from "@material-ui/lab/Alert";
+import { CommonAvailableTabs } from "../../components/shared/Dashboard/CommonAvailableTabs";
 
 interface routeProps {
   id: string;
@@ -74,22 +75,16 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
 
       <Box my={5} />
 
-      <div className='dashboard_common_available'>
-        <h1 className='header'>Results</h1>
-        <Divider />
-        <Box mb={1.5} />
-        {commonAvailable &&
-          commonAvailableCategory &&
-          Object.keys(commonAvailableCategory).map((categoryIndex, i) => (
-            <CommonAvailableCategoryGroup
-              key={i}
-              category={commonAvailableCategory[+categoryIndex]}
-              commonAvailable={commonAvailable}
-              participantCount={participants.length}
-              index={i + 1}
-            />
-          ))}
-      </div>
+      <h1 className='header'>Results</h1>
+      <Divider />
+      <Box mb={1.5} />
+      {commonAvailable && commonAvailableCategory && (
+        <CommonAvailableTabs
+          commonAvailableCategory={commonAvailableCategory}
+          commonAvailable={commonAvailable}
+          participantCount={participants.length}
+        />
+      )}
 
       <Button
         onClick={() => {

@@ -16,28 +16,20 @@ export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroup
 
   return (
     <>
-      <div className='common_available_category_group'>
-        <CategoryTitle categoryType={index} />
-
-        <Divider />
-
-        <Box mb={1} />
-
-        {category.length > 0 ? (
-          category.map((element, i) => (
-            <CommonAvailableElement
-              key={i}
-              index={i + 1}
-              date={element[0]}
-              timeSlotIndex={element[1]}
-              commonAvailable={commonAvailable}
-              participantCount={participantCount}
-            />
-          ))
-        ) : (
-          <h2>Empty</h2>
-        )}
-      </div>
+      {category.length > 0 ? (
+        category.map((element, i) => (
+          <CommonAvailableElement
+            key={i}
+            index={i + 1}
+            date={element[0]}
+            timeSlotIndex={element[1]}
+            commonAvailable={commonAvailable}
+            participantCount={participantCount}
+          />
+        ))
+      ) : (
+        <h2>Empty</h2>
+      )}
 
       <Box mb={3} />
     </>

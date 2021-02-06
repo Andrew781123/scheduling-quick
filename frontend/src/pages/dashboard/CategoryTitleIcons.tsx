@@ -16,9 +16,9 @@ export const CategoryTitleIcons: React.FC<CategoryTitleIconsProps> = props => {
 
   return (
     <div className='category_title_icons'>
-      <WatchLaterIcon style={{ fill: timeIconColor }} fontSize='large' />
+      <WatchLaterIcon style={{ fill: timeIconColor }} fontSize='default' />
       <Box component='span' mx={0.7} />
-      <PeopleAltIcon style={{ fill: peopleIconColor }} fontSize='large' />
+      <PeopleAltIcon style={{ fill: peopleIconColor }} fontSize='default' />
     </div>
   );
 };
