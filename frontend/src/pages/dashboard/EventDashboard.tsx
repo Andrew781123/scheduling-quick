@@ -1,5 +1,5 @@
 import { Box, Button, Divider } from "@material-ui/core";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CommonAvailableCategoryGroup } from "../../components/shared/Dashboard/CommonAvailableCategoryGroup";
 import { EventContext } from "../../context/event-context/EventProvider";
@@ -42,6 +42,12 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
     // eslint-disable-next-line
   }, []);
 
+  const participantList = useMemo(() => {
+    return participants.map(participantObj => {
+      return participantObj.name;
+    });
+  }, [participants]);
+
   return (
     <div className='page_container'>
       <Alert
@@ -80,6 +86,7 @@ export const EventDashboard: React.FC<EventDashboardProps> = props => {
       <Box mb={1.5} />
       {commonAvailable && commonAvailableCategory && (
         <CommonAvailableTabs
+          participantList={participantList}
           commonAvailableCategory={commonAvailableCategory}
           commonAvailable={commonAvailable}
           participantCount={participants.length}

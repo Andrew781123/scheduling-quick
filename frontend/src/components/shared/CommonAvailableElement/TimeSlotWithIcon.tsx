@@ -11,7 +11,7 @@ export const TImeSlotWithIcon: React.FC<TimeSlotWithIconProps> = props => {
   const { fromTime, toTime, iconColor } = props;
 
   return (
-    <div className='icon_with_data'>
+    <div className='icon_with_data icon_with_data_span'>
       <RangeDisplay
         fromRange={fromTime}
         toRange={toTime}

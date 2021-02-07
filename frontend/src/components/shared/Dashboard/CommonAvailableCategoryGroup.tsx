@@ -4,6 +4,7 @@ import { GREEN_COLOR, RED_COLOR } from "../../../shared/constants";
 import { CommonAvailableElement } from "../CommonAvailableElement/CommonAvailableElement";
 
 interface CommonAvailableCategoryGroupProps {
+  participantList: string[];
   index: number;
   category: CommonByPeopleElement[];
   commonAvailable: TimeAvailable;
@@ -11,11 +12,16 @@ interface CommonAvailableCategoryGroupProps {
 }
 
 export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroupProps> = props => {
-  const { index, category, commonAvailable, participantCount } = props;
+  const {
+    participantList,
+    index,
+    category,
+    commonAvailable,
+    participantCount
+  } = props;
 
   const timeSlotIconColor =
     index === 1 || index === 3 ? GREEN_COLOR : RED_COLOR;
-  const peopleIconColor = index === 1 || index === 2 ? GREEN_COLOR : RED_COLOR;
 
   return (
     <>
@@ -23,13 +29,12 @@ export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroup
         category.map((element, i) => (
           <CommonAvailableElement
             key={i}
-            index={i + 1}
             date={element[0]}
             timeSlotIndex={element[1]}
             commonAvailable={commonAvailable}
             participantCount={participantCount}
+            participantList={participantList}
             timeSlotIconColor={timeSlotIconColor}
-            peopleIconColor={peopleIconColor}
           />
         ))
       ) : (

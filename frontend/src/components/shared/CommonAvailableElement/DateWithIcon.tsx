@@ -9,7 +9,7 @@ export const DateWithIcon: React.FC<DateWithIconProps> = props => {
   const { date } = props;
 
   return (
-    <div className='icon_with_data'>
+    <div className='icon_with_data icon_with_data_span'>
       <EventIcon />
       {date}
     </div>

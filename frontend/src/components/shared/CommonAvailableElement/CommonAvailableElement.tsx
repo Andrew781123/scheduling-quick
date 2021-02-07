@@ -6,15 +6,16 @@ import { DateWithIcon } from "./DateWithIcon";
 import { TImeSlotWithIcon } from "./TimeSlotWithIcon";
 import { Box } from "@material-ui/core";
 import { spawn } from "child_process";
+import { PeopleList } from "./PeopleList";
+import Divider from "@material-ui/core/Divider";
 
 interface CommonAvailableElementProps {
-  index: number;
   date: string;
   timeSlotIndex: number;
   commonAvailable: TimeAvailable;
   participantCount: number;
+  participantList: string[];
   timeSlotIconColor: string;
-  peopleIconColor: string;
 }
 
 export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = props => {
@@ -22,44 +23,43 @@ export const CommonAvailableElement: React.FC<CommonAvailableElementProps> = pro
     date,
     timeSlotIndex,
     commonAvailable,
-    index,
     timeSlotIconColor,
-    peopleIconColor
+    participantList
   } = props;
 
-  const [timeSlot, availablePeople] = useMemo(() => {
+  const [timeSlot, availablePeople, unavailablePeople] = useMemo(() => {
     const timeSlot = commonAvailable[date][timeSlotIndex];
     const availablePeople = commonAvailable[date][timeSlotIndex][2];
 
-    return [timeSlot, availablePeople];
+    const unavailablePeople = participantList.filter(
+      participant => !availablePeople.includes(participant)
+    );
+
+    return [timeSlot, availablePeople, unavailablePeople];
   }, [commonAvailable, date, timeSlotIndex]);
 
   return (
     <div className='common_available_element'>
-      <DateWithIcon date={date} />
+      <div className='element_date_and_time'>
+        <DateWithIcon date={date} />
 
-      <Box my={0.7} />
+        <Box mx={0.7} component='span' />
 
-      <TImeSlotWithIcon
-        fromTime={timeSlot[0]}
-        toTime={timeSlot[1]}
-        iconColor={timeSlotIconColor}
-      />
+        <TImeSlotWithIcon
+          fromTime={timeSlot[0]}
+          toTime={timeSlot[1]}
+          iconColor={timeSlotIconColor}
+        />
+      </div>
 
-      <Box my={0.7} />
+      <Box my={0.5} />
+      <Divider />
+      <Box my={1} />
 
-      <div className='icon_with_data'>
-        <PeopleAltIcon style={{ color: peopleIconColor }} />{" "}
-        {availablePeople.map((name, index) => {
-          return (
-            <span key={index}>
-              {" "}
-              {name}
-              {index < availablePeople.length - 1 && ","}
-              {index <= availablePeople.length - 2 && <span>&nbsp;</span>}
-            </span>
-          );
-        })}
+      <div className='people_lists'>
+        <PeopleList peopleList={availablePeople} available />
+        <Divider orientation='vertical' component='span' flexItem />
+        <PeopleList peopleList={unavailablePeople} />
       </div>
     </div>
   );

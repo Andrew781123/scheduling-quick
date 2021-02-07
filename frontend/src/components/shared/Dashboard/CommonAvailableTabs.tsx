@@ -1,21 +1,15 @@
-import { AppBar, makeStyles, Paper, Theme } from "@material-ui/core";
-import Tabs from "@material-ui/core/Tabs";
+import { AppBar, makeStyles, Theme } from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
 import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import { TabPanel } from "@material-ui/lab";
-import PhoneIcon from "@material-ui/icons/Phone";
-import React from "react";
-import {
-  CommonAvailableCategory,
-  CommonByPeopleElement,
-  TimeAvailable
-} from "../../../../../types";
-import { CommonAvailableElement } from "../CommonAvailableElement/CommonAvailableElement";
+import React, { Fragment } from "react";
+import { CommonAvailableCategory, TimeAvailable } from "../../../../../types";
 import { CommonAvailableCategoryGroup } from "./CommonAvailableCategoryGroup";
 import { CategoryTitle } from "../../../pages/dashboard/CategoryTitle";
 
 interface CommonAvailableTabsProps {
+  participantList: string[];
   commonAvailableCategory: CommonAvailableCategory;
   commonAvailable: TimeAvailable;
   participantCount: number;
@@ -52,7 +46,12 @@ const useTabListStyle = makeStyles({
 });
 
 export const CommonAvailableTabs: React.FC<CommonAvailableTabsProps> = props => {
-  const { commonAvailableCategory, commonAvailable, participantCount } = props;
+  const {
+    participantList,
+    commonAvailableCategory,
+    commonAvailable,
+    participantCount
+  } = props;
 
   const [value, setValue] = React.useState("1");
 
@@ -84,6 +83,7 @@ export const CommonAvailableTabs: React.FC<CommonAvailableTabsProps> = props => 
           >
             {categoryIndexes.map(index => (
               <Tab
+                key={index}
                 icon={<CategoryTitle categoryType={index} />}
                 value={index.toString()}
                 classes={{ root: tabBarIconClass.root }}
@@ -93,17 +93,17 @@ export const CommonAvailableTabs: React.FC<CommonAvailableTabsProps> = props => 
         </AppBar>
 
         {Object.keys(commonAvailableCategory).map((categoryIndex, i) => (
-          <>
+          <Fragment key={i}>
             <TabPanel value={(i + 1).toString()} className={tabListClass.root}>
               <CommonAvailableCategoryGroup
-                key={i}
+                participantList={participantList}
                 category={commonAvailableCategory[+categoryIndex]}
                 commonAvailable={commonAvailable}
                 participantCount={participantCount}
                 index={i + 1}
               />
             </TabPanel>
-          </>
+          </Fragment>
         ))}
       </TabContext>
     </>

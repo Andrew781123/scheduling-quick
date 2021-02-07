@@ -6,4 +6,20 @@
   margin-bottom: 5px;
   background-color: $thirdColor;
   border-radius: 5px;
+
+  .element_date_and_time {
+    // display: flex;
+    // justify-content: space-between;
+  }
+
+  .people_lists {
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    .people_list {
+      width: 48%;
+    }
+  }
 }
