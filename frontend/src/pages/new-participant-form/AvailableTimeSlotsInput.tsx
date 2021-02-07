@@ -176,7 +176,9 @@ export const AvailableTimeSlotsInput: React.FC<AvailableTimeSlotsInputProps> = p
       const newToDateString = newToDate.format(DATE_STRING);
 
       if (selectedDatesMap[newToDateString] || newToDate.diff(maxDate) > 0)
-        return pushErrors(["Cannot set range"]);
+        return pushErrors([
+          "Cannot set range because it will cause overlapping dates"
+        ]);
 
       addOrRemoveKeyFromSelectedDateMap([newToDate, newToDate], true, [
         true,

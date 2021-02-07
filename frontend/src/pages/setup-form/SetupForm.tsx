@@ -32,7 +32,7 @@ import "./SetupForm.scss";
 import { TIME_STRING } from "../../shared/constants";
 import { ErrorContext } from "../../context/error-context/ErrorProvider";
 import useOnBlurError from "../../shared/hooks/useOnBlurError";
-import { isConstructorDeclaration } from "typescript";
+import { useInputStyles } from "./styles";
 
 interface SetupFormProps {
   history: H.History;
@@ -195,6 +195,8 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     }
   };
 
+  const inputClasses = useInputStyles();
+
   return (
     <div className='page_container'>
       <PageHeader
@@ -218,6 +220,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
               shrink: true
             }}
             className='input_field'
+            classes={{ root: inputClasses.root }}
             error={onBlurErrors.organizerName ? true : false}
             helperText={onBlurErrors.organizerName}
           />
@@ -231,6 +234,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
               shrink: true
             }}
             className='input_field'
+            classes={{ root: inputClasses.root }}
           />
           <ComponentDivider />
           <div>
