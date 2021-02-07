@@ -23,18 +23,28 @@ interface DateAndTimeInputProps {
   autoSetToDate: (fromDate: Moment) => void;
   period: periodState;
   index: number;
+  arePeriodFieldsValid: { timeRange: boolean; dateRange: boolean };
+  setArePeriodFieldsValid: React.Dispatch<
+    React.SetStateAction<{
+      timeRange: boolean;
+      dateRange: boolean;
+    }>
+  >;
 }
 
 export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
-  const { selectPeriod, autoSetToTime, autoSetToDate, period, index } = props;
+  const {
+    selectPeriod,
+    autoSetToTime,
+    autoSetToDate,
+    period,
+    index,
+    arePeriodFieldsValid,
+    setArePeriodFieldsValid
+  } = props;
   const { dateRange, timeRange } = period;
 
   const [userSetDateOrTimeFirstTime, setUserSetDateOrTimeFirstTime] = useState({
-    timeRange: true,
-    dateRange: true
-  });
-
-  const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
     timeRange: true,
     dateRange: true
   });

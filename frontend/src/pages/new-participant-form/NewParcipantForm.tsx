@@ -309,9 +309,7 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       );
 
       history.push({ pathname: `/events/${eventId}/dashboard` });
-    } catch (err) {
-      console.error(err.message);
-    }
+    } catch (err) {}
   };
 
   return (

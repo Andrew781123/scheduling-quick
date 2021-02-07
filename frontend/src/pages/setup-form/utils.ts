@@ -28,11 +28,32 @@ export const formatPeriods = (periods: periodState[]): period[] => {
   return formattedPeriods;
 };
 
-export const validateInputOnSubmit = (name: string) => {
+export const validateNameInput = (name: string) => {
+  //check if contains string
+  if (/\s/.test(name)) return "Name should not contain empty space";
+
+  if (name.length > 20) return "Name should not be longer than 20 characters";
+};
+
+export const validateInputOnSubmit = (
+  name: string,
+  arePeriodFieldsValid: { timeRange: boolean; dateRange: boolean },
+  onBlurErrors: {
+    [key: string]: string | null;
+  }
+) => {
   const errors: FormErrors[] = [];
 
   if (name.length === 0 || name.trim().length === 0) {
     errors.push("Name can't be empty");
+  }
+
+  if (!arePeriodFieldsValid.timeRange) errors.push("Invalid time-slot input");
+
+  if (!arePeriodFieldsValid.dateRange) errors.push("Invalid date input");
+
+  for (const inputName in onBlurErrors) {
+    if (onBlurErrors[inputName]) errors.push("There are invalid inputs");
   }
 
   return errors;

@@ -1,10 +1,9 @@
-import React, { useReducer, useState } from "react";
+import React, { useContext, useReducer, useState } from "react";
 import { DateAndTimeInput } from "../../components/shared/time-picker/DateAndTimeInput";
 import setupInfoReducer from "./setupInfoReducer";
 import moment, { Moment } from "moment";
 import {
   dateRangeState,
-  FormErrors,
   periodState,
   setupInfo,
   timeRangeState
@@ -16,11 +15,13 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  Collapse,
-  IconButton,
   CircularProgress
 } from "@material-ui/core";
-import { formatPeriods, validateInputOnSubmit } from "./utils";
+import {
+  formatPeriods,
+  validateInputOnSubmit,
+  validateNameInput
+} from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";
 import { EVENT_MIN_DURATION_HOURS, EVENT_MIN_DURATION_MIN } from "./constants";
@@ -29,8 +30,9 @@ import { PageHeader } from "../../shared/conponents/PageHeader";
 import EventIcon from "@material-ui/icons/Event";
 import "./SetupForm.scss";
 import { TIME_STRING } from "../../shared/constants";
-import Alert from "@material-ui/lab/Alert";
-import CloseIcon from "@material-ui/icons/Close";
+import { ErrorContext } from "../../context/error-context/ErrorProvider";
+import useOnBlurError from "../../shared/hooks/useOnBlurError";
+import { isConstructorDeclaration } from "typescript";
 
 interface SetupFormProps {
   history: H.History;
@@ -87,13 +89,23 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     });
   };
 
-  const [formErrors, setFormErrors] = useState<{
-    errors: FormErrors[];
-    show: boolean;
-  }>({
-    errors: [],
-    show: false
+  const [arePeriodFieldsValid, setArePeriodFieldsValid] = useState({
+    timeRange: true,
+    dateRange: true
   });
+
+  const { onBlurErrors, addOnBlurError, clearOnBlurError } = useOnBlurError([
+    "organizerName"
+  ]);
+
+  const { pushErrors, clearErrors } = useContext(ErrorContext);
+
+  const handleNameOnBlur = () => {
+    const error = validateNameInput(organizerName);
+
+    if (error) addOnBlurError("organizerName", error);
+    else if (onBlurErrors.organizerName) clearOnBlurError("organizerName");
+  };
 
   const autoSetToTime = (fromTime: Moment) => {
     //need to make a copy because fromTime is passed by reference
@@ -141,17 +153,19 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
   };
 
   const submitForm = async () => {
+    clearErrors();
     dispatch({ type: "TOGGLE_SETUP_FORM_LOADING" });
 
-    const errors = validateInputOnSubmit(organizerName);
+    const errors = validateInputOnSubmit(
+      organizerName,
+      arePeriodFieldsValid,
+      onBlurErrors
+    );
 
     if (errors.length > 0) {
       dispatch({ type: "TOGGLE_SETUP_FORM_LOADING" });
 
-      return setFormErrors({
-        errors,
-        show: true
-      });
+      return pushErrors(errors);
     }
 
     const formattedPeriods = formatPeriods(periods);
@@ -183,32 +197,6 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
 
   return (
     <div className='page_container'>
-      {formErrors.errors.length > 0 &&
-        formErrors.errors.map((error, i) => (
-          <Collapse in={formErrors.show} key={i}>
-            <Alert
-              severity='error'
-              action={
-                <IconButton
-                  aria-label='close'
-                  color='inherit'
-                  size='small'
-                  onClick={() => {
-                    setFormErrors(errors => ({
-                      ...errors,
-                      show: false
-                    }));
-                  }}
-                >
-                  <CloseIcon fontSize='inherit' />
-                </IconButton>
-              }
-            >
-              {error}
-            </Alert>
-          </Collapse>
-        ))}
-
       <PageHeader
         icon={<EventIcon fontSize='large' />}
         headerText='Setup an Event'
@@ -221,6 +209,8 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
             value={organizerName}
             name='organizerName'
             onChange={hanleTextInput}
+            onBlur={handleNameOnBlur}
+            onFocus={() => clearOnBlurError("organizerName")}
             placeholder='Enter name'
             required={true}
             label='Name of organizer'
@@ -228,6 +218,8 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
               shrink: true
             }}
             className='input_field'
+            error={onBlurErrors.organizerName ? true : false}
+            helperText={onBlurErrors.organizerName}
           />
           <TextField
             value={venue}
@@ -294,6 +286,8 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
                 period={period}
                 index={i}
                 key={i}
+                arePeriodFieldsValid={arePeriodFieldsValid}
+                setArePeriodFieldsValid={setArePeriodFieldsValid}
               />
             );
           })}

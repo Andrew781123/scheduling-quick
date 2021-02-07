@@ -36,7 +36,11 @@ export interface setupInfoDateAndTimeFields {
 
 export type setupInfo = setupInfoDateAndTimeFields & setupInfoTextFields;
 
-export type FormErrors = "Invalid time-slot input" | "Name can't be empty";
+export type FormErrors =
+  | "Invalid time-slot input"
+  | "Name can't be empty"
+  | "Invalid date input"
+  | "There are invalid inputs";
 
 export type DateOrTime = "date" | "time";
 
