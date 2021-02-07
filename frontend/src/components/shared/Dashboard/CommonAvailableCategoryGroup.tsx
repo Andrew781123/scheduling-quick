@@ -1,8 +1,7 @@
 import React from "react";
 import { CommonByPeopleElement, TimeAvailable } from "../../../../../types";
+import { GREEN_COLOR, RED_COLOR } from "../../../shared/constants";
 import { CommonAvailableElement } from "../CommonAvailableElement/CommonAvailableElement";
-import { CategoryTitle } from "../../../pages/dashboard/CategoryTitle";
-import { Box, Divider } from "@material-ui/core";
 
 interface CommonAvailableCategoryGroupProps {
   index: number;
@@ -13,6 +12,10 @@ interface CommonAvailableCategoryGroupProps {
 
 export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroupProps> = props => {
   const { index, category, commonAvailable, participantCount } = props;
+
+  const timeSlotIconColor =
+    index === 1 || index === 3 ? GREEN_COLOR : RED_COLOR;
+  const peopleIconColor = index === 1 || index === 2 ? GREEN_COLOR : RED_COLOR;
 
   return (
     <>
@@ -25,6 +28,8 @@ export const CommonAvailableCategoryGroup: React.FC<CommonAvailableCategoryGroup
             timeSlotIndex={element[1]}
             commonAvailable={commonAvailable}
             participantCount={participantCount}
+            timeSlotIconColor={timeSlotIconColor}
+            peopleIconColor={peopleIconColor}
           />
         ))
       ) : (

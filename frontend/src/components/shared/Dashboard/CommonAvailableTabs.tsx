@@ -28,8 +28,18 @@ const useTabBarStyles = makeStyles((theme: Theme) => ({
   indicator: {
     backgroundColor: "#F7DC6A",
     height: 3.7
+  },
+  flexContainer: {
+    justifyContent: "space-around"
   }
 }));
+
+const useTabIconStyles = makeStyles({
+  root: {
+    marginTop: 5,
+    marginBottom: 5
+  }
+});
 
 const useTabListStyle = makeStyles({
   root: {
@@ -54,6 +64,7 @@ export const CommonAvailableTabs: React.FC<CommonAvailableTabsProps> = props => 
 
   const tabBarClass = useTabBarStyles();
   const tabListClass = useTabListStyle();
+  const tabBarIconClass = useTabIconStyles();
 
   return (
     <>
@@ -66,13 +77,16 @@ export const CommonAvailableTabs: React.FC<CommonAvailableTabsProps> = props => 
             textColor='primary'
             aria-label='disabled tabs example'
             onChange={handleChange}
-            classes={{ indicator: tabBarClass.indicator }}
+            classes={{
+              indicator: tabBarClass.indicator,
+              flexContainer: tabBarClass.flexContainer
+            }}
           >
             {categoryIndexes.map(index => (
               <Tab
                 icon={<CategoryTitle categoryType={index} />}
                 value={index.toString()}
-                classes={{ root: tabBarClass.root }}
+                classes={{ root: tabBarIconClass.root }}
               />
             ))}
           </TabList>
