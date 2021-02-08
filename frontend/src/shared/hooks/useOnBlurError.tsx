@@ -1,33 +1,33 @@
 import { useState } from "react";
 
-interface OnBlurErrors {
+interface OnBlurErrorsMap {
   [key: string]: string | null;
 }
 
 export default function useOnBlurError(inputNames: string[]) {
-  const [onBlurErrors, setOnBlurErrors] = useState(() => {
+  const [onBlurErrorsMap, setOnBlurErrorsMap] = useState(() => {
     const initialOnBlurErrors = {};
 
     inputNames.forEach(
-      name => ((initialOnBlurErrors as OnBlurErrors)[name] = null)
+      name => ((initialOnBlurErrors as OnBlurErrorsMap)[name] = null)
     );
 
-    return initialOnBlurErrors as OnBlurErrors;
+    return initialOnBlurErrors as OnBlurErrorsMap;
   });
 
   const addOnBlurError = (inputName: string, newError: string) => {
-    setOnBlurErrors(error => ({
+    setOnBlurErrorsMap(error => ({
       ...error,
       [inputName]: newError
     }));
   };
 
   const clearOnBlurError = (inputName: string) => {
-    setOnBlurErrors(error => ({
+    setOnBlurErrorsMap(error => ({
       ...error,
       [inputName]: null
     }));
   };
 
-  return { onBlurErrors, addOnBlurError, clearOnBlurError };
+  return { onBlurErrorsMap, addOnBlurError, clearOnBlurError };
 }

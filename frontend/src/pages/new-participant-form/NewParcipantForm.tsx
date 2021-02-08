@@ -32,6 +32,8 @@ import Alert from "@material-ui/lab/Alert";
 import { NewParticipantFormReducer } from "./NewParticipantFormReducer";
 import { DATE_STRING, TIME_STRING } from "../../shared/constants";
 import { ErrorContext } from "../../context/error-context/ErrorProvider";
+import useOnBlurError from "../../shared/hooks/useOnBlurError";
+import { InputWithOnBlurErrorChecks } from "../../shared/conponents/InputWithOnBlurErrorChecks";
 
 interface routeParams {
   id: string;
@@ -113,6 +115,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   const [selectedDatesMap, setSelectedDatesMap] = useState<SelectedDateMap>({});
+
+  const { onBlurErrorsMap, addOnBlurError, clearOnBlurError } = useOnBlurError([
+    "name"
+  ]);
 
   // useEffect(() => {
   //   console.log(selectedDatesMap);
@@ -345,19 +351,24 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       <div className='new_participant_form_container'>
         <div className='input_block'>
           <h2 className='label primary_label'>Your Info</h2>
-          <TextField
-            error={nameError}
-            helperText={nameError && "empty name"}
-            className='text-input'
-            value={participantName}
-            name='participantName'
-            placeholder='Enter name'
-            onChange={handleNameInput}
-            required={true}
-            label='Name'
-            InputLabelProps={{
-              shrink: true
-            }}
+          <InputWithOnBlurErrorChecks
+            input={participantName}
+            onBlurErrorMsg={onBlurErrorsMap.name}
+            addOnBlurError={addOnBlurError}
+            clearOnBlurError={clearOnBlurError}
+            InputComponent={
+              <TextField
+                name='name'
+                value={participantName}
+                onChange={handleNameInput}
+                placeholder='Enter name'
+                required={true}
+                label='Name'
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            }
           />
         </div>
         <div className='input_block'>

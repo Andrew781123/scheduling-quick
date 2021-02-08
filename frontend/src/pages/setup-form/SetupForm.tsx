@@ -33,6 +33,7 @@ import { TIME_STRING } from "../../shared/constants";
 import { ErrorContext } from "../../context/error-context/ErrorProvider";
 import useOnBlurError from "../../shared/hooks/useOnBlurError";
 import { useInputStyles } from "./styles";
+import { InputWithOnBlurErrorChecks } from "../../shared/conponents/InputWithOnBlurErrorChecks";
 
 interface SetupFormProps {
   history: H.History;
@@ -94,18 +95,11 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     dateRange: true
   });
 
-  const { onBlurErrors, addOnBlurError, clearOnBlurError } = useOnBlurError([
+  const { onBlurErrorsMap, addOnBlurError, clearOnBlurError } = useOnBlurError([
     "organizerName"
   ]);
 
   const { pushErrors, clearErrors } = useContext(ErrorContext);
-
-  const handleNameOnBlur = () => {
-    const error = validateNameInput(organizerName);
-
-    if (error) addOnBlurError("organizerName", error);
-    else if (onBlurErrors.organizerName) clearOnBlurError("organizerName");
-  };
 
   const autoSetToTime = (fromTime: Moment) => {
     //need to make a copy because fromTime is passed by reference
@@ -159,7 +153,7 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
     const errors = validateInputOnSubmit(
       organizerName,
       arePeriodFieldsValid,
-      onBlurErrors
+      onBlurErrorsMap
     );
 
     if (errors.length > 0) {
@@ -207,23 +201,28 @@ export const SetupForm: React.FC<SetupFormProps> = props => {
       <div className='input_block'>
         <h2 className='label primary_label'>Event Info</h2>
         <div className='sub_input_block'>
-          <TextField
-            value={organizerName}
-            name='organizerName'
-            onChange={hanleTextInput}
-            onBlur={handleNameOnBlur}
-            onFocus={() => clearOnBlurError("organizerName")}
-            placeholder='Enter name'
-            required={true}
-            label='Name of organizer'
-            InputLabelProps={{
-              shrink: true
-            }}
-            className='input_field'
-            classes={{ root: inputClasses.root }}
-            error={onBlurErrors.organizerName ? true : false}
-            helperText={onBlurErrors.organizerName}
+          <InputWithOnBlurErrorChecks
+            input={organizerName}
+            onBlurErrorMsg={onBlurErrorsMap.organizerName}
+            addOnBlurError={addOnBlurError}
+            clearOnBlurError={clearOnBlurError}
+            InputComponent={
+              <TextField
+                name='organizerName'
+                value={organizerName}
+                onChange={hanleTextInput}
+                placeholder='Enter name'
+                required={true}
+                label='Name of organizer'
+                InputLabelProps={{
+                  shrink: true
+                }}
+                className='input_field'
+                classes={{ root: inputClasses.root }}
+              />
+            }
           />
+
           <TextField
             value={venue}
             name='venue'
