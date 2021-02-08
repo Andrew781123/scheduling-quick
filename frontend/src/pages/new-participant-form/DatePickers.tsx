@@ -2,7 +2,7 @@ import { DatePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
 import React, { useState } from "react";
 import { validateDateRange } from "../../shared/validation";
-import { DateRangeState, FormErrors } from "./types";
+import { DateRangeState } from "./types";
 
 interface DatePickersProps {
   dateIndex: number;
@@ -63,7 +63,7 @@ export const DatePickers: React.FC<DatePickersProps> = props => {
   };
 
   const validateDate = (time: Moment, isFromDate: boolean) => {
-    let errorMessage: FormErrors | undefined;
+    let errorMessage: string | undefined;
 
     errorMessage = validateDateRange({
       fromDate: isFromDate ? time : dateRange.fromDate,

@@ -1,5 +1,6 @@
 import { Moment } from "moment";
 import { EventMinDurationHour, EventMinDurationMin } from "../../../../types";
+import { NameInputErrors } from "../../shared/types";
 
 export interface dateRangeState {
   fromDate: Moment | null;
@@ -35,12 +36,6 @@ export interface setupInfoDateAndTimeFields {
 }
 
 export type setupInfo = setupInfoDateAndTimeFields & setupInfoTextFields;
-
-export type FormErrors =
-  | "Invalid time-slot input"
-  | "Name can't be empty"
-  | "Invalid date input"
-  | "There are invalid inputs";
 
 export type DateOrTime = "date" | "time";
 

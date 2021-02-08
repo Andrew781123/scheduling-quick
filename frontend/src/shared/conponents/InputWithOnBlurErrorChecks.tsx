@@ -1,6 +1,6 @@
 import { TextFieldProps } from "@material-ui/core";
 import React from "react";
-import { validateNameInput } from "../../pages/setup-form/utils";
+import { validateNameInput } from "../validation";
 
 interface InputWithOnBlurErrorChecksProps {
   InputComponent: React.FunctionComponentElement<TextFieldProps>;

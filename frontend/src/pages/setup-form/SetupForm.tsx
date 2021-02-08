@@ -17,11 +17,7 @@ import {
   InputLabel,
   CircularProgress
 } from "@material-ui/core";
-import {
-  formatPeriods,
-  validateInputOnSubmit,
-  validateNameInput
-} from "./utils";
+import { formatPeriods, validateInputOnSubmit } from "./utils";
 import axios from "../../api/proxy";
 import * as H from "history";
 import { EVENT_MIN_DURATION_HOURS, EVENT_MIN_DURATION_MIN } from "./constants";

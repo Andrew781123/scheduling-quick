@@ -315,7 +315,10 @@ export const NewParcipantForm: React.FC<NewParcipantFormProps> = props => {
       );
 
       history.push({ pathname: `/events/${eventId}/dashboard` });
-    } catch (err) {}
+    } catch (err) {
+      setDisableSubmitButton(false);
+      pushErrors(["There is something wrong, please try again"]);
+    }
   };
 
   return (

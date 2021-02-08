@@ -2,7 +2,7 @@ import { TimePicker } from "@material-ui/pickers";
 import { Moment } from "moment";
 import React, { useMemo, useState } from "react";
 import { validateTimeRange } from "../../shared/validation";
-import { FormErrors, timeSlot, TwoDimentionalMap } from "./types";
+import { timeSlot, TwoDimentionalMap } from "./types";
 import { convertCoordinatesToKey } from "./utils";
 
 interface TimePickersProps {
@@ -77,7 +77,7 @@ export const TimePickers: React.FC<TimePickersProps> = props => {
   };
 
   const validateTimeSlot = (time: Moment, isFromTime: boolean) => {
-    let errorMessage: FormErrors | undefined;
+    let errorMessage: string | undefined;
 
     errorMessage = validateTimeRange({
       fromTime: isFromTime ? time : timeSlot.fromTime,

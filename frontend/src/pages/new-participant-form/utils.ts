@@ -12,7 +12,7 @@ import {
   SelectedDateMap
 } from "./types";
 import moment, { Moment } from "moment";
-import { FormErrors } from "./types";
+import { validateNameInput } from "../../shared/validation";
 
 export const computeMinMaxDate = (periods: period[]) => {
   let minDate = moment(periods[0].dateRange[0], DATE_STRING);
@@ -196,10 +196,12 @@ export const simplifyTimeSlots = (participantInput: participant) => {
 export const validateInput = (
   name: string,
   dateAndTimeInputs: NewParticipantDateAndTimeInput
-): FormErrors[] => {
-  let errors: FormErrors[] = [];
+) => {
+  let errors: string[] = [];
 
-  if (name.trim().length === 0) errors.push("Name cannot be empty");
+  const nameError = validateNameInput(name);
+
+  if (nameError) errors.push(nameError);
 
   let dateRangeArr: DateRangeState<Moment | null>[] = [];
   for (const input of dateAndTimeInputs) {
@@ -273,7 +275,7 @@ export const checkOverLapDates = (
 export const checkAnyInvalidDateAndTimeInputs = (
   dateAndTimeInputs: NewParticipantDateAndTimeInput
 ) => {
-  let errors: FormErrors[] = [];
+  let errors: string[] = [];
 
   const INVALID_DATE_MESSAGE = "There are invalid date inputs";
   const INVALID_TIME_SLOT_MESSAGE = "There are invalid time inputs";

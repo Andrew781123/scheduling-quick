@@ -38,11 +38,3 @@ export interface SelectedDateMap {
 export interface TwoDimentionalMap {
   [key: string]: boolean;
 }
-
-export type FormErrors =
-  | "Invalid time range"
-  | "Invalid date range"
-  | "Name cannot be empty"
-  | "There are overlap dates"
-  | "There are invalid date inputs"
-  | "There are invalid time inputs";

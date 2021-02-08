@@ -1,6 +1,7 @@
-import { FormErrors, periodState } from "./types";
+import { periodState } from "./types";
 import { period } from "../../../../types";
 import { TIME_STRING, DATE_STRING } from "../../shared/constants";
+import { validateNameInput } from "../../shared/validation";
 
 export const formatPeriods = (periods: periodState[]): period[] => {
   const formattedPeriods: period[] = [];
@@ -28,15 +29,6 @@ export const formatPeriods = (periods: periodState[]): period[] => {
   return formattedPeriods;
 };
 
-export const validateNameInput = (name: string) => {
-  //check if contains string
-  if (name.trim().length === 0) return "Name cannot be empty";
-
-  if (/\s/.test(name)) return "Name should not contain empty space";
-
-  if (name.length > 15) return "Name should not be longer than 15 characters";
-};
-
 export const validateInputOnSubmit = (
   name: string,
   arePeriodFieldsValid: { timeRange: boolean; dateRange: boolean },
@@ -44,11 +36,11 @@ export const validateInputOnSubmit = (
     [key: string]: string | null;
   }
 ) => {
-  const errors: FormErrors[] = [];
+  const errors: string[] = [];
 
-  if (name.length === 0 || name.trim().length === 0) {
-    errors.push("Name can't be empty");
-  }
+  const nameError = validateNameInput(name);
+
+  if (nameError) errors.push(nameError);
 
   if (!arePeriodFieldsValid.timeRange) errors.push("Invalid time-slot input");
 

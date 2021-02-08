@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   dateRangeState,
-  FormErrors,
   periodState,
   timeRangeState
 } from "../../../pages/setup-form/types";
@@ -70,7 +69,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = props => {
       return;
     }
 
-    let errorMessage: FormErrors | undefined;
+    let errorMessage: string | undefined;
 
     //validate data or time
     if (periodField === "dateRange") {

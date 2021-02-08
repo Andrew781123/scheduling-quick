@@ -23,3 +23,12 @@ export const validateDateRange = (dateRange: dateRangeState) => {
     return errorMessage;
   }
 };
+
+export const validateNameInput = (name: string) => {
+  //check if contains string
+  if (name.trim().length === 0) return "Name cannot be empty";
+
+  if (/\s/.test(name)) return "Name should not contain empty space";
+
+  if (name.length > 15) return "Name should not be longer than 15 characters";
+};
