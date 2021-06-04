@@ -10,12 +10,12 @@
 
 
 ## How to use
-1. Event organizer fill in a simple form, describing the event
+1. Event organizer fills in a simple form, describing the event
 <br/>
 
 ![image](https://user-images.githubusercontent.com/61986168/117776182-d8002680-b26d-11eb-8f9d-19d60dab61e9.png)
 <br/>
-2. A link will be generated and is to be sent to participants
+2. A link will be generated and the organizer sents it to participants
 <br/>
 
 ![image](https://user-images.githubusercontent.com/61986168/117776268-f82fe580-b26d-11eb-85d6-3441bc8dab48.png)
